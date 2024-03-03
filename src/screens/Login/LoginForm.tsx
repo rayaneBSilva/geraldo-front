@@ -4,13 +4,31 @@ import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
+import { StyleSheet } from "react-native";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isRequiredUsername, setIsRequiredUsername] = useState(false);
+  const [isRequiredPassword, setIsRequiredPassword] = useState(false);
+
+  const handleLoginPress = () => {
+    username.trim() === ""
+      ? setIsRequiredUsername(true)
+      : setIsRequiredUsername(false);
+    password.trim() === ""
+      ? setIsRequiredPassword(true)
+      : setIsRequiredPassword(false);
+
+    // Lógica de autenticação ou navegação para a próxima tela
+    // username.trim() !== "" && password.trim() !== "" && handleNavRegister();
+    // handleNavRegister();
+  };
+
   return (
-    // <View style={{ width: "85%", marginTop: 20 }}>
     <View style={{ width: "85%" }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={loginStyles.containerLoginForm}>
         <FontAwesome
           name="user"
           size={24}
@@ -21,6 +39,10 @@ const LoginForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="Usuário"
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+          errorMessage={isRequiredUsername ? "Campo obrigatório" : ""}
+          errorStyle={{ color: isRequiredUsername ? "red" : "black" }}
         />
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -31,10 +53,14 @@ const LoginForm = () => {
           style={loginStyles.icon}
         />
         <Input
-          containerStyle={{ flex: 1, marginLeft: 10 }}
+          containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           secureTextEntry={!showPassword}
           placeholder="Senha"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          errorMessage={isRequiredPassword ? "Campo obrigatório" : ""}
+          errorStyle={{ color: isRequiredPassword ? "red" : "black" }}
         />
         <TouchableOpacity
           style={{ position: "absolute", right: 10, top: 10 }}
@@ -47,14 +73,18 @@ const LoginForm = () => {
           />
         </TouchableOpacity>
       </View>
-      {/* <CustomButton title="Acessar" onPress={handlePress} /> */}
-      <CustomButton title="Acessar" />
+      <CustomButton
+        title="Acessar"
+        onPress={() => {
+          handleLoginPress();
+        }}
+      />
       <View />
       <Text
         style={loginStyles.textButton}
-        //   onPress={() => {
-        //       handleNavRegister();
-        //     }}
+        onPress={() => {
+          handleLoginPress();
+        }}
       >
         Esqueceu a sua senha?
       </Text>

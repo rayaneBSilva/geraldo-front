@@ -27,4 +27,9 @@ export const loginStyles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
+  containerLoginForm: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: -10,
+  },
 });

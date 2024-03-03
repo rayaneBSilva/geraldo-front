@@ -4,16 +4,15 @@ import { Button } from "@rneui/themed";
 
 interface CustomButtonProps {
   title: string;
-  //   onPress: () => void;
+  onPress: () => void;
 }
 
-// const CustomButton = ({ title, onPress }) => {
-const CustomButton: React.FC<CustomButtonProps> = ({ title }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress }) => {
   return (
     <View style={{ alignItems: "center" }}>
       <Button
         title={title}
-        //   onPress={onPress}
+        onPress={onPress}
         loading={false}
         loadingProps={{ size: "small", color: "black" }}
         buttonStyle={{
@@ -26,7 +25,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title }) => {
           height: 50,
           width: "85%",
           marginVertical: 10,
-          marginTop: 60,
+          marginTop: 50,
         }}
       />
     </View>

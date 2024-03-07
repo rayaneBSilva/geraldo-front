@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Alert } from "react-native";
+import auth from "@react-native-firebase/auth";
 import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
-import { StyleSheet } from "react-native";
+import axios from "axios";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +14,7 @@ const LoginForm = () => {
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [isRequiredPassword, setIsRequiredPassword] = useState(false);
 
-  const handleLoginPress = () => {
+  const handleLoginPress = async () => {
     username.trim() === ""
       ? setIsRequiredUsername(true)
       : setIsRequiredUsername(false);
@@ -21,10 +22,37 @@ const LoginForm = () => {
       ? setIsRequiredPassword(true)
       : setIsRequiredPassword(false);
 
-    // Lógica de autenticação ou navegação para a próxima tela
-    // username.trim() !== "" && password.trim() !== "" && handleNavRegister();
-    // handleNavRegister();
+    if (username.trim() !== "" && password.trim() !== "") {
+      signIn();
+      // try {
+      //   const response = await axios.post("http://127.0.0.1:3000/login", {
+      //     username,
+      //     password,
+      //   });
+      //   console.log(response.data);
+      // } catch (error) {
+      //   if (error instanceof Error) {
+      //     Alert.alert(
+      //       "Erro ao fazer login",
+      //       error.message,
+      //       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      //       { cancelable: false }
+      //     );
+      //   }
+      // }
+    }
   };
+
+  function signIn() {
+    auth()
+      .signInWithEmailAndPassword(username, password)
+      .then(() => {
+        console.log("user is authenticated");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <View style={{ width: "85%" }}>

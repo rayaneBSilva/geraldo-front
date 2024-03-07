@@ -1,6 +1,6 @@
 import React from "react";
-import { View } from "react-native";
-import { Button } from "@rneui/themed";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface CustomButtonProps {
   title: string;
@@ -10,26 +10,39 @@ interface CustomButtonProps {
 const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress }) => {
   return (
     <View style={{ alignItems: "center" }}>
-      <Button
-        title={title}
-        onPress={onPress}
-        loading={false}
-        loadingProps={{ size: "small", color: "black" }}
-        buttonStyle={{
-          backgroundColor: "yellow",
-          borderRadius: 20,
-        }}
-        titleStyle={{fontSize: 23, color: "#2D207C" }}
-        containerStyle={{
-          marginHorizontal: 50,
-          height: 50,
-          width: "85%",
-          marginVertical: 10,
-          marginTop: 50,
-        }}
-      />
+      <LinearGradient
+        colors={["#FCFF58", "#FEC500"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.container}
+      >
+        <TouchableOpacity onPress={onPress} style={styles.buttonContainer}>
+          <Text style={styles.text}>{title}</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 20,
+    height: 50,
+    width: "85%",
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    color: "#2D207C",
+    fontWeight: "500",
+    fontSize: 23,
+  },
+});
 
 export default CustomButton;

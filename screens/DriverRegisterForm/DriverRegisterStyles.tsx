@@ -4,6 +4,8 @@ export const registerDriverStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    textAlign:"center",
+    justifyContent:"center",
     padding: 20,
   },
   text:{

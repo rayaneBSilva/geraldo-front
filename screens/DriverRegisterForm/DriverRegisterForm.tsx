@@ -7,9 +7,11 @@ import { registerDriverStyles } from "./DriverRegisterStyles";
 
 
 const RegisterForm = () =>{
+    const [name, setName] = useState("");
+    const [nameError, setNameError] = useState("");
 
     return(
-    <View style={{width:"85%", marginTop:100}}>
+    <View style={{width:"85%"}}>
         
         <View> 
             <Text style={registerDriverStyles.text}>Cadastro do                          Motorista</Text>
@@ -18,15 +20,17 @@ const RegisterForm = () =>{
         <View style={registerDriverStyles.containerRegisterForm}>
             <FontAwesome 
                 name="user"
-                size={24}
+                size={34}
                 color={"white"}
                 style={registerDriverStyles.icon}
              />
             <Input
-                containerStyle={{width:"90%"}}
+                containerStyle={{width:"90%", marginLeft:3.5}}
                 style= {{color:"white"}}
                 placeholder="Nome"
+                value={name}
             ></Input>
+            {nameError !== "" && (<Text style={{color: "red", marginLeft: 10,}}>{nameError}</Text>)}
         </View>
 
         <View style={registerDriverStyles.containerRegisterForm}>
@@ -47,7 +51,7 @@ const RegisterForm = () =>{
         <View style={registerDriverStyles.containerRegisterForm}>
             <FontAwesome 
                 name="envelope"
-                size={24}
+                size={27}
                 color={"white"}
                 style={registerDriverStyles.icon}>
             </FontAwesome>
@@ -61,7 +65,7 @@ const RegisterForm = () =>{
         <View style={registerDriverStyles.containerRegisterForm}>
             <FontAwesome 
                 name="calendar"
-                size={24}
+                size={27}
                 color={"white"}
                 style={registerDriverStyles.icon}>
             </FontAwesome>

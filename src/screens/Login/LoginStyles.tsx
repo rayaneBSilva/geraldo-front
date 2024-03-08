@@ -26,10 +26,11 @@ export const loginStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+    marginTop: -30,
   },
   containerLoginForm: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: -10,
+    marginTop: -20,
   },
 });

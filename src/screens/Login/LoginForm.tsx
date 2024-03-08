@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
-import auth from "@react-native-firebase/auth";
 import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
-import axios from "axios";
+import UserService from "../../services/UserService";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +13,9 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [isRequiredPassword, setIsRequiredPassword] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleLoginPress = async () => {
     username.trim() === ""
@@ -22,37 +25,24 @@ const LoginForm = () => {
       ? setIsRequiredPassword(true)
       : setIsRequiredPassword(false);
 
+    let data = {
+      username: username,
+      password: password,
+    };
+
     if (username.trim() !== "" && password.trim() !== "") {
-      signIn();
-      // try {
-      //   const response = await axios.post("http://127.0.0.1:3000/login", {
-      //     username,
-      //     password,
-      //   });
-      //   console.log(response.data);
-      // } catch (error) {
-      //   if (error instanceof Error) {
-      //     Alert.alert(
-      //       "Erro ao fazer login",
-      //       error.message,
-      //       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-      //       { cancelable: false }
-      //     );
-      //   }
-      // }
+      UserService.login(data)
+        .then((response) => {
+          setLoading(false);
+          navigation.navigate("Teste" as never);
+          ///
+        })
+        .catch((error) => {
+          setLoading(false);
+          Alert.alert("Usuário não existe" + error);
+        });
     }
   };
-
-  function signIn() {
-    auth()
-      .signInWithEmailAndPassword(username, password)
-      .then(() => {
-        console.log("user is authenticated");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
   return (
     <View style={{ width: "85%" }}>
@@ -111,13 +101,27 @@ const LoginForm = () => {
       <Text
         style={loginStyles.textButton}
         onPress={() => {
-          handleLoginPress();
+          navigation.navigate("ForgotPasswordScreen" as never);
         }}
       >
         Esqueceu a sua senha?
       </Text>
-      <Text style={loginStyles.textButton}>Cadastrar Motorista</Text>
-      <Text style={loginStyles.textButton}>Cadastrar Estabelecimento</Text>
+      <Text
+        style={loginStyles.textButton}
+        onPress={() => {
+          navigation.navigate("DriverRegister" as never);
+        }}
+      >
+        Cadastrar Motorista
+      </Text>
+      <Text
+        style={loginStyles.textButton}
+        onPress={() => {
+          navigation.navigate("CreateEstablishment" as never);
+        }}
+      >
+        Cadastrar Estabelecimento
+      </Text>
     </View>
   );
 };

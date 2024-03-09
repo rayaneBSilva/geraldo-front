@@ -4,17 +4,24 @@ import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
+import { validateUsername } from "./DriverRegisterValidation";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
+  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState("");
+
 
   const handleLoginPress = async () => {
-    setIsRequiredUsername(username.trim() === "");
+    const userNameValidation = validateUsername(username);
+    setIsRequiredUsername(userNameValidation.required);
+    setInvalidUsernameMessage(userNameValidation.message);
+
   };
   
   const handleUsernameFocus = () => {
     setIsRequiredUsername(false);
+    setInvalidUsernameMessage("");
   };
 
   return (
@@ -36,7 +43,7 @@ const RegisterForm = () => {
           placeholder={"Nome"}
           onChangeText={(text) => setUsername(text)}
           value={username}
-          errorMessage={isRequiredUsername ? "Campo obrigatório" : ""}
+          errorMessage={isRequiredUsername ? invalidUsernameMessage : ""}
           errorStyle={{ color: "red", marginLeft:-1 }}
           onFocus={handleUsernameFocus} 
 

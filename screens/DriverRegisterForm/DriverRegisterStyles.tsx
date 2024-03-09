@@ -12,7 +12,7 @@ export const registerDriverStyles = StyleSheet.create({
     color:"#FFF",
     marginTop:-60,
     marginBottom:45,
-    fontSize:50,
+    fontSize:45,
     fontWeight: "bold",
     textAlign: "center"
   },

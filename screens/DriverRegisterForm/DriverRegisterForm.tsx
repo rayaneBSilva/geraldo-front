@@ -4,7 +4,7 @@ import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
-import { validateUsername, formatCPF, validateCPF } from "./DriverRegisterValidation";
+import { validateUsername, formatCPF, validateCPF, validateEmail } from "./DriverRegisterValidation";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
@@ -14,6 +14,10 @@ const RegisterForm = () => {
   const [cpf, setCpf] = useState('');
   const [isRequiredCpf, setIsRequiredCpf] = useState(false);
   const [invalidCpfMessage, setInvalidCpfMessage] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [isRequiredEmail, setIsRequiredEmail] = useState(false);
+  const [invalidEmailMessage, setInvalidEmailMessage] = useState('');
 
   const handleCpfChange = (cpf:any) => {
     setCpf(formatCPF(cpf)); // Formate imediatamente o CPF
@@ -27,6 +31,10 @@ const RegisterForm = () => {
     const cpfValidation = validateCPF(cpf);
     setIsRequiredCpf(cpfValidation.required);
     setInvalidCpfMessage(cpfValidation.message);
+
+    const emailValidation = validateEmail(email);
+    setIsRequiredEmail(emailValidation.required);
+    setInvalidEmailMessage(emailValidation.message);
   };
   
   const handleUsernameFocus = () => {
@@ -89,6 +97,10 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="Email"
+          onChangeText={setEmail}
+          value={email}
+          errorMessage={isRequiredEmail ? invalidEmailMessage : ''}
+          errorStyle={{ color: 'red', marginLeft: -1 }}
         ></Input>
       </View>
 

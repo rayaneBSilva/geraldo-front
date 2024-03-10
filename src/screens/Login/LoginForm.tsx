@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
-import { Input, Text } from "@rneui/themed";
+import { View, TouchableOpacity, Text } from "react-native";
+import { Input } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
@@ -13,34 +13,18 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [isRequiredPassword, setIsRequiredPassword] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-
   const navigation = useNavigation();
 
   const handleLoginPress = async () => {
-    username.trim() === ""
-      ? setIsRequiredUsername(true)
-      : setIsRequiredUsername(false);
-    password.trim() === ""
-      ? setIsRequiredPassword(true)
-      : setIsRequiredPassword(false);
-
-    let data = {
-      username: username,
-      password: password,
-    };
+    setIsRequiredUsername(username.trim() === "");
+    setIsRequiredPassword(password.trim() === "");
 
     if (username.trim() !== "" && password.trim() !== "") {
-      UserService.login(data)
-        .then((response) => {
-          setLoading(false);
-          navigation.navigate("Teste" as never);
-          ///
-        })
-        .catch((error) => {
-          setLoading(false);
-          Alert.alert("Usuário não existe" + error);
-        });
+      try {
+        await UserService.login({ username, password });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -91,34 +75,22 @@ const LoginForm = () => {
           />
         </TouchableOpacity>
       </View>
-      <CustomButton
-        title="Acessar"
-        onPress={() => {
-          handleLoginPress();
-        }}
-      />
-      <View />
+      <CustomButton title="Acessar" onPress={handleLoginPress} />
       <Text
         style={loginStyles.textButton}
-        onPress={() => {
-          navigation.navigate("ForgotPasswordScreen" as never);
-        }}
+        onPress={() => navigation.navigate("ForgotPasswordScreen" as never)}
       >
         Esqueceu a sua senha?
       </Text>
       <Text
         style={loginStyles.textButton}
-        onPress={() => {
-          navigation.navigate("DriverRegister" as never);
-        }}
+        onPress={() => navigation.navigate("Register" as never)}
       >
         Cadastrar Motorista
       </Text>
       <Text
         style={loginStyles.textButton}
-        onPress={() => {
-          navigation.navigate("CreateEstablishment" as never);
-        }}
+        onPress={() => navigation.navigate("CreateEstablishment" as never)}
       >
         Cadastrar Estabelecimento
       </Text>

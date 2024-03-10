@@ -1,29 +1,15 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios, { AxiosResponse } from "axios";
-import Config from "../utils/Config";
+import ServiceBase from "./ServiceBase";
+import { AxiosResponse } from "axios";
 
 interface UserData {
-  // FALTA Definir a estrutura do objeto 'data' aqui
+  [key: string]: any;
 }
-
-class UserService {
+class UserService extends ServiceBase {
   async login(data: UserData): Promise<AxiosResponse> {
-    return axios({
-      url: Config.API_URL + "usuario/login",
-      method: "POST",
-      timeout: Config.TIMEOUT_REQUEST,
-      data: data,
-      headers: Config.HEADER_REQUEST,
-    })
-      .then((response) => {
-        AsyncStorage.setItem("TOKEN", response.data.access_token);
-        return Promise.resolve(response);
-      })
-      .catch((error) => {
-        return Promise.reject(error);
-      });
+    return await this.post(data, "login");
   }
 }
 
-const usuarioService = new UserService();
-export default usuarioService;
+const userService = new UserService();
+
+export default userService;

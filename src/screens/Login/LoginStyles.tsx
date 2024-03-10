@@ -7,6 +7,7 @@ export const loginStyles = StyleSheet.create({
     padding: 20,
   },
   logo: {
+    marginTop: 30,
     height: 350,
     width: 350,
   },

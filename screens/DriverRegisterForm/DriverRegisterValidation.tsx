@@ -1,5 +1,5 @@
 // validationUtils.js
-
+import React from "react";
 export const validateUsername = (username:any) => {
     if (username.trim() === "") {
       return { required: true, message: "Campo obrigatório" };
@@ -20,4 +20,21 @@ export const validateUsername = (username:any) => {
     return /^[a-zA-Z0-9]+$/.test(str);
   };
   
+  export const validateCPF = (cpf:any) => {
+    const isValidLength = cpf.length === 11;
+    const isNotAllZeroes = cpf !== '00000000000';
+    const containsOnlyNumbers = /^\d+$/.test(cpf);
   
+    if (!isValidLength || !isNotAllZeroes || !containsOnlyNumbers) {
+      return { required: true, message: 'CPF inválido' };
+    }
+
+  
+    return { required: false, message: '' }; 
+  };
+  
+  export const formatCPF = (cpf: any) => {
+    // Formate o CPF como xxx.xxx.xxx-xx
+    const formattedCpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4');
+    return formattedCpf;
+  };

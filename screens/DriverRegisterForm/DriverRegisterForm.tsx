@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
@@ -6,24 +6,26 @@ import CustomButton from "../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
 import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate } from "./DriverRegisterValidation";
 import {useNavigation} from "@react-navigation/native";
+import RegisterSuccesfully from "../RegistrationSuccessfully";
 
 const RegisterForm = () => {
   const navigation = useNavigation();
   const [username, setUsername] = useState("");
-  const [isRequiredUsername, setIsRequiredUsername] = useState(false);
+  const [isRequiredUsername, setIsRequiredUsername] = useState(true);
   const [invalidUsernameMessage, setInvalidUsernameMessage] = useState("");
+  const [allValidationsPassed, setAllValidationsPassed] = useState(false);
 
   const [cpf, setCpf] = useState('');
-  const [isRequiredCpf, setIsRequiredCpf] = useState(false);
+  const [isRequiredCpf, setIsRequiredCpf] = useState(true);
   const [invalidCpfMessage, setInvalidCpfMessage] = useState('');
 
   const [email, setEmail] = useState('');
-  const [isRequiredEmail, setIsRequiredEmail] = useState(false);
+  const [isRequiredEmail, setIsRequiredEmail] = useState(true);
   const [invalidEmailMessage, setInvalidEmailMessage] = useState('');
 
 
   const [dateOfBirth, setDateOfBirth] = useState('');
-  const [isRequiredDateOfBirth, setIsRequiredDateOfBirth] = useState(false);
+  const [isRequiredDateOfBirth, setIsRequiredDateOfBirth] = useState(true);
   const [invalidDateOfBirthMessage, setInvalidDateOfBirthMessage] = useState('');
 
 
@@ -71,6 +73,25 @@ const RegisterForm = () => {
     setIsRequiredDateOfBirth(false);
     setInvalidDateOfBirthMessage("");
   };
+
+  const checkValidations = () => {
+    if (
+      !isRequiredUsername &&
+      !isRequiredCpf &&
+      !isRequiredEmail &&
+      !isRequiredDateOfBirth
+    ) {
+      setAllValidationsPassed(true);
+    } else {
+      setAllValidationsPassed(false);
+    }
+  };
+
+
+  useEffect(() =>{
+   checkValidations();
+  })
+
   return (
     <View style={{ width: "85%", flexDirection: "column" }}>
       <View>
@@ -157,7 +178,13 @@ const RegisterForm = () => {
       <View>
         <CustomButton
           title="Criar conta"
-          onPress={() => navigation.navigate('RegisterSuccesfully' as never)}
+          onPress={
+            () => {
+              handleLoginPress();
+              checkValidations();
+              if(allValidationsPassed){
+              navigation.navigate(RegisterSuccesfully as never);
+            }}}
         ></CustomButton>
       </View>
     </View>

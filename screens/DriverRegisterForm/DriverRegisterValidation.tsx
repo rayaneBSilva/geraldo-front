@@ -29,11 +29,11 @@ export const validateUsername = (username:any) => {
       return { required: true, message: "CPF é obrigatório" };
     }
     if (!isValidLength || !isNotAllZeroes || !containsOnlyNumbers) {
-      return { required: false, message: 'CPF inválido' };
+      return { required: true, message: 'CPF inválido' };
     }
 
   
-    return { required: true, message: '' }; 
+    return { required: false, message: '' }; 
   };
   
   export const formatCPF = (cpf: any) => {
@@ -54,17 +54,17 @@ export const validateUsername = (username:any) => {
     // checando a presença de um @
     const hasAtSymbol = email.indexOf('@') !== -1;
     if (!hasAtSymbol) {
-      return { required: false, message: 'Email inválido (faltando @)' };
+      return { required: true, message: 'Email inválido (faltando @)' };
     }
   
     // teste dos caracteres especiais
     const hasSpecialChars = /[^\w\s!#$%&'*+/=?^_`{|}~-]+/.test(email);
     if (hasSpecialChars) {
-      return { required: false, message: 'Email inválido (caracteres especiais não permitidos)' };
+      return { required: true, message: 'Email inválido (caracteres especiais não permitidos)' };
     }
   
     // Assuming a more thorough validation happens elsewhere (e.g., on server-side)
-    return { required: true, message: '' };
+    return { required: false, message: '' };
   };
 
   export const validateDateOfBirth = (dateOfBirth:any) => {
@@ -81,7 +81,7 @@ export const validateUsername = (username:any) => {
   // Split date string using "/" for dd/mm/aaaa format
   const dobParts = dateOfBirth.split("/");
   if (dobParts.length !== 3) {
-    return { required: false, message: 'Data inválida, tente no formato dd/mm/aaaa' };
+    return { required: true, message: 'Data inválida, tente no formato dd/mm/aaaa' };
   }
 
   const [day, month, year] = dobParts.map(Number);
@@ -89,7 +89,7 @@ export const validateUsername = (username:any) => {
 
   // Validate date
   if (isNaN(birthDate.getTime())) {
-    return { required: false, message: 'Data inválida' };
+    return { required: true, message: 'Data inválida' };
   }
 
   // Check age restrictions

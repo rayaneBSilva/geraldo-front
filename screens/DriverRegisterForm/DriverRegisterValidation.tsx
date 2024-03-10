@@ -17,7 +17,7 @@ export const validateUsername = (username:any) => {
   };
   
   export const containsOnlyLettersAndNumbers = (str:any) => {
-    return /^[a-zA-Z0-9]+$/.test(str);
+    return /^[a-zA-Z0-9\s]+$/.test(str);
   };
   
   export const validateCPF = (cpf:any) => {

@@ -10,7 +10,7 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Register" component={DriverRegister} />
+      <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
       <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -5,9 +5,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
 import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate } from "./DriverRegisterValidation";
-import { set } from "date-fns";
+import {useNavigation} from "@react-navigation/native";
 
 const RegisterForm = () => {
+  const navigation = useNavigation();
   const [username, setUsername] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [invalidUsernameMessage, setInvalidUsernameMessage] = useState("");
@@ -156,7 +157,7 @@ const RegisterForm = () => {
       <View>
         <CustomButton
           title="Criar conta"
-          onPress={handleLoginPress}
+          onPress={() => navigation.navigate('RegisterSuccesfully' as never)}
         ></CustomButton>
       </View>
     </View>

@@ -2,7 +2,7 @@
 import React from "react";
 export const validateUsername = (username:any) => {
     if (username.trim() === "") {
-      return { required: true, message: "Campo obrigatório" };
+      return { required: true, message: "Nome é obrigatório" };
     } else if (!checkMinLength(username, 4)) {
       return { required: true, message: "Nome deve ter pelo menos 4 caracteres" };
     } else if (!containsOnlyLettersAndNumbers(username)) {
@@ -24,13 +24,16 @@ export const validateUsername = (username:any) => {
     const isValidLength = cpf.length === 11;
     const isNotAllZeroes = cpf !== '00000000000';
     const containsOnlyNumbers = /^\d+$/.test(cpf);
-  
+    
+    if(cpf.trim() === ""){
+      return { required: true, message: "CPF é obrigatório" };
+    }
     if (!isValidLength || !isNotAllZeroes || !containsOnlyNumbers) {
-      return { required: true, message: 'CPF inválido' };
+      return { required: false, message: 'CPF inválido' };
     }
 
   
-    return { required: false, message: '' }; 
+    return { required: true, message: '' }; 
   };
   
   export const formatCPF = (cpf: any) => {
@@ -51,15 +54,60 @@ export const validateUsername = (username:any) => {
     // checando a presença de um @
     const hasAtSymbol = email.indexOf('@') !== -1;
     if (!hasAtSymbol) {
-      return { required: true, message: 'Email inválido (faltando @)' };
+      return { required: false, message: 'Email inválido (faltando @)' };
     }
   
     // teste dos caracteres especiais
-    const hasSpecialChars = /[^\w\s.!#$%&'*+/=?^_`{|}~-]+/.test(email);
+    const hasSpecialChars = /[^\w\s!#$%&'*+/=?^_`{|}~-]+/.test(email);
     if (hasSpecialChars) {
-      return { required: true, message: 'Email inválido (caracteres especiais não permitidos)' };
+      return { required: false, message: 'Email inválido (caracteres especiais não permitidos)' };
     }
   
     // Assuming a more thorough validation happens elsewhere (e.g., on server-side)
-    return { required: false, message: '' };
+    return { required: true, message: '' };
   };
+
+  export const validateDateOfBirth = (dateOfBirth:any) => {
+    // Checando se a data é vazia 
+    if (!dateOfBirth.trim()) {
+      return { required: true, message: 'Data de nascimento é obrigatória' };
+    }
+
+    const isValidLength = dateOfBirth.length === 8;
+    const isNotAllZeroes = dateOfBirth !== '000000000000';
+    const containsOnlyNumbers = /^\d+$/.test(dateOfBirth);
+  
+  
+  // Split date string using "/" for dd/mm/aaaa format
+  const dobParts = dateOfBirth.split("/");
+  if (dobParts.length !== 3) {
+    return { required: false, message: 'Data inválida, tente no formato dd/mm/aaaa' };
+  }
+
+  const [day, month, year] = dobParts.map(Number);
+  const birthDate = new Date(year, month - 1, day); // Months are 0-indexed
+
+  // Validate date
+  if (isNaN(birthDate.getTime())) {
+    return { required: false, message: 'Data inválida' };
+  }
+
+  // Check age restrictions
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear() - ((today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) ? 1 : 0);
+
+  if (age < 18) {
+    return { required: true, message: 'É necessário ter 18 anos ou mais para se cadastrar' };
+  } else if (age > 100) {
+    return { required: true, message: 'Idade excede o limite' };
+  }
+  
+    return { required: false, message: '' }; 
+  };
+  
+  export const formatDate = (date: any) => {
+    //formatando a data
+    const formattedCpf = date.replace(/(\d{2})(\d{2})(\d{4})/g, '$1/$2/$3');
+    return formattedCpf;
+  };
+  

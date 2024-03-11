@@ -5,7 +5,7 @@ export const VehicleRegistrationStyles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: "80%",
+    width: "90%",
   },
   backgroundImage: {
     flex: 1,
@@ -14,7 +14,7 @@ export const VehicleRegistrationStyles = StyleSheet.create({
     alignItems: "center",
   },
   headerText: {
-    fontSize: 30,
+    fontSize: 50,
     color: "#fff",
     fontWeight: "bold"
   },
@@ -23,5 +23,8 @@ export const VehicleRegistrationStyles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center"
+  },
+  Header: {
+    marginBottom: 70
   }
 });

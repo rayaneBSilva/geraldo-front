@@ -18,7 +18,9 @@ const formSchema = yup.object({
   placa: yup.string()
     .required('Por favor, informe a placa do veículo.')
     .matches(/^([A-Z]{3}\d{4})$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
-  anoDeFabricação: yup.string().required('Por favor, informe o ano de fabricação do veículo.'),
+  anoDeFabricação: yup.string()
+    .required('Por favor, informe o ano de fabricação do veículo.')
+    .matches(/^(19|20)\d{2}$/, 'Por favor, informe um ano de fabricação válido.'),
   modelo: yup.string().required('Por favor, informe o modelo do veículo.'),
   quilometragemAtual: yup.number()
     .typeError('Por favor, informe a quilometragem atual do veículo.')
@@ -71,6 +73,7 @@ function VehicleRegistration() {
               style={{ color: "white" }}
               iconName='calendar'
               containerStyle={{ width: "94%" }}
+              type='number'
             >
 
             </ControlledTextInput>

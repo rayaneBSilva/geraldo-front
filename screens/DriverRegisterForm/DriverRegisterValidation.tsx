@@ -58,8 +58,8 @@ export const validateUsername = (username:any) => {
     }
   
     // teste dos caracteres especiais
-    const hasSpecialChars = /[^\w\s!#$%&'*+/=?^_`{|}~-]+/.test(email);
-    if (hasSpecialChars) {
+    const hasSpecialChars = /[^\w@.]/;
+    if (hasSpecialChars.test(email)) {
       return { required: true, message: 'Email inválido (caracteres especiais não permitidos)' };
     }
   

@@ -129,7 +129,7 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="CPF"
-          onChangeText={handleCpfChange} // Chame handleCpfChange para formatação imediata
+          onChangeText={(text) => setCpf(text)} // Chame handleCpfChange para formatação imediata
           value={cpf} // Exiba o CPF formatado
           errorMessage={isRequiredCpf ? invalidCpfMessage : ''}
           errorStyle={{ color: 'red', marginLeft: -1 }}
@@ -148,7 +148,7 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="Email"
-          onChangeText={setEmail}
+          onChangeText={(text) => setEmail(text)}
           value={email}
           onFocus={handleUserEmailFocus}
           errorMessage={isRequiredEmail ? invalidEmailMessage : ''}

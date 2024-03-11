@@ -55,22 +55,22 @@ const RegisterForm = () => {
   
   
   const handleUsernameFocus = () => {
-    setIsRequiredUsername(false);
+    setIsRequiredUsername(true);
     setInvalidUsernameMessage("");
   };
 
   const handleUserCPFFocus = () => {
-    setIsRequiredCpf(false);
+    setIsRequiredCpf(true);
     setInvalidCpfMessage("");
   };
 
   const handleUserEmailFocus = () => {
-    setIsRequiredEmail(false);
+    setIsRequiredEmail(true);
     setInvalidEmailMessage("");
   };
 
   const handleUserdateFocus = () => {
-    setIsRequiredDateOfBirth(false);
+    setIsRequiredDateOfBirth(true);
     setInvalidDateOfBirthMessage("");
   };
 
@@ -83,7 +83,7 @@ const RegisterForm = () => {
     ) {
       setAllValidationsPassed(true);
     } else {
-      setAllValidationsPassed(false);
+      setAllValidationsPassed(false); 
     }
   };
 

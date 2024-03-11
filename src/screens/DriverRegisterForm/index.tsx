@@ -11,7 +11,7 @@ const DriverRegister = () => {
     //   };
     return (
       <ImageBackground
-        source={require("../../assets/splashScreen.png")}
+        source={require("../../../assets/splashScreen.png")}
         style={registerDriverStyles.backgroundImage}
       >
         <View style={registerDriverStyles.container}>

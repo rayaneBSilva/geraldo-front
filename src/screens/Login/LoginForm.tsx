@@ -84,7 +84,7 @@ const LoginForm = () => {
       </Text>
       <Text
         style={loginStyles.textButton}
-        onPress={() => navigation.navigate("Register" as never)}
+        onPress={() => navigation.navigate("DriverRegister" as never)}
       >
         Cadastrar Motorista
       </Text>

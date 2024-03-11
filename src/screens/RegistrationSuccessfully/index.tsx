@@ -11,18 +11,18 @@ interface SplashScreenProps {
 const RegisterSuccesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("DriverRegister"); // TO - DO mudar para tela de login
-    }, 3000); // Atraso de 3 segundos
+      navigation.navigate("Login"); 
+    }, 2000); // Atraso de 3 segundos
   }, []);
 
   return (
     <ImageBackground
-      source={require("../../assets/splashScreen.png")}
+      source={require("../../../assets/splashScreen.png")}
       style={RegisterSuccesfullyStyles.backgroundImage}
     >
       <View style={registerDriverStyles.container}>
         <Image
-          source={require("../../assets/geraldo-login.png")}
+          source={require("../../../assets/geraldo-login.png")}
           style={RegisterSuccesfullyStyles.logo}
         />
         <Text style={RegisterSuccesfullyStyles.text}>

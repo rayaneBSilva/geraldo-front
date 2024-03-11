@@ -16,6 +16,14 @@ export const registerDriverStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  textButton: {
+    color: "white",
+    marginTop: 15,
+    fontSize: 14,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   icon: {
     marginRight: 10,
     marginBottom:20

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
-import CustomButton from "../../components/button/driverRegister";
+import CustomButton from "../../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
 import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate } from "./DriverRegisterValidation";
 import {useNavigation} from "@react-navigation/native";
@@ -186,6 +186,12 @@ const RegisterForm = () => {
               navigation.navigate(RegisterSuccesfully as never);
             }}}
         ></CustomButton>
+        <Text
+        style={registerDriverStyles.textButton}
+        onPress={() => navigation.navigate("Login" as never)}
+      >
+        Cancelar
+      </Text>
       </View>
     </View>
   );

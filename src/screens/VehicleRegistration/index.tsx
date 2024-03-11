@@ -59,6 +59,7 @@ function VehicleRegistration() {
               placeholder="Placa"
               style={{ color: "white" }}
               iconName='user'
+              containerStyle={{ width: "95%" }}
             >
 
             </ControlledTextInput>
@@ -68,6 +69,8 @@ function VehicleRegistration() {
               rules={{required: "Ano de Fabricação obrigatório"}}
               placeholder="Ano de Fabricação"
               style={{ color: "white" }}
+              iconName='calendar'
+              containerStyle={{ width: "94%" }}
             >
 
             </ControlledTextInput>
@@ -77,6 +80,8 @@ function VehicleRegistration() {
               rules={{required: "modelo obrigatório"}}
               placeholder="Modelo"
               style={{ color: "white" }}
+              iconName='car'
+              containerStyle={{ width: "92%" }}
             >
 
             </ControlledTextInput>
@@ -88,7 +93,8 @@ function VehicleRegistration() {
               placeholder="Quilometragem Atual"
               style={{ color: "white" }}
               type='number'
-
+              iconName='car'
+              containerStyle={{ width: "92%" }}
             >
 
             </ControlledTextInput>

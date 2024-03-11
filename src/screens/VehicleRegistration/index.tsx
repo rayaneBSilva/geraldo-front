@@ -58,6 +58,7 @@ function VehicleRegistration() {
               rules={{required: "placa obrigatória"}}
               placeholder="Placa"
               style={{ color: "white" }}
+              iconName='user'
             >
 
             </ControlledTextInput>

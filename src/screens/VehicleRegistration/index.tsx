@@ -15,11 +15,14 @@ type VehicleForm = {
 }
 
 const formSchema = yup.object({
-  placa: yup.string().required('Por favor, informe a placa do veículo.')
+  placa: yup.string()
+    .required('Por favor, informe a placa do veículo.')
     .matches(/^([A-Z]{3}\d{4})$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
   anoDeFabricação: yup.string().required('Por favor, informe o ano de fabricação do veículo.'),
   modelo: yup.string().required('Por favor, informe o modelo do veículo.'),
-  quilometragemAtual: yup.number().required('Por favor, informe a quilometragem atual do veículo.')
+  quilometragemAtual: yup.number()
+    .typeError('Por favor, informe a quilometragem atual do veículo.')
+    .required('Por favor, informe a quilometragem atual do veículo.')
     .min(0, 'A quilometragem atual não pode ser menor que 0.')
 });
 

@@ -22,7 +22,7 @@ function ControlledTextInput<FormType extends FieldValues>({ control, rules, nam
                     onChangeText={field.onChange}
                     onBlur={field.onBlur}
                     errorMessage={fieldState.error?.message}
-                    keyboardType={type === 'number' ? 'numeric' : 'default'} // Utilizando a propriedade 'type'
+                    keyboardType={type === 'number' ? 'numeric' : 'default'} 
                 />
             )}
         />

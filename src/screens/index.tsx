@@ -4,17 +4,24 @@ import { forgotPasswordStyles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Mail from '../../assets/mail.svg'
+import forgotPasswordService from '../services/ForgotPasswordService';
 
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState('');
 
-  const onForgotTap = () => {
+  const onForgotTap =  async () => {
     if (email.trim() === "" || !email.includes("@")) {
-      console.log('invalid email!');
-      return;
+      try {
+        const data = {
+          "email" : email
+        }
+        const a = await forgotPasswordService.recovery({data});
+        console.log(a);
+      } catch (error){
+        console.log(error);
+      }
     }
-    console.log('Reset password for email:', email);
   };
 
   return (

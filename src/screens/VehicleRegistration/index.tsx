@@ -20,11 +20,11 @@ const formSchema = yup.object({
     .matches(/^([A-Z]{3}\d{4})$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
   anoDeFabricação: yup.string()
     .required('Por favor, informe o ano de fabricação do veículo.')
-    .matches(/^(19|20)\d{2}$/, 'Por favor, informe um ano de fabricação válido.'),
+    .matches(/^(19|20)\d{2}$/, 'Por favor, informe um ano de fabricação válido. Exemplo: 2011'),
   modelo: yup.string().required('Por favor, informe o modelo do veículo.'),
   quilometragemAtual: yup.number()
-    .typeError('Por favor, informe a quilometragem atual do veículo.')
     .required('Por favor, informe a quilometragem atual do veículo.')
+    .typeError('Por favor, informe a quilometragem atual do veículo.')
     .min(0, 'A quilometragem atual não pode ser menor que 0.')
 });
 
@@ -36,7 +36,7 @@ function VehicleRegistration() {
       placa: "",
       anoDeFabricação: "",
       modelo: "",
-      quilometragemAtual: 0
+      quilometragemAtual: -1
     },
     mode: 'onChange',
     resolver: yupResolver(formSchema)
@@ -102,7 +102,7 @@ function VehicleRegistration() {
 
             </ControlledTextInput>
 
-            <CustomButton title="Cadastrar" onPress={() => console.log("print")}></CustomButton>
+            <CustomButton title="Cadastrar" onPress={handleSubmit((e) => console.log(e))}></CustomButton>
           </View>
         </SafeAreaView>
     </KeyboardAvoidingView>

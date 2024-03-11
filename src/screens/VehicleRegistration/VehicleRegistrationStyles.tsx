@@ -20,7 +20,6 @@ export const VehicleRegistrationStyles = StyleSheet.create({
   },
   registerForm: {
     width: "100%",
-    backgroundColor: "red",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center"

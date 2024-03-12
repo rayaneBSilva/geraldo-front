@@ -4,20 +4,22 @@ import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
-import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate } from "./DriverRegisterValidation";
+import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate, formatDateBack} from "./DriverRegisterValidation";
 import {useNavigation} from "@react-navigation/native";
 import RegisterSuccesfully from "../RegistrationSuccessfully";
+import userServiceDriverRegister from "../../services/UserServiceDriverRegister";
+
 
 const RegisterForm = () => {
   const navigation = useNavigation();
-  const [username, setUsername] = useState("");
-  const [isRequiredUsername, setIsRequiredUsername] = useState(true);
-  const [invalidUsernameMessage, setInvalidUsernameMessage] = useState("");
+  const [name, setName] = useState("");
+  const [isRequiredName, setIsRequiredName] = useState(true);
+  const [invalidNameMessage, setInvalidNameMessage] = useState("");
   const [allValidationsPassed, setAllValidationsPassed] = useState(false);
 
-  const [cpf, setCpf] = useState('');
-  const [isRequiredCpf, setIsRequiredCpf] = useState(true);
-  const [invalidCpfMessage, setInvalidCpfMessage] = useState('');
+  const [username, setUserName] = useState('');
+  const [isRequiredUserName, setIsRequiredUserName] = useState(true);
+  const [invalidUserNameMessage, setInvalidUserNameMessage] = useState('');
 
   const [email, setEmail] = useState('');
   const [isRequiredEmail, setIsRequiredEmail] = useState(true);
@@ -28,21 +30,20 @@ const RegisterForm = () => {
   const [isRequiredDateOfBirth, setIsRequiredDateOfBirth] = useState(true);
   const [invalidDateOfBirthMessage, setInvalidDateOfBirthMessage] = useState('');
 
-
   const handleCpfChange = (cpf:any) => {
-    setCpf(formatCPF(cpf)); // Formate imediatamente o CPF
+    setUserName(formatCPF(cpf)); // Formate imediatamente o CPF
   };
  const handleDateChange = (dateOfBirth:any) =>{
-    setDateOfBirth(formatDate(dateOfBirth))
+    setDateOfBirth(formatDate(dateOfBirth));
  }
   const handleLoginPress = async () => {
-    const userNameValidation = validateUsername(username);
-    setIsRequiredUsername(userNameValidation.required);
-    setInvalidUsernameMessage(userNameValidation.message);
+    const userNameValidation = validateUsername(name);
+    setIsRequiredName(userNameValidation.required);
+    setInvalidNameMessage(userNameValidation.message);
 
-    const cpfValidation = validateCPF(cpf);
-    setIsRequiredCpf(cpfValidation.required);
-    setInvalidCpfMessage(cpfValidation.message);
+    const cpfValidation = validateCPF(username);
+    setIsRequiredUserName(cpfValidation.required);
+    setInvalidUserNameMessage(cpfValidation.message);
 
     const emailValidation = validateEmail(email);
     setIsRequiredEmail(emailValidation.required);
@@ -51,17 +52,22 @@ const RegisterForm = () => {
    const dateValidation = validateDateOfBirth(dateOfBirth);
    setIsRequiredDateOfBirth(dateValidation.required);
    setInvalidDateOfBirthMessage(dateValidation.message);
+
+  const birthday = formatDateBack(dateOfBirth);
+  
+  userServiceDriverRegister.driverRegister({name, username, email, birthday}, navigation);
+
   };
   
   
   const handleUsernameFocus = () => {
-    setIsRequiredUsername(true);
-    setInvalidUsernameMessage("");
+    setIsRequiredName(true);
+    setInvalidNameMessage("");
   };
 
   const handleUserCPFFocus = () => {
-    setIsRequiredCpf(true);
-    setInvalidCpfMessage("");
+    setIsRequiredUserName(true);
+    setInvalidUserNameMessage("");
   };
 
   const handleUserEmailFocus = () => {
@@ -76,8 +82,8 @@ const RegisterForm = () => {
 
   const checkValidations = () => {
     if (
-      !isRequiredUsername &&
-      !isRequiredCpf &&
+      !isRequiredName &&
+      !isRequiredUserName &&
       !isRequiredEmail &&
       !isRequiredDateOfBirth
     ) {
@@ -109,9 +115,9 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%", marginLeft: 3.5 }}
           style={{ color: "white" }}
           placeholder={"Nome"}
-          onChangeText={(text) => setUsername(text)}
-          value={username}
-          errorMessage={isRequiredUsername ? invalidUsernameMessage : ""}
+          onChangeText={(text) => setName(text)}
+          value={name}
+          errorMessage={isRequiredName ? invalidNameMessage : ""}
           errorStyle={{ color: "red", marginLeft:-1 }}
           onFocus={handleUsernameFocus} 
 
@@ -129,9 +135,9 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="CPF"
-          onChangeText={(text) => setCpf(text)} // Chame handleCpfChange para formatação imediata
-          value={cpf} // Exiba o CPF formatado
-          errorMessage={isRequiredCpf ? invalidCpfMessage : ''}
+          onChangeText={(text) => setUserName(text)} // Chame handleCpfChange para formatação imediata
+          value={username} // Exiba o CPF formatado
+          errorMessage={isRequiredUserName ? invalidUserNameMessage : ''}
           errorStyle={{ color: 'red', marginLeft: -1 }}
           onFocus={handleUserCPFFocus}
         ></Input>

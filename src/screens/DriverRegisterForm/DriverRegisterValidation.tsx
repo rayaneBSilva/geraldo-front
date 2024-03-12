@@ -107,7 +107,18 @@ export const validateUsername = (username:any) => {
   
   export const formatDate = (date: any) => {
     //formatando a data
-    const formattedCpf = date.replace(/(\d{2})(\d{2})(\d{4})/g, '$1/$2/$3');
-    return formattedCpf;
+    const formattedDate = date.replace(/(\d{2})(\d{2})(\d{4})/g, '$1/$2/$3');
+    return formattedDate;
   };
+
+  export const formatDateBack = (date:string) => {
+    // 20030329
+    //29/03/2003
+    const day = date.slice(0,2);
+    const month = date.slice(3,5);
+    const year = date.slice(6, 10)
+    
+    const newDate = `${year}-${month}-${day}` 
+    return newDate;
+  }
   

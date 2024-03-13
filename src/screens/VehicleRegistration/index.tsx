@@ -95,7 +95,7 @@ function VehicleRegistration() {
               placeholder="Quilometragem Atual"
               style={{ color: "white" }}
               type='number'
-              iconName='car'
+              iconName='speedometer'
               containerStyle={{ width: "92%" }}
             >
 

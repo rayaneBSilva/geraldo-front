@@ -5,7 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
 import UserService from "../../services/UserService";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +13,20 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [isRequiredPassword, setIsRequiredPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      clearErrorMessages();
+    }, [])
+  );
+
+  const clearErrorMessages = () => {
+    setErrorMessage("");
+    setIsRequiredUsername(false);
+    setIsRequiredPassword(false);
+  };
 
   const handleLoginPress = async () => {
     setIsRequiredUsername(username.trim() === "");
@@ -21,11 +34,34 @@ const LoginForm = () => {
 
     if (username.trim() !== "" && password.trim() !== "") {
       try {
-        await UserService.login({ username, password });
+        await UserService.login({ username, password }, navigation);
+        setErrorMessage("");
       } catch (error) {
-        console.log(error);
+        setErrorMessage("Usuário ou senha inválidos");
       }
     }
+  };
+
+  const handleMessageError = (): string => {
+    let responseMessage = "";
+
+    if (isRequiredUsername) {
+      responseMessage = "Campo obrigatório";
+    } else if (errorMessage !== "") {
+      responseMessage = errorMessage;
+    }
+    return responseMessage;
+  };
+
+  const handleMessageErrorPassword = (): string => {
+    let responseMessage = "";
+
+    if (isRequiredPassword) {
+      responseMessage = "Campo obrigatório";
+    } else if (errorMessage !== "") {
+      responseMessage = errorMessage;
+    }
+    return responseMessage;
   };
 
   return (
@@ -43,8 +79,10 @@ const LoginForm = () => {
           placeholder="Usuário"
           onChangeText={(text) => setUsername(text)}
           value={username}
-          errorMessage={isRequiredUsername ? "Campo obrigatório" : ""}
-          errorStyle={{ color: isRequiredUsername ? "red" : "black" }}
+          errorMessage={handleMessageError()}
+          errorStyle={{
+            color: isRequiredUsername || errorMessage !== "" ? "red" : "black",
+          }}
         />
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -61,8 +99,10 @@ const LoginForm = () => {
           placeholder="Senha"
           onChangeText={(text) => setPassword(text)}
           value={password}
-          errorMessage={isRequiredPassword ? "Campo obrigatório" : ""}
-          errorStyle={{ color: isRequiredPassword ? "red" : "black" }}
+          errorMessage={handleMessageErrorPassword()}
+          errorStyle={{
+            color: isRequiredPassword || errorMessage !== "" ? "red" : "black",
+          }}
         />
         <TouchableOpacity
           style={{ position: "absolute", right: 10, top: 10 }}

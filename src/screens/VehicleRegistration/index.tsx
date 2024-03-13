@@ -60,7 +60,7 @@ function VehicleRegistration() {
               placeholder="Placa"
               style={{ color: "white" }}
               iconName='user'
-              containerStyle={{ width: "95%" }}
+              containerStyle={{ width: "92%", marginLeft: 10 }}
             >
 
             </ControlledTextInput>
@@ -71,7 +71,7 @@ function VehicleRegistration() {
               placeholder="Ano de Fabricação"
               style={{ color: "white" }}
               iconName='calendar'
-              containerStyle={{ width: "94%" }}
+              containerStyle={{ width: "92%", marginLeft: 5 }}
               type='number'
             >
 

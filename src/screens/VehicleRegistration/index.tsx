@@ -56,6 +56,7 @@ function VehicleRegistration() {
                 iconName='calendar'
                 containerStyle={{ width: "92%", marginLeft: 5 }}
                 type='number'
+                maxLength={4}
               >
 
               </ControlledTextInput>

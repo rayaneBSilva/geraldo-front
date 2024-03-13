@@ -1,5 +1,7 @@
 import * as yup from "yup"
 
+const date = new Date().getFullYear() + 2
+
 export const vehicleSchema = yup.object({
     placa: yup.string()
       .required('Por favor, informe a placa do veículo.')
@@ -7,7 +9,7 @@ export const vehicleSchema = yup.object({
     anoDeFabricação: yup.number()
       .required('Por favor, informe o ano de fabricação do veículo.')
       .typeError('Por favor, informe o ano de fabricação do veículo.')
-      .test('valida-ano', 'O ano de fabricação não pode ser maior que o ano seguinte e deve ser maior que 1900.', function (value) {
+      .test('valida-ano', `O ano de fabricação não pode ser maior que o ano seguinte e deve ser maior que 1900 e menor que ${date}.`, function (value) {
         const thisYear = new Date().getFullYear() + 1;
         return value <= thisYear && value >= 1900;
       }),

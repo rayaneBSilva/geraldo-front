@@ -1,5 +1,5 @@
 import React from 'react'
-import { ImageBackground, KeyboardAvoidingView, SafeAreaView, Text, View, Platform } from 'react-native'
+import { ImageBackground, KeyboardAvoidingView, SafeAreaView, Text, View, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { VehicleRegistrationStyles  as styles } from "./VehicleRegistrationStyles";
 import CustomButton from '../../components/button';
 import ControlledTextInput from '../../components/controller/ControlledTextInput';
@@ -18,7 +18,7 @@ type VehicleForm = {
 const formSchema = yup.object({
   placa: yup.string()
     .required('Por favor, informe a placa do veículo.')
-    .matches(/^([A-Z]{3}\d{4})$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
+    .matches(/^[A-Za-z]{3}\d{4}$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
   anoDeFabricação: yup.number()
     .required('Por favor, informe o ano de fabricação do veículo.')
     .typeError('Por favor, informe o ano de fabricação do veículo.')
@@ -43,69 +43,71 @@ function VehicleRegistration() {
 
   return (
     <ImageBackground
-      source={require("../../../assets/splashScreen.png")}
-      style={styles.backgroundImage}
-    >
-      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.Header}>
-            <Text style={styles.headerText}>Cadastro</Text>
-            <Text style={styles.headerText}>de Veículo</Text>
-          </View>
-          <View style={styles.registerForm}>
-            <ControlledTextInput
-              control={control}
-              name="placa"
-              rules={{required: "placa obrigatória"}}
-              placeholder="Placa"
-              style={{ color: "white" }}
-              iconName='user'
-              containerStyle={{ width: "92%", marginLeft: 10 }}
-            >
+        source={require("../../../assets/splashScreen.png")}
+        style={styles.backgroundImage}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TouchableWithoutFeedback accessible={false} touchSoundDisabled onPress={() => Keyboard.dismiss()} >
+          <SafeAreaView style={styles.container}>
+            <View style={styles.Header}>
+              <Text style={styles.headerText}>Cadastro</Text>
+              <Text style={styles.headerText}>de Veículo</Text>
+            </View>
+            <View style={styles.registerForm}>
+              <ControlledTextInput
+                control={control}
+                name="placa"
+                rules={{required: "placa obrigatória"}}
+                placeholder="Placa"
+                style={{ color: "white" }}
+                iconName='user'
+                containerStyle={{ width: "92%", marginLeft: 10, transform: "uppercase" }}
+              >
 
-            </ControlledTextInput>
-            <ControlledTextInput
-              control={control}
-              name="anoDeFabricação"
-              rules={{required: "Ano de Fabricação obrigatório"}}
-              placeholder="Ano de Fabricação"
-              style={{ color: "white" }}
-              iconName='calendar'
-              containerStyle={{ width: "92%", marginLeft: 5 }}
-              type='number'
-            >
+              </ControlledTextInput>
+              <ControlledTextInput
+                control={control}
+                name="anoDeFabricação"
+                rules={{required: "Ano de Fabricação obrigatório"}}
+                placeholder="Ano de Fabricação"
+                style={{ color: "white" }}
+                iconName='calendar'
+                containerStyle={{ width: "92%", marginLeft: 5 }}
+                type='number'
+              >
 
-            </ControlledTextInput>
-            <ControlledTextInput
-              control={control}
-              name="modelo"
-              rules={{required: "modelo obrigatório"}}
-              placeholder="Modelo"
-              style={{ color: "white" }}
-              iconName='car'
-              containerStyle={{ width: "92%" }}
-            >
+              </ControlledTextInput>
+              <ControlledTextInput
+                control={control}
+                name="modelo"
+                rules={{required: "modelo obrigatório"}}
+                placeholder="Modelo"
+                style={{ color: "white" }}
+                iconName='car'
+                containerStyle={{ width: "92%" }}
+              >
 
-            </ControlledTextInput>
+              </ControlledTextInput>
 
-            <ControlledTextInput
-              control={control}
-              name="quilometragemAtual"
-              rules={{required: "Quilometragem Atual obrigatório"}}
-              placeholder="Quilometragem Atual"
-              style={{ color: "white" }}
-              type='number'
-              iconName='speedometer'
-              containerStyle={{ width: "92%" }}
-            >
+              <ControlledTextInput
+                control={control}
+                name="quilometragemAtual"
+                rules={{required: "Quilometragem Atual obrigatório"}}
+                placeholder="Quilometragem Atual"
+                style={{ color: "white" }}
+                type='number'
+                iconName='speedometer'
+                containerStyle={{ width: "92%" }}
+              >
 
-            </ControlledTextInput>
+              </ControlledTextInput>
 
-            <CustomButton title="Cadastrar" onPress={handleSubmit((e) => console.log(e))}></CustomButton>
-          </View>
-        </SafeAreaView>
-    </KeyboardAvoidingView>
-    </ImageBackground>
+              <CustomButton title="Cadastrar" onPress={handleSubmit((e) => console.log(e))}></CustomButton>
+            </View>
+          </SafeAreaView>
+      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+      </ImageBackground>
   )
 }
 

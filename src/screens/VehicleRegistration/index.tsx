@@ -6,6 +6,7 @@ import ControlledTextInput from '../../components/controller/ControlledTextInput
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { vehicleSchema } from '../../utils/yupSchemas';
+import vehicleService from '../../services/VehicleService';
 
 type VehicleForm = {
   placa: string,
@@ -22,6 +23,11 @@ function VehicleRegistration() {
     mode: 'onChange',
     resolver: yupResolver(vehicleSchema)
   })
+
+  const handleCreateVehicle = async (e : VehicleForm ) => {
+    console.log(e)
+    // await vehicleService.createVehicle()
+  }
 
   return (
     <ImageBackground

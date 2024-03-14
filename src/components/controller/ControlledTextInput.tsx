@@ -17,7 +17,6 @@ function isFontAwesomeIcon(iconName: Icon): iconName is keyof typeof IconTypes.g
     return iconName in IconTypes.glyphMap;
 }
 
-// TO-DO Fix Inputs Size
 // TO-DO Mensagem de Cadastro realizado com sucesso!
 function ControlledTextInput<FormType extends FieldValues>({ control, rules, name,  ...textInputProps }: UseControllerProps<FormType> & ExtendedInputProps) {
     const { type, iconName, ...restProps } = textInputProps;

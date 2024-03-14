@@ -37,7 +37,7 @@ const LoginForm = () => {
           color="white"
           style={loginStyles.icon}
         />
-        <Input
+        {/* <Input
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="Usuário"
@@ -45,7 +45,7 @@ const LoginForm = () => {
           value={username}
           errorMessage={isRequiredUsername ? "Campo obrigatório" : ""}
           errorStyle={{ color: isRequiredUsername ? "red" : "black" }}
-        />
+        /> */}
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <FontAwesome
@@ -54,7 +54,7 @@ const LoginForm = () => {
           color="white"
           style={loginStyles.icon}
         />
-        <Input
+        {/* <Input
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           secureTextEntry={!showPassword}
@@ -63,7 +63,7 @@ const LoginForm = () => {
           value={password}
           errorMessage={isRequiredPassword ? "Campo obrigatório" : ""}
           errorStyle={{ color: isRequiredPassword ? "red" : "black" }}
-        />
+        /> */}
         <TouchableOpacity
           style={{ position: "absolute", right: 10, top: 10 }}
           onPress={() => setShowPassword(!showPassword)}

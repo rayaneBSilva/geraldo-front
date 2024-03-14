@@ -25,8 +25,8 @@ function VehicleRegistration() {
   })
 
   const handleCreateVehicle = async (e : VehicleForm ) => {
-    console.log(e)
-    // await vehicleService.createVehicle()
+    // Ver como é para mandar os dados
+    const response = await vehicleService.createVehicle(e)
   }
 
   return (
@@ -91,7 +91,7 @@ function VehicleRegistration() {
 
               </ControlledTextInput>
 
-              <CustomButton title="Cadastrar" onPress={handleSubmit((e) => console.log(e))}></CustomButton>
+              <CustomButton title="Cadastrar" onPress={handleSubmit((e) => handleCreateVehicle(e))}></CustomButton>
             </View>
           </SafeAreaView>
       </TouchableWithoutFeedback>

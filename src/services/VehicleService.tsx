@@ -8,11 +8,12 @@ interface vehicleData {
 
 
 class VehicleService extends ServiceBase {
-  async createVehicle(data: vehicleData, navigation: any): Promise<void> {
+  async createVehicle(data: vehicleData): Promise<any> {
     try {
-      await this.post(data, "vehicle");
+      const response = await this.post(data, "vehicle");
+      return response
     } catch (error: any) {
-      throw error;
+      return error;
     }
   }
 }

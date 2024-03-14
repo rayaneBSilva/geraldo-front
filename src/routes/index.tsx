@@ -1,6 +1,11 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import CreateEstablishment from "../screens/CreateEstablishment";
+import DriverRegister from "../screens/DriverRegisterForm";
+import VehicleRegistration from "../screens/VehicleRegistration";
+import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
 import Login from "../screens/Login";
 import SplashScreen from "../screens/SplashScreen";
 

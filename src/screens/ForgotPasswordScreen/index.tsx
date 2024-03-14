@@ -83,7 +83,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
                 color="white"
                 style={{ marginRight: 10, }}
               />
-              {/* <Input
+              <Input
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder="Email"
@@ -91,7 +91,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
                 value={email}
                 errorMessage={isEmailInvalid ? "Insira um email válido" : ""}
                 errorStyle={{ color: isEmailInvalid ? "red" : "black" }}
-              /> */}
+              />
             </View>
             <View style={{ width: "85%" }}>
               <CustomButton title="Recuperar Senha" onPress={onForgotTap} />

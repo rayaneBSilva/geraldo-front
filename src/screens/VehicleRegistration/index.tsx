@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { vehicleSchema } from '../../utils/yupSchemas';
 import vehicleService from '../../services/VehicleService';
+import {useNavigation} from "@react-navigation/native";
 
 type VehicleForm = {
   placa: string,
@@ -18,6 +19,8 @@ type VehicleForm = {
 
 
 function VehicleRegistration() {
+
+  const navigation = useNavigation()
 
   const {control, handleSubmit, formState: { errors } } = useForm<VehicleForm>({
     mode: 'onChange',
@@ -92,6 +95,12 @@ function VehicleRegistration() {
               </ControlledTextInput>
 
               <CustomButton title="Cadastrar" onPress={handleSubmit((e) => handleCreateVehicle(e))}></CustomButton>
+              <Text
+                style={styles.textButton}
+                onPress={() => navigation.goBack()}
+              >
+                Cancelar
+            </Text>
             </View>
           </SafeAreaView>
       </TouchableWithoutFeedback>

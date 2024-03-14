@@ -26,5 +26,13 @@ export const VehicleRegistrationStyles = StyleSheet.create({
   },
   Header: {
     marginBottom: 70
+  },
+  textButton: {
+    color: "white",
+    marginTop: 15,
+    fontSize: 14,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   }
 });

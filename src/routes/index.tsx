@@ -1,13 +1,14 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../screens/Login";
-import SplashScreen from "../screens/SplashScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import CreateEstablishment from "../screens/CreateEstablishment";
 import ViewCar from "../screens/ViewCar";
 import DriverRegister from "../screens/DriverRegisterForm";
+import VehicleRegistration from "../screens/VehicleRegistration";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
+import Login from "../screens/Login";
+import SplashScreen from "../screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ function Routes() {
         <Stack.Screen name="CreateEstablishment" component={CreateEstablishment} />
         <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
+        <Stack.Screen  name="VehicleRegistration" component={VehicleRegistration}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -23,7 +23,7 @@ const defaultValidator = (value: any): Maybe<Error> => {
   return none()
 }
 
-function createFields(): Record<string, string>  {
+function createFields(): Record<string, string> {
   return Object
   .keys(Fields)
   .reduce((prev, curr) => {

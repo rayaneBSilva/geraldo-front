@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import CreateEstablishment from "../screens/CreateEstablishment";
+import ViewCar from "../screens/ViewCar";
 import DriverRegister from "../screens/DriverRegisterForm";
 import VehicleRegistration from "../screens/VehicleRegistration";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
@@ -15,6 +16,7 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>

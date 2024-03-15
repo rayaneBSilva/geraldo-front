@@ -3,7 +3,7 @@ interface vehicleData {
     placa: string,
     anoDeFabricação: number,
     modelo: string,
-    quilometragemAtual: number
+    quilometragemAtual: string
 }
 
 

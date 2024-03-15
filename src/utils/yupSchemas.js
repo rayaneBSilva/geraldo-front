@@ -14,8 +14,8 @@ export const vehicleSchema = yup.object({
         return value <= thisYear && value >= 1900;
       }),
     modelo: yup.string().required('Por favor, informe o modelo do veículo.'),
-    quilometragemAtual: yup.number()
+    quilometragemAtual: yup.string()
       .required('Por favor, informe a quilometragem atual do veículo.')
+      .matches(/^\d+(?:,\d+)?$/, 'Por favor, informe uma placa válida no formato 33,11 ou 33.')
       .typeError('Por favor, informe a quilometragem atual do veículo.')
-      .min(0, 'A quilometragem atual não pode ser menor que 0.')
   });

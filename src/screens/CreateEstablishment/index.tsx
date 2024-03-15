@@ -17,6 +17,11 @@ import { CreateEstablishmentCommand } from '../../api/commands/CreateEstablishme
 import { FindAddressQuery } from '../../api/queries/FindAddress';
 import { Input } from '../../components/input';
 import { Picker } from '../../components/picker';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+
+interface CreateEstablishmentProps {
+  navigation: NavigationProp<ParamListBase>;
+}
 
 const defaultValidator = (value: any): Maybe<Error> => {
   if (!value) return just(new Error("Campo Obrigatório"))
@@ -48,7 +53,7 @@ enum Fields {
   number = "number"
 }
 
-const CreateEstablishment = () => {
+const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation }) => {
   const [fieldsValues, setFieldsValues] = useState<Record<string, string>>(createFields())
   const [fieldsErrors, setFieldsErrors] = useState<Record<string, string>>(createFields())
 
@@ -64,7 +69,13 @@ const CreateEstablishment = () => {
             error: error.message
           }
         ]
-      } else return prev
+      } else return [
+        ...prev,
+        {
+          name: curr,
+          error: ""
+        }
+      ]
     }, [] as Array<{
       name: string;
       error: string;
@@ -97,6 +108,7 @@ const CreateEstablishment = () => {
     } else {
       alert("Estabelecimento cadastrado com sucesso.")
       setFieldsValues(createFields())
+      navigation.navigate("Login")
     }
   }
 
@@ -142,6 +154,7 @@ const CreateEstablishment = () => {
         }}
         >
           <ScrollView 
+          automaticallyAdjustKeyboardInsets={true}
           contentContainerStyle={{
             alignItems: "center",
             marginTop: 50,

@@ -22,6 +22,7 @@ const LoginForm = () => {
     if (username.trim() !== "" && password.trim() !== "") {
       try {
         await UserService.login({ username, password });
+        navigation.navigate("VehicleList" as never);
       } catch (error) {
         console.log(error);
       }

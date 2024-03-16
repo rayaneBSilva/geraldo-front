@@ -7,6 +7,7 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import CreateEstablishment from "../screens/CreateEstablishment";
 import DriverRegister from "../screens/DriverRegisterForm";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
+import VehicleList from "../screens/VehicleListScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function Routes() {
         <Stack.Screen name="CreateEstablishment" component={CreateEstablishment} />
         <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
+        <Stack.Screen name="VehicleList" component={VehicleList}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

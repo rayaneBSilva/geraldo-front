@@ -4672,6 +4672,11 @@ lightningcss@~1.19.0:
     lightningcss-linux-x64-musl "1.19.0"
     lightningcss-win32-x64-msvc "1.19.0"
 
+linear-gradient@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.npmjs.org/linear-gradient/-/linear-gradient-1.0.6.tgz"
+  integrity sha512-ogM9DW9Zu9opIri7edn/2qROr2lZRtogkGWs/7aOi9QkKqQhfC3MjvwddWFTF7y4ezRDgYyP7+QlkWIV8kyITA==
+
 lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"

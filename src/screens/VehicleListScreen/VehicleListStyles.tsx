@@ -11,14 +11,13 @@ export const vehicleListStyles = StyleSheet.create({
 
       flatListContainer:{
         marginTop: 45,
-        backgroundColor: "#fff",
+        backgroundColor: "yellow",
         marginVertical: 10,
         marginHorizontal: 16,
         paddingBottom: 32,
         borderRadius: 30,
         justifyContent: "center",
         alignItems: "center",
-
       },
       separator:{
         height:2,
@@ -30,11 +29,27 @@ export const vehicleListStyles = StyleSheet.create({
       },
       
       imageCard: {
-        height: 200,
+        height: 150,
         width: "100%", 
         borderRadius:0,
         borderTopLeftRadius: 30, 
         borderTopRightRadius: 30
+      },
+      
+      gradientBackground: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: 30,
+      },
+      shareItem:{
+        position: "absolute",
+        top: 10,
+        right: 10,
+        zIndex: 1
       }
+    
 
 });

@@ -36,9 +36,9 @@ const VehicleList = () => {
                         <Image source={{uri:item.imageUrl}} style={vehicleListStyles.imageCard} />
                         <TouchableOpacity onPress={() => handleHeartPress(item.id)} style={vehicleListStyles.shareItem}>
                             <FontAwesome
-                                name="heart"
+                                name="user-plus"
                                 size={24}
-                                color={"red"}
+                                color={"white"}
                             />
                         </TouchableOpacity>
                         <Text style={vehicleListStyles.Text}>{item.title.toString()}</Text>

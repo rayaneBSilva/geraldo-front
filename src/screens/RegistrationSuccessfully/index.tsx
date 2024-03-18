@@ -8,6 +8,7 @@ interface SplashScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
+
 const RegisterSuccesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {

@@ -8,6 +8,7 @@ export const vehicheComponent = StyleSheet.create({
     fontSize: 15,
     fontWeight: "normal",
     textAlign: "center",
+    paddingLeft: 20,
   },
   container: {
     flex: 1,
@@ -57,6 +58,7 @@ export const vehicheComponent = StyleSheet.create({
   containerLoginForm: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: -20,
+    marginTop: -60,
+    padding: 20,
   },
 });

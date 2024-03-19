@@ -1,24 +1,33 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Button } from "@rneui/themed";
 
 interface CustomButtonProps {
   title: string;
   onPress: () => void;
+  style?: ViewStyle;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({
+  title,
+  onPress,
+  style,
+}) => {
   return (
     <View style={{ alignItems: "center" }}>
       <LinearGradient
         colors={["#FCFF58", "#FEC500"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={styles.container}
+        end={{ x: 0.85, y: 0 }}
+        style={[styles.container, style]}
       >
-        <TouchableOpacity onPress={onPress} style={styles.buttonContainer}>
-          <Text style={styles.text}>{title}</Text>
-        </TouchableOpacity>
+        <Button
+          title={title}
+          type="clear"
+          onPress={onPress}
+          buttonStyle={styles.buttonContainer}
+          titleStyle={styles.text}
+        />
       </LinearGradient>
     </View>
   );
@@ -26,22 +35,21 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 20,
-    height: 50,
-    width: "85%",
-    marginTop: 30,
-    justifyContent: "center",
-    alignItems: "center",
+    width: "65%",
+    marginTop: 50,
+    borderRadius: 15,
+    paddingVertical: 3,
+    marginBottom: 20,
   },
   buttonContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderRadius: 0,
+    width: "100%",
   },
   text: {
-    color: "black",
-    fontWeight: "500",
-    fontSize: 23,
+    color: "#2D207C",
+    fontSize: 18,
   },
 });
 

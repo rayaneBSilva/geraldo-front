@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Input, Text } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
-import CustomButton from "../../../components/button/driverRegister";
 import { registerDriverStyles } from "./DriverRegisterStyles";
-import { validateUsername, formatCPF, validateCPF, validateEmail, validateDateOfBirth, formatDate, formatDateBack} from "./DriverRegisterValidation";
-import {useNavigation} from "@react-navigation/native";
+import {
+  validateUsername,
+  formatCPF,
+  validateCPF,
+  validateEmail,
+  validateDateOfBirth,
+  formatDate,
+  formatDateBack,
+} from "./DriverRegisterValidation";
+import { useNavigation } from "@react-navigation/native";
 import RegisterSuccesfully from "../RegistrationSuccessfully";
 import userServiceDriverRegister from "../../services/UserServiceDriverRegister";
-
+import CustomButton from "../../components/button";
 
 const RegisterForm = () => {
   const navigation = useNavigation();
@@ -17,25 +24,25 @@ const RegisterForm = () => {
   const [invalidNameMessage, setInvalidNameMessage] = useState("");
   const [allValidationsPassed, setAllValidationsPassed] = useState(false);
 
-  const [username, setUserName] = useState('');
+  const [username, setUserName] = useState("");
   const [isRequiredUserName, setIsRequiredUserName] = useState(true);
-  const [invalidUserNameMessage, setInvalidUserNameMessage] = useState('');
+  const [invalidUserNameMessage, setInvalidUserNameMessage] = useState("");
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isRequiredEmail, setIsRequiredEmail] = useState(true);
-  const [invalidEmailMessage, setInvalidEmailMessage] = useState('');
+  const [invalidEmailMessage, setInvalidEmailMessage] = useState("");
 
-
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [isRequiredDateOfBirth, setIsRequiredDateOfBirth] = useState(true);
-  const [invalidDateOfBirthMessage, setInvalidDateOfBirthMessage] = useState('');
+  const [invalidDateOfBirthMessage, setInvalidDateOfBirthMessage] =
+    useState("");
 
-  const handleCpfChange = (cpf:any) => {
+  const handleCpfChange = (cpf: any) => {
     setUserName(formatCPF(cpf)); // Formate imediatamente o CPF
   };
- const handleDateChange = (dateOfBirth:any) =>{
+  const handleDateChange = (dateOfBirth: any) => {
     setDateOfBirth(formatDate(dateOfBirth));
- }
+  };
   const handleLoginPress = async () => {
     const userNameValidation = validateUsername(name);
     setIsRequiredName(userNameValidation.required);
@@ -49,17 +56,18 @@ const RegisterForm = () => {
     setIsRequiredEmail(emailValidation.required);
     setInvalidEmailMessage(emailValidation.message);
 
-   const dateValidation = validateDateOfBirth(dateOfBirth);
-   setIsRequiredDateOfBirth(dateValidation.required);
-   setInvalidDateOfBirthMessage(dateValidation.message);
+    const dateValidation = validateDateOfBirth(dateOfBirth);
+    setIsRequiredDateOfBirth(dateValidation.required);
+    setInvalidDateOfBirthMessage(dateValidation.message);
 
-  const birthday = formatDateBack(dateOfBirth);
-  
-  userServiceDriverRegister.driverRegister({name, username, email, birthday}, navigation);
+    const birthday = formatDateBack(dateOfBirth);
 
+    userServiceDriverRegister.driverRegister(
+      { name, username, email, birthday },
+      navigation
+    );
   };
-  
-  
+
   const handleUsernameFocus = () => {
     setIsRequiredName(true);
     setInvalidNameMessage("");
@@ -89,14 +97,13 @@ const RegisterForm = () => {
     ) {
       setAllValidationsPassed(true);
     } else {
-      setAllValidationsPassed(false); 
+      setAllValidationsPassed(false);
     }
   };
 
-
-  useEffect(() =>{
-   checkValidations();
-  })
+  useEffect(() => {
+    checkValidations();
+  });
 
   return (
     <View style={{ width: "85%", flexDirection: "column" }}>
@@ -118,9 +125,8 @@ const RegisterForm = () => {
           onChangeText={(text) => setName(text)}
           value={name}
           errorMessage={isRequiredName ? invalidNameMessage : ""}
-          errorStyle={{ color: "red", marginLeft:-1 }}
-          onFocus={handleUsernameFocus} 
-
+          errorStyle={{ color: "red", marginLeft: -1 }}
+          onFocus={handleUsernameFocus}
         />
       </View>
 
@@ -137,8 +143,8 @@ const RegisterForm = () => {
           placeholder="CPF"
           onChangeText={(text) => setUserName(text)} // Chame handleCpfChange para formatação imediata
           value={username} // Exiba o CPF formatado
-          errorMessage={isRequiredUserName ? invalidUserNameMessage : ''}
-          errorStyle={{ color: 'red', marginLeft: -1 }}
+          errorMessage={isRequiredUserName ? invalidUserNameMessage : ""}
+          errorStyle={{ color: "red", marginLeft: -1 }}
           onFocus={handleUserCPFFocus}
         ></Input>
       </View>
@@ -157,8 +163,8 @@ const RegisterForm = () => {
           onChangeText={(text) => setEmail(text)}
           value={email}
           onFocus={handleUserEmailFocus}
-          errorMessage={isRequiredEmail ? invalidEmailMessage : ''}
-          errorStyle={{ color: 'red', marginLeft: -1 }}
+          errorMessage={isRequiredEmail ? invalidEmailMessage : ""}
+          errorStyle={{ color: "red", marginLeft: -1 }}
         ></Input>
       </View>
 
@@ -174,30 +180,30 @@ const RegisterForm = () => {
           style={{ color: "white" }}
           placeholder="Data de nascimento"
           onChangeText={handleDateChange}
-          value={dateOfBirth} 
+          value={dateOfBirth}
           onFocus={handleUserdateFocus}
-          errorMessage={isRequiredDateOfBirth ? invalidDateOfBirthMessage : ''}
-          errorStyle={{ color: 'red', marginLeft: -1 }}
+          errorMessage={isRequiredDateOfBirth ? invalidDateOfBirthMessage : ""}
+          errorStyle={{ color: "red", marginLeft: -1 }}
         ></Input>
         <View />
       </View>
       <View>
         <CustomButton
           title="Criar conta"
-          onPress={
-            () => {
-              handleLoginPress();
-              checkValidations();
-              if(allValidationsPassed){
+          onPress={() => {
+            handleLoginPress();
+            checkValidations();
+            if (allValidationsPassed) {
               navigation.navigate(RegisterSuccesfully as never);
-            }}}
+            }
+          }}
         ></CustomButton>
         <Text
-        style={registerDriverStyles.textButton}
-        onPress={() => navigation.navigate("Login" as never)}
-      >
-        Cancelar
-      </Text>
+          style={registerDriverStyles.textButton}
+          onPress={() => navigation.navigate("Login" as never)}
+        >
+          Cancelar
+        </Text>
       </View>
     </View>
   );

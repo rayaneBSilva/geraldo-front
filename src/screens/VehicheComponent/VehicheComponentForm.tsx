@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Image, Alert } from "react-native";
+import { Input } from "@rneui/themed";
 import { vehicheComponent } from "./VehicheComponentStyles";
 import CustomButton from "../../components/button";
 import MainTitle from "../../../components/title/mainTitle";
 import FrequencyButton from "../../../components/button/frequencyButton";
+import { useNavigation } from "@react-navigation/native";
+import vehicheComponentService from "../../services/VehicheComponentService";
+import Validation from "../../validation";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
@@ -18,26 +22,45 @@ type InputProps = {
   errorStyle?: object;
 };
 
-const Input = ({
+const CustomInput = ({
   placeholder,
   icon: Icon,
+  onChangeText,
+  value,
   errorMessage,
   errorStyle,
 }: InputProps) => {
   return (
-    <View style={vehicheComponent.view}>
-      <Image source={Icon} style={vehicheComponent.icon} />
-      <TextInput
-        placeholder={placeholder}
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
-        style={vehicheComponent.textInput}
-      />
-      {errorMessage && <Text style={errorStyle}>{errorMessage}</Text>}
+    <View style={{ height: 80 }}>
+      <View style={vehicheComponent.view}>
+        <Image source={Icon} style={vehicheComponent.icon} />
+        <TextInput
+          placeholder={placeholder}
+          placeholderTextColor="rgba(255, 255, 255, 0.5)"
+          style={vehicheComponent.textInput}
+          onChangeText={onChangeText}
+          value={value}
+        />
+      </View>
+      {errorMessage && (
+        <Text style={[errorStyle, { paddingLeft: 35 }]}>{errorMessage}</Text>
+      )}
     </View>
   );
 };
+interface ComponentData {
+  id: string;
+  componentType: string;
+  date: string;
+  mileage: number;
+  frequency: number;
+}
 
-const VehicheComponentForm = () => {
+const VehicheComponentForm = ({
+  componentData,
+}: {
+  componentData?: ComponentData;
+}) => {
   const [selectedFrequency, setSelectedFrequency] = useState<number | null>(
     null
   );
@@ -47,9 +70,22 @@ const VehicheComponentForm = () => {
   const [isRequiredFrequency, setIsRequiredFrequency] = useState(false);
   const [componentType, setComponentType] = useState("");
   const [date, setDate] = useState("");
-  const [mileage, setMileage] = useState("");
-  const [frequency, setFrequency] = useState("");
+  const [mileage, setMileage] = useState<number | null>(null);
+  const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigation = useNavigation();
+  const [type, setType] = useState("new");
+
+  useEffect(() => {
+    if (componentData) {
+      setComponentType(componentData.componentType);
+      setDate(componentData.date);
+      setMileage(componentData.mileage);
+      setFrequency(componentData.frequency);
+
+      setType("edit");
+    }
+  }, [componentData]);
 
   const handleSelectFrequency = (frequency: string | null) => {
     if (frequency !== null) {
@@ -62,56 +98,57 @@ const VehicheComponentForm = () => {
 
   const handleCustomButtonPress = async () => {
     setIsRequiredComponentType(componentType.trim() === "");
+    setIsRequiredDate(date.trim() === "");
+    setIsRequiredMileage(mileage === null || mileage === undefined);
+    setIsRequiredFrequency(frequency === null || frequency === undefined);
+
+    const dateErrorMessage = Validation.validateDate(date);
+    if (dateErrorMessage !== "") {
+      setErrorMessage(dateErrorMessage);
+      return;
+    }
+
+    if (
+      type === "edit" &&
+      componentData?.mileage &&
+      mileage !== null &&
+      mileage > componentData?.mileage
+    ) {
+      const mileageErrorMessage = Validation.validateMileage(
+        mileage,
+        componentData.mileage
+      );
+      if (mileageErrorMessage !== "") {
+        setErrorMessage(mileageErrorMessage);
+        return;
+      }
+    }
+
     if (
       componentType.trim() !== "" &&
       date.trim() !== "" &&
-      mileage.trim() !== ""
+      mileage?.toString().trim() === "" &&
+      frequency?.toString().trim() === ""
     ) {
+      try {
+        if (type === "edit" && componentData) {
+          await vehicheComponentService.updateComponent(
+            { componentType, date, mileage, frequency },
+            componentData.id,
+            navigation
+          );
+        } else {
+          await vehicheComponentService.save(
+            { componentType, date, mileage, frequency },
+            navigation
+          );
+        }
+        setErrorMessage("");
+        navigation.navigate("LoginForm" as never); //APAGAR DEPOIS
+      } catch (error) {
+        setErrorMessage("Dados inválidos");
+      }
     }
-  };
-
-  const handleMessageError = (): string => {
-    let responseMessage = "";
-
-    if (isRequiredComponentType) {
-      responseMessage = "Campo obrigatório";
-    } else if (errorMessage !== "") {
-      responseMessage = errorMessage;
-    }
-    return responseMessage;
-  };
-
-  const handleMessageDateError = (): string => {
-    let responseMessage = "";
-
-    if (isRequiredDate) {
-      responseMessage = "Campo obrigatório";
-    } else if (errorMessage !== "") {
-      responseMessage = errorMessage;
-    }
-    return responseMessage;
-  };
-
-  const handleMessageMileageError = (): string => {
-    let responseMessage = "";
-
-    if (isRequiredMileage) {
-      responseMessage = "Campo obrigatório";
-    } else if (errorMessage !== "") {
-      responseMessage = errorMessage;
-    }
-    return responseMessage;
-  };
-
-  const handleMessageFrequencyError = (): string => {
-    let responseMessage = "";
-
-    if (isRequiredFrequency) {
-      responseMessage = "Campo obrigatório";
-    } else if (errorMessage !== "") {
-      responseMessage = errorMessage;
-    }
-    return responseMessage;
   };
 
   return (
@@ -123,63 +160,105 @@ const VehicheComponentForm = () => {
           componente
         </Text>
       </View>
-      <View style={vehicheComponent.containerLoginForm}>
-        <Input
-          placeholder="Tipo do Componente"
-          icon={PranchetaIcon}
-          onChangeText={(text) => setComponentType(text)}
-          value={componentType}
-          errorMessage={handleMessageError()}
-          errorStyle={{
-            color:
-              isRequiredComponentType || errorMessage !== "" ? "red" : "black",
-          }}
-        />
-      </View>
-      <View style={vehicheComponent.containerLoginForm}>
-        <Input
-          placeholder="Data da troca"
-          icon={CalendarIcon}
-          onChangeText={(text) => setDate(text)}
-          value={date}
-          errorMessage={handleMessageDateError()}
-          errorStyle={{
-            color: isRequiredDate || errorMessage !== "" ? "red" : "black",
-          }}
-        />
-      </View>
-      <View style={vehicheComponent.containerLoginForm}>
-        <Input
-          placeholder="Quilometragem até a Troca"
-          icon={QuilometragemIcon}
-          onChangeText={(text) => setMileage(text)}
-          value={mileage}
-          errorMessage={handleMessageMileageError()}
-          errorStyle={{
-            color: isRequiredMileage || errorMessage !== "" ? "red" : "black",
-          }}
-        />
-      </View>
-      <View style={vehicheComponent.view}>
-        <FrequencyButton
-          title="Dias"
-          options={["Dias", "Mes(es)", "Ano(s)"]}
-          onSelect={handleSelectFrequency}
-        />
-        <TextInput
-          placeholder={"Frequência de Lembretes"}
-          placeholderTextColor="rgba(255, 255, 255, 0.5)"
-          style={[
-            vehicheComponent.textInput,
-            { maxWidth: 220, marginLeft: 10, marginTop: 0 },
-          ]}
-          onChangeText={(text) => setFrequency(text)}
-          value={frequency}
-          // errorMessage={handleMessageMileageError()}
-          // errorStyle={{
-          //   color: isRequiredMileage || errorMessage !== "" ? "red" : "black",
-          // }}
-        />
+      <View style={{ width: "85%", paddingLeft: 20, paddingRight: 20 }}>
+        <View style={vehicheComponent.containerLoginForm}>
+          <CustomInput
+            placeholder="Tipo do Componente"
+            icon={PranchetaIcon}
+            onChangeText={(text) => setComponentType(text)}
+            value={componentType}
+            errorMessage={Validation.generateErrorMessage(
+              isRequiredComponentType,
+              errorMessage
+            )}
+            errorStyle={{
+              color:
+                isRequiredComponentType || errorMessage !== ""
+                  ? "red"
+                  : "black",
+            }}
+          />
+        </View>
+        <View style={vehicheComponent.containerLoginForm}>
+          <CustomInput
+            placeholder="Data da troca"
+            icon={CalendarIcon}
+            onChangeText={(text) => setDate(text)}
+            value={date}
+            errorMessage={Validation.generateErrorMessage(
+              isRequiredDate,
+              errorMessage
+            )}
+            errorStyle={{
+              color: isRequiredDate || errorMessage !== "" ? "red" : "black",
+            }}
+          />
+        </View>
+        <View style={vehicheComponent.containerLoginForm}>
+          <CustomInput
+            placeholder="Quilometragem até a Troca"
+            icon={QuilometragemIcon}
+            onChangeText={(text) => {
+              if (text.trim() === "") {
+                setMileage(null);
+              } else {
+                const parsedValue = parseFloat(text);
+                if (!isNaN(parsedValue)) {
+                  setMileage(parsedValue);
+                } else {
+                  setMileage(null);
+                }
+              }
+            }}
+            value={mileage ? mileage.toString() : ""}
+            errorMessage={Validation.generateErrorMessage(
+              isRequiredMileage,
+              errorMessage
+            )}
+            errorStyle={{
+              color: isRequiredMileage || errorMessage !== "" ? "red" : "black",
+            }}
+          />
+        </View>
+        <View style={[vehicheComponent.view, { paddingLeft: 20 }]}>
+          <View style={{ marginBottom: 25 }}>
+            <FrequencyButton
+              title="Dias"
+              options={["Dias", "Mes(es)", "Ano(s)"]}
+              onSelect={handleSelectFrequency}
+            />
+          </View>
+
+          <Input
+            placeholder={"Frequência de Lembretes"}
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            style={[
+              vehicheComponent.textInput,
+              { maxWidth: 230, marginTop: 0 },
+            ]}
+            onChangeText={(text) => {
+              if (text.trim() === "") {
+                setFrequency(null);
+              } else {
+                const parsedValue = parseFloat(text);
+                if (!isNaN(parsedValue)) {
+                  setFrequency(parsedValue);
+                } else {
+                  setFrequency(null);
+                }
+              }
+            }}
+            value={frequency ? frequency.toString() : ""}
+            errorMessage={Validation.generateErrorMessage(
+              isRequiredFrequency,
+              errorMessage
+            )}
+            errorStyle={{
+              color:
+                isRequiredFrequency || errorMessage !== "" ? "red" : "black",
+            }}
+          />
+        </View>
       </View>
       <View
         style={{
@@ -188,9 +267,18 @@ const VehicheComponentForm = () => {
           position: "absolute",
         }}
       ></View>
-      <View style={{ marginTop: 30 }}>
-        <CustomButton title="Cadastrar" onPress={handleCustomButtonPress} />
-      </View>
+      <CustomButton
+        title="Cadastrar"
+        onPress={handleCustomButtonPress}
+        style={{ marginTop: 20 }}
+      />
+      <CustomButton
+        title="Cancelar"
+        onPress={() => {
+          navigation.navigate("VehicleList" as never);
+        }}
+        style={{ marginTop: 20 }}
+      />
     </View>
   );
 };

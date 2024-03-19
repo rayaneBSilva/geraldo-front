@@ -7,6 +7,7 @@ import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import CreateEstablishment from "../screens/CreateEstablishment";
 import DriverRegister from "../screens/DriverRegisterForm";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
+import VehicheComponent from "../screens/VehicheComponent";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,10 +17,20 @@ function Routes() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>
-        <Stack.Screen name="CreateEstablishment" component={CreateEstablishment} />
-        <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
-        <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+        />
+        <Stack.Screen
+          name="CreateEstablishment"
+          component={CreateEstablishment}
+        />
+        <Stack.Screen name="DriverRegister" component={DriverRegister} />
+        <Stack.Screen
+          name="RegisterSuccesfully"
+          component={RegistrationSuccesfully}
+        />
+        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
       </Stack.Navigator>
     </NavigationContainer>
   );

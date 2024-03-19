@@ -38,6 +38,7 @@ const LoginForm = () => {
         setErrorMessage("");
       } catch (error) {
         setErrorMessage("Usuário ou senha inválidos");
+        navigation.navigate("VehicheComponent" as never);
       }
     }
   };
@@ -93,7 +94,7 @@ const LoginForm = () => {
           style={loginStyles.icon}
         />
         <Input
-          containerStyle={{ width: "90%" }}
+          containerStyle={{ width: "90%", marginBottom: -30 }}
           style={{ color: "white" }}
           secureTextEntry={!showPassword}
           placeholder="Senha"
@@ -117,7 +118,7 @@ const LoginForm = () => {
       </View>
       <CustomButton title="Acessar" onPress={handleLoginPress} />
       <Text
-        style={loginStyles.textButton}
+        style={[loginStyles.textButton, { marginTop: 20 }]}
         onPress={() => navigation.navigate("ForgotPasswordScreen" as never)}
       >
         Esqueceu a sua senha?

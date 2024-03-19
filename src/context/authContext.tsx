@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import userService from "../services/UserService";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import axios from "axios";
 
 
 interface AuthProps {
@@ -43,12 +44,15 @@ export const AuthProvider = ({ children }: any) => {
     const login = async (username: string, password: string, navigation: any) => {
         try {
             const response =  await userService.login({username, password}, navigation)
+            const token = response.data.data.access_token
             setAuthState({
-                token: response.data.token,
+                token: token,
                 authenticated: true
             })
 
-            await SecureStore.setItemAsync("token", response.data.token)
+            await SecureStore.setItemAsync("token", token)
+            
+            axios.defaults.headers.common['Authorization'] = token
             
             return response
         } catch (e) {
@@ -63,6 +67,7 @@ export const AuthProvider = ({ children }: any) => {
         })
 
         await SecureStore.deleteItemAsync("token")
+        axios.defaults.headers.common['Authorization'] = null
     }
 
     const value = {

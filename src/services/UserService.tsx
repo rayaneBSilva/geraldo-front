@@ -7,7 +7,8 @@ class UserService extends ServiceBase {
   async login(data: UserData, navigation: any): Promise<AxiosResponse> {
     try {
       const response = await this.post(data, "login");
-      navigation.navigate("VehicheComponent");
+      //TO-DO redirecionar para a pagina de vehicle component
+      navigation.navigate("VehicleRegistration");
       return response
     } catch (error: any) {
       throw error;

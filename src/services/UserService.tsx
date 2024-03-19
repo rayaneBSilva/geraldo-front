@@ -1,12 +1,14 @@
+import { AxiosResponse } from "axios";
 import ServiceBase from "./ServiceBase";
 interface UserData {
   [key: string]: any;
 }
 class UserService extends ServiceBase {
-  async login(data: UserData, navigation: any): Promise<void> {
+  async login(data: UserData, navigation: any): Promise<AxiosResponse> {
     try {
-      await this.post(data, "login");
+      const response = await this.post(data, "login");
       navigation.navigate("VehicheComponent");
+      return response
     } catch (error: any) {
       throw error;
     }

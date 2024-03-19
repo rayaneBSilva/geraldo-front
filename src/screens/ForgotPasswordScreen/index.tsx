@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Button } from 'react-native';
 import { forgotPasswordStyles } from './styles';
-import { Input } from "@rneui/themed";
+// import { Input } from "@rneui/themed";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Mail from '../../../assets/mail.svg'
@@ -83,15 +83,15 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
                 color="white"
                 style={{ marginRight: 10, }}
               />
-              <Input
-                containerStyle={{ width: "90%" }}
-                style={{ color: "white" }}
-                placeholder="Email"
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                errorMessage={isEmailInvalid ? "Insira um email válido" : ""}
-                errorStyle={{ color: isEmailInvalid ? "red" : "black" }}
-              />
+              {/* <Input
+                // containerStyle={{ width: "90%" }}
+                // style={{ color: "white" }}
+                // placeholder="Email"
+                // onChangeText={(text) => setEmail(text)}
+                // value={email}
+                // errorMessage={isEmailInvalid ? "Insira um email válido" : ""}
+                // errorStyle={{ color: isEmailInvalid ? "red" : "black" }}
+              /> */}
             </View>
             <View style={{ width: "85%" }}>
               <CustomButton title="Recuperar Senha" onPress={onForgotTap} />

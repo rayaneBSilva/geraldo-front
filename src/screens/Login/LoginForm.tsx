@@ -34,14 +34,13 @@ const LoginForm = () => {
     setIsRequiredPassword(password.trim() === "");
 
     if (username.trim() !== "" && password.trim() !== "") {
-      try {
         const response = await onLogin!(username, password, navigation)
-        console.log("file: Login.tsx ~ handlePressLogin ~ result", response)
-        setErrorMessage("");
-      } catch (error) {
-        console.log(error)
-        setErrorMessage("Usuário ou senha inválidos");
-      }
+        
+        if(response?.error){
+          setErrorMessage("Usuário ou senha inválidos");
+        }else{
+          setErrorMessage("");
+        }
     }
   };
 

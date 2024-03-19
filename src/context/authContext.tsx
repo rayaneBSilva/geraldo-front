@@ -44,9 +44,6 @@ export const AuthProvider = ({ children }: any) => {
         try {
             const response =  await userService.login({cpf, password}, navigation)
 
-            console.log("file: AuthContext.tsx ~ login ~ result", response)
-
-
             setAuthState({
                 token: response.data.token,
                 authenticated: true
@@ -56,7 +53,7 @@ export const AuthProvider = ({ children }: any) => {
             
             return response
         } catch (e) {
-            return {error: true, msg: (e as any).response.data.msg };
+            return {error: true, msg: (e as any).response?.data };
         }
     }
 

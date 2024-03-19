@@ -4,6 +4,7 @@ import LoginForm from "./LoginForm";
 import { loginStyles } from "./LoginStyles";
 import * as Animatable from "react-native-animatable";
 
+
 const Login = () => {
   return (
     <ImageBackground

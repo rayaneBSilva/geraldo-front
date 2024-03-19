@@ -189,7 +189,7 @@ const RegisterForm = () => {
               handleLoginPress();
               checkValidations();
               if(allValidationsPassed){
-              navigation.navigate(RegisterSuccesfully as never);
+              navigation.navigate("RegisterSuccesfully" as never);
             }}}
         ></CustomButton>
         <Text

@@ -9,6 +9,9 @@ import VehicleRegistration from "../screens/VehicleRegistration";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
 import Login from "../screens/Login";
 import SplashScreen from "../screens/SplashScreen";
+import VehicleList from "../screens/VehicleListScreen";
+import CarSharing from "../screens/CarSharing";
+import Succesfully from "../screens/Succesfully";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +27,9 @@ function Routes() {
         <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
         <Stack.Screen  name="VehicleRegistration" component={VehicleRegistration}/>
+        <Stack.Screen name="VehicleList" component={VehicleList}/>
+        <Stack.Screen name="CarSharing" component={CarSharing}/>
+        <Stack.Screen name="Succesfully" component={Succesfully}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

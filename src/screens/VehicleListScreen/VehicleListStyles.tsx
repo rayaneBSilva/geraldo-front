@@ -49,7 +49,25 @@ export const vehicleListStyles = StyleSheet.create({
         top: 10,
         right: 10,
         zIndex: 1
-      }
+      },
+      searchInput: {
+        marginTop: 60,
+        backgroundColor: 'white',
+        padding: 10,
+        margin: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        color: "white"
+      },
+      icon: {
+        marginRight: 10,
+      },
+      containerSearchForm: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 30,
+        width: "85%"
+      },
     
 
 });

@@ -1,3 +1,4 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Maybe, just, none } from '@sweet-monads/maybe';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from "react";
@@ -17,7 +18,6 @@ import { CreateEstablishmentCommand } from '../../api/commands/CreateEstablishme
 import { FindAddressQuery } from '../../api/queries/FindAddress';
 import { Input } from '../../components/input';
 import { Picker } from '../../components/picker';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface CreateEstablishmentProps {
   navigation: NavigationProp<ParamListBase>;

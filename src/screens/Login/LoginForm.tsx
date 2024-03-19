@@ -4,8 +4,8 @@ import { Input } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { loginStyles } from "./LoginStyles";
 import CustomButton from "../../components/button";
-import UserService from "../../services/UserService";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../context/authContext";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +15,7 @@ const LoginForm = () => {
   const [isRequiredPassword, setIsRequiredPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
+  const { onLogin } = useAuth()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -34,9 +35,11 @@ const LoginForm = () => {
 
     if (username.trim() !== "" && password.trim() !== "") {
       try {
-        await UserService.login({ username, password }, navigation);
+        const response = await onLogin!(username, password, navigation)
+        console.log("file: Login.tsx ~ handlePressLogin ~ result", response)
         setErrorMessage("");
       } catch (error) {
+        console.log(error)
         setErrorMessage("Usuário ou senha inválidos");
       }
     }

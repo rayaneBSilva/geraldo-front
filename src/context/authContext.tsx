@@ -6,10 +6,9 @@ import * as SecureStore from "expo-secure-store";
 
 interface AuthProps {
     authState?: {token: string | null; authenticated: boolean | null};
-    onLogin?: (cpf: string, password: string) => Promise<any>
+    onLogin?: (cpf: string, password: string, navigation: any) => Promise<any>
     onLogout?: () => Promise<any>
 }
-const navigation = useNavigation()
 
 const AuthContext = createContext<AuthProps>({});
 
@@ -25,11 +24,11 @@ export const AuthProvider = ({ children }: any) => {
         token: null,
         authenticated: null
     })
-
+    
     useEffect(() => {
         const loadToken = async () => {
             const token = await SecureStore.getItemAsync("token")
-
+            
             if(token){
                 setAuthState({
                     token: token,
@@ -37,13 +36,16 @@ export const AuthProvider = ({ children }: any) => {
                 })
             }
         }
-
+        
         loadToken()
     },[])
-
-    const login = async (cpf: string, password: string) => {
+    
+    const login = async (cpf: string, password: string, navigation: any) => {
         try {
             const response =  await userService.login({cpf, password}, navigation)
+
+            console.log("file: AuthContext.tsx ~ login ~ result", response)
+
 
             setAuthState({
                 token: response.data.token,

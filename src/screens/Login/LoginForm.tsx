@@ -34,13 +34,13 @@ const LoginForm = () => {
     setIsRequiredPassword(password.trim() === "");
 
     if (username.trim() !== "" && password.trim() !== "") {
-        const response = await onLogin!(username, password, navigation)
+      const response = await onLogin!(username, password, navigation)
         
-        if(response?.error){
-          setErrorMessage("Usuário ou senha inválidos");
-        }else{
-          setErrorMessage("");
-        }
+      if(response?.error){
+        setErrorMessage("Usuário ou senha inválidos");
+      }else{
+        setErrorMessage("");
+      }
     }
   };
 

@@ -40,10 +40,9 @@ export const AuthProvider = ({ children }: any) => {
         loadToken()
     },[])
     
-    const login = async (cpf: string, password: string, navigation: any) => {
+    const login = async (username: string, password: string, navigation: any) => {
         try {
-            const response =  await userService.login({cpf, password}, navigation)
-
+            const response =  await userService.login({username, password}, navigation)
             setAuthState({
                 token: response.data.token,
                 authenticated: true

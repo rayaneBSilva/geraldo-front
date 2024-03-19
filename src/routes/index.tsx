@@ -16,12 +16,12 @@ function Routes() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="VehicleList" component={VehicleList}/>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>
         <Stack.Screen name="CreateEstablishment" component={CreateEstablishment} />
         <Stack.Screen name="DriverRegister" component={DriverRegister} /> 
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
-        <Stack.Screen name="VehicleList" component={VehicleList}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

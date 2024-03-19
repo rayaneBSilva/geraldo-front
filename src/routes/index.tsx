@@ -9,6 +9,7 @@ import DriverRegister from "../screens/DriverRegisterForm";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
 import VehicleList from "../screens/VehicleListScreen";
 import CarSharing from "../screens/CarSharing";
+import Succesfully from "../screens/Succesfully";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ function Routes() {
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully} />
         <Stack.Screen name="VehicleList" component={VehicleList}/>
         <Stack.Screen name="CarSharing" component={CarSharing}/>
+        <Stack.Screen name="Succesfully" component={Succesfully}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

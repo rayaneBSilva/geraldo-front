@@ -30,8 +30,7 @@ export const vehicleListStyles = StyleSheet.create({
         fontSize: 24,
         paddingTop: 6,
         color: "#2D207C",
-        textAlign: "right", // Alinha o texto à direita
-    },
+      },
 
     imageCard: {
         height: 130,

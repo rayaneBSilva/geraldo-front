@@ -37,7 +37,7 @@ const VehicleList = () => {
         }
     ];
 
-    const handleHeartPress = (id:any) => {
+    const handleSharePress = (id:any) => {
         console.log("clicou")
     }
 
@@ -77,7 +77,7 @@ const VehicleList = () => {
                     />
                 </View>
             </View>
-            <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20, flex: 1 }}> 
+            <View style={{ paddingHorizontal: 4, paddingTop: 0, paddingBottom: 20, flex: 1 }}> 
                 <FlatList
                     data={filteredData}
                     renderItem={({ item }) =>
@@ -88,7 +88,7 @@ const VehicleList = () => {
                             style={vehicleListStyles.flatListContainer}
                         >
                             <Image source={{ uri: item.imageUrl }} style={vehicleListStyles.imageCard} />
-                            <TouchableOpacity onPress={() => handleHeartPress(item.id)} style={vehicleListStyles.shareItem}>
+                            <TouchableOpacity onPress={() => handleSharePress(item.id)} style={vehicleListStyles.shareItem}>
                                 <FontAwesome
                                     name="user-plus"
                                     size={24}

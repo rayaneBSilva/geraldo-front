@@ -47,57 +47,60 @@ const VehicleList = () => {
 
     return (
         <ImageBackground
-            source={require("../../../assets/splashScreen.png")}
+            source={require("../../../assets/splashScreen -without-border.png")}
             style={vehicleListStyles.backgroundImage}
         >
             <SafeAreaView />
             <View style={{alignItems:"center", marginHorizontal: -10, marginRight: 20}}>
-            <View style={vehicleListStyles.containerSearchForm}>
-                <FontAwesome
-                    name="search"
-                    size={24}
-                    color="white"
-                    style={vehicleListStyles.icon}
-                />
-                 <Input
-                    containerStyle={{ width: "90%", marginTop: 30 }} // Adiciona margem superior
-                    placeholder="Procure por um carro"
-                    placeholderTextColor="white" // Define a cor do texto do placeholder
-                    inputStyle={{ color: 'white' }} // Define a cor do texto do input
-                    underlineColorAndroid="transparent" // Oculta a linha padrão do input no Android
-                    style={{ borderBottomColor: 'white', borderBottomWidth: 1 }}
-                    value={searchTerm}
-                    onChangeText={setSearchTerm}
-/>
-                <FontAwesome
-                    name="plus"
-                    size={24}
-                    color="white"
-                    style={vehicleListStyles.iconPlus}
+                <View style={vehicleListStyles.containerSearchForm}>
+                    <FontAwesome
+                        name="search"
+                        size={24}
+                        color="white"
+                        style={vehicleListStyles.icon}
+                    />
+                    <Input
+                        containerStyle={{ width: "90%", marginTop: 30 }} // Adiciona margem superior
+                        placeholder="Procure por um carro"
+                        placeholderTextColor="white" // Define a cor do texto do placeholder
+                        inputStyle={{ color: 'white' }} // Define a cor do texto do input
+                        underlineColorAndroid="transparent" // Oculta a linha padrão do input no Android
+                        style={{ borderBottomColor: 'white', borderBottomWidth: 1 }}
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                    />
+                    <FontAwesome
+                        name="plus"
+                        size={24}
+                        color="white"
+                        style={vehicleListStyles.iconPlus}
+                    />
+                </View>
+            </View>
+            <View style={{ paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20, flex: 1 }}> 
+                <FlatList
+                    data={filteredData}
+                    renderItem={({ item }) =>
+                        <LinearGradient
+                            colors={['rgba(252,255,88,1)', 'rgba(254,197,0,1)']} //cores
+                            start={{ x: 0, y: 0.5 }} //início do gradiente na horizontal
+                            end={{ x: 1, y: 0.5 }} //fim do gradiente na horizontal
+                            style={vehicleListStyles.flatListContainer}
+                        >
+                            <Image source={{ uri: item.imageUrl }} style={vehicleListStyles.imageCard} />
+                            <TouchableOpacity onPress={() => handleHeartPress(item.id)} style={vehicleListStyles.shareItem}>
+                                <FontAwesome
+                                    name="user-plus"
+                                    size={24}
+                                    color={"white"}
+                                />
+                            </TouchableOpacity>
+                            <Text style={vehicleListStyles.Text}>{item.title.toString()}</Text>
+                        </LinearGradient>
+                    }
+                    contentContainerStyle={{ paddingBottom: 20 }}
                 />
             </View>
-            </View>
-            <FlatList
-                data={filteredData}
-                renderItem={({ item }) =>
-                    <LinearGradient
-                    colors={['rgba(252,255,88,1)', 'rgba(254,197,0,1)']} //cores
-                    start={{ x: 0, y: 0.5 }} //início do gradiente na horizontal
-                    end={{ x: 1, y: 0.5 }} //fim do gradiente na horizontal
-                        style={vehicleListStyles.flatListContainer}
-                    >
-                        <Image source={{ uri: item.imageUrl }} style={vehicleListStyles.imageCard} />
-                        <TouchableOpacity onPress={() => handleHeartPress(item.id)} style={vehicleListStyles.shareItem}>
-                            <FontAwesome
-                                name="user-plus"
-                                size={24}
-                                color={"white"}
-                            />
-                        </TouchableOpacity>
-                        <Text style={vehicleListStyles.Text}>{item.title.toString()}</Text>
-                    </LinearGradient>
-                }
-            />
         </ImageBackground>
     );
 };

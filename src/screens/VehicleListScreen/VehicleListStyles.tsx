@@ -7,6 +7,7 @@ export const vehicleListStyles = StyleSheet.create({
         height: "100%",
         resizeMode: "cover",
         marginTop: -30,
+        
     },
 
     flatListContainer: {

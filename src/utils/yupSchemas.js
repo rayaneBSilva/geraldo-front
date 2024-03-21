@@ -16,6 +16,6 @@ export const vehicleSchema = yup.object({
     modelo: yup.string().required('Por favor, informe o modelo do veículo.'),
     quilometragemAtual: yup.string()
       .required('Por favor, informe a quilometragem atual do veículo.')
-      .matches(/^\d+(?:,\d+)?$/, 'Por favor, informe uma placa válida no formato 33,11 ou 33.')
+      .matches(/^\d+$/, 'Por favor, informe apenas dígitos.')
       .typeError('Por favor, informe a quilometragem atual do veículo.')
   });

@@ -6,7 +6,7 @@ import ControlledTextInput from '../../components/controller/ControlledTextInput
 import { useForm } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { vehicleSchema } from '../../utils/yupSchemas';
-import vehicleService from '../../services/VehicleService';
+import vehicleService, { vehicleDTO } from '../../services/VehicleService';
 import {useNavigation} from "@react-navigation/native";
 
 type VehicleForm = {
@@ -30,8 +30,16 @@ function VehicleRegistration() {
 
   //To-Do colocar modal ao ir para a tela anterior
   const handleCreateVehicle = async (e : VehicleForm ) => {
+    const data: vehicleDTO = {
+      kilometers: parseInt(e.quilometragemAtual),
+      model: e.modelo,
+      plate: e.placa,
+      year: e.anoDeFabricação
+    } 
+
     setIsMakingRequest(true)
-    const response = await vehicleService.createVehicle(e)
+    const response = await vehicleService.createVehicle(data)
+    console.log(response)
     setIsMakingRequest(false)
     navigation.goBack()
   }

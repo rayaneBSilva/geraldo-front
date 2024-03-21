@@ -5,9 +5,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
 import { Input } from "@rneui/themed";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from "@react-navigation/native";
+
 
 const VehicleList = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const navigation = useNavigation();
+
 
     const data = [
         {
@@ -38,7 +42,8 @@ const VehicleList = () => {
     ];
 
     const handleSharePress = (id:any) => {
-        console.log("clicou")
+        navigation.navigate("CarSharing" as never);
+
     }
 
     const filteredData = data.filter(item =>

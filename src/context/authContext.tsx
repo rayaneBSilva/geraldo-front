@@ -51,9 +51,7 @@ export const AuthProvider = ({ children }: any) => {
             })
 
             await SecureStore.setItemAsync("token", token)
-            
-            axios.defaults.headers.common['Authorization'] = token
-            
+
             return response
         } catch (e) {
             return {error: true, msg: (e as any).response?.data };
@@ -67,7 +65,7 @@ export const AuthProvider = ({ children }: any) => {
         })
 
         await SecureStore.deleteItemAsync("token")
-        axios.defaults.headers.common['Authorization'] = null
+       
     }
 
     const value = {

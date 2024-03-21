@@ -28,7 +28,7 @@ function VehicleRegistration() {
     resolver: yupResolver(vehicleSchema)
   })
 
-  //To-Do colocar modal ao ir para a tela anterior
+  //To-Do colocar modal de aviso sobre a requisao na tela anterior
   const handleCreateVehicle = async (e : VehicleForm ) => {
     const data: vehicleDTO = {
       kilometers: parseInt(e.quilometragemAtual),
@@ -39,7 +39,7 @@ function VehicleRegistration() {
 
     setIsMakingRequest(true)
     const response = await vehicleService.createVehicle(data)
-    console.log(response)
+
     setIsMakingRequest(false)
     navigation.goBack()
   }

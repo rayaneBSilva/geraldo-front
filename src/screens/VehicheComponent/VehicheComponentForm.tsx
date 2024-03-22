@@ -191,11 +191,7 @@ const VehicheComponentForm = ({
 
   const handleDatePress = () => {
     alert("entrei aqui");
-    <DateTimePicker mode="date" display="spinner" value={date2} />;
     setShowPicker(true);
-    <View>
-      {true && <DateTimePicker mode="date" display="spinner" value={date2} />}
-    </View>;
   };
 
   return (
@@ -236,7 +232,7 @@ const VehicheComponentForm = ({
             icon={CalendarIcon}
             onChangeText={(text) => setDate(text)}
             value={date}
-            onPress={handleDatePress} // Adicione isso
+            onPress={handleDatePress}
             errorMessage={Validation.generateErrorMessage(
               isRequiredDate,
               errorMessage
@@ -246,20 +242,19 @@ const VehicheComponentForm = ({
             }}
           />
         </View>
-
-        {/* <View style={vehicheComponent.containerLoginForm}>
-          {!false && (
-            <Pressable onPress={toggleDatepicker}>
-              <TextInput
-                style={{ color: "white" }}
-                placeholder="Sat Aug 21 2004"
-                value={date2}
-                onChangeText={handleTextChange}
-                editable={true}
-              />
-            </Pressable>
-          )}
-        </View> */}
+        {showPicker && (
+          <DateTimePicker
+            mode="date"
+            display="spinner"
+            value={new Date(date)}
+            onChange={(event, selectedDate) => {
+              setShowPicker(false);
+              if (selectedDate) {
+                setDate(selectedDate.toISOString().split("T")[0]);
+              }
+            }}
+          />
+        )}
         <View style={vehicheComponent.containerLoginForm}>
           <CustomInput
             placeholder="Quilometragem até a Troca"

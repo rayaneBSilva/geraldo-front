@@ -1,13 +1,15 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../screens/Login";
-import SplashScreen from "../screens/SplashScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
 import CreateEstablishment from "../screens/CreateEstablishment";
+import ViewCar from "../screens/ViewCar";
 import DriverRegister from "../screens/DriverRegisterForm";
+import VehicleRegistration from "../screens/VehicleRegistration";
 import RegistrationSuccesfully from "../screens/RegistrationSuccessfully";
 import VehicheComponent from "../screens/VehicheComponent";
+import Login from "../screens/Login";
+import SplashScreen from "../screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,12 +17,10 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-        />
+        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen
           name="CreateEstablishment"
           component={CreateEstablishment}
@@ -30,7 +30,8 @@ function Routes() {
           name="RegisterSuccesfully"
           component={RegistrationSuccesfully}
         />
-        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
+        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>
+        <Stack.Screen  name="VehicleRegistration" component={VehicleRegistration}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { View, Image, ImageBackground, Text, FlatList, TouchableOpacity } from "react-native";
-import { vehicleListStyles } from "./VehicleListStyles";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/themed";
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { vehicleListStyles } from "./VehicleListStyles";
 
 
 const VehicleList = () => {
@@ -43,9 +43,12 @@ const VehicleList = () => {
 
     const handleSharePress = (id:any) => {
         navigation.navigate("CarSharing" as never);
-
     }
 
+    const handlePlusPress = (id:any) => {
+        navigation.navigate("VehicleRegistration" as never);
+
+    }
     const filteredData = data.filter(item =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -74,12 +77,15 @@ const VehicleList = () => {
                         value={searchTerm}
                         onChangeText={setSearchTerm}
                     />
+                <TouchableOpacity onPress={handlePlusPress}>
                     <FontAwesome
                         name="plus"
                         size={24}
                         color="white"
                         style={vehicleListStyles.iconPlus}
                     />
+                </TouchableOpacity>
+
                 </View>
             </View>
             <View style={{ paddingHorizontal: 4, paddingTop: 0, paddingBottom: 20, flex: 1 }}> 

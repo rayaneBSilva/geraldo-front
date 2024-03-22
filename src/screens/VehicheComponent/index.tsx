@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, ImageBackground } from "react-native";
+import { View, ImageBackground } from "react-native";
 import VehicheComponentForm from "./VehicheComponentForm";
 import { vehicheComponent } from "./VehicheComponentStyles";
 import * as Animatable from "react-native-animatable";
 import vehicheComponentService from "../../services/VehicheComponentService";
 import { useRoute } from "@react-navigation/native";
+import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import toastConfig from "../../components/toastMessage/toastConfig";
+import { AppFrame } from "../../components/app-frame";
 
 interface ComponentData {
   id: string;
@@ -41,16 +44,16 @@ const VehicheComponent = () => {
   }, [route.params]);
 
   return (
-    <ImageBackground
-      source={require("../../../assets/splashScreen.png")}
-      style={vehicheComponent.backgroundImage}
-    >
+    <AppFrame>
+      <View style={{ marginTop: 20 }}>
+        <Toast config={toastConfig} />
+      </View>
       <View style={vehicheComponent.container}>
         <Animatable.View animation="fadeInUp" style={{ alignItems: "center" }}>
           {<VehicheComponentForm componentData={componentData} />}
         </Animatable.View>
       </View>
-    </ImageBackground>
+    </AppFrame>
   );
 };
 

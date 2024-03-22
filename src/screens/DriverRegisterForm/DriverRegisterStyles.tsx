@@ -4,17 +4,17 @@ export const registerDriverStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    textAlign:"center",
-    justifyContent:"center",
+    textAlign: "center",
+    justifyContent: "center",
     padding: 20,
   },
-  text:{
-    color:"#FFF",
-    marginTop:-60,
-    marginBottom:45,
-    fontSize:45,
+  text: {
+    color: "#FFF",
+    marginTop: -60,
+    marginBottom: 45,
+    fontSize: 45,
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   textButton: {
     color: "white",
@@ -26,12 +26,12 @@ export const registerDriverStyles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
-    marginBottom:20
+    marginBottom: 20,
   },
- 
+
   button: {
-    flexDirection: "row", 
-    justifyContent:"center",
+    flexDirection: "row",
+    justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
   },

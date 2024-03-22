@@ -61,4 +61,12 @@ export const vehicheComponent = StyleSheet.create({
     marginTop: -60,
     padding: 20,
   },
+  textButton: {
+    color: "white",
+    marginTop: 15,
+    fontSize: 18,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

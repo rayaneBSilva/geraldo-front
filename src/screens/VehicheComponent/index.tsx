@@ -10,11 +10,13 @@ import toastConfig from "../../components/toastMessage/toastConfig";
 import { AppFrame } from "../../components/app-frame";
 
 interface ComponentData {
-  id: string;
+  id: number;
+  vehicleId: number;
+  userId: number;
   componentType: string;
-  date: string;
-  mileage: number;
-  frequency: number;
+  dateLastExchange: Date;
+  kilometersLastExchange: number;
+  maintenanceFrequency: number;
 }
 
 const VehicheComponent = () => {

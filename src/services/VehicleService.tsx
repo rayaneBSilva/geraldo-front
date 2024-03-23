@@ -1,5 +1,6 @@
 import ServiceBase from "./ServiceBase";
 export interface vehicleDTO {
+    id: number,
     plate: string,
     year: number,
     model: string,

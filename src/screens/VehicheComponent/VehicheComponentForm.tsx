@@ -54,11 +54,13 @@ const CustomInput = ({
   );
 };
 interface ComponentData {
-  id: string;
+  id: number;
+  vehicleId: number;
+  userId: number;
   componentType: string;
-  date: string;
-  mileage: number;
-  frequency: number;
+  dateLastExchange: Date;
+  kilometersLastExchange: number;
+  maintenanceFrequency: number;
 }
 
 const VehicheComponentForm = ({
@@ -78,6 +80,8 @@ const VehicheComponentForm = ({
   const [mileage, setMileage] = useState<number | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessageDate, setErrorMessageDate] = useState("");
+  const [errorMessageMileage, setErrorMessageMileage] = useState("");
   const navigation = useNavigation();
   const [type, setType] = useState("new");
   const [showPicker, setShowPicker] = useState(false);
@@ -85,9 +89,9 @@ const VehicheComponentForm = ({
   useEffect(() => {
     if (componentData) {
       setComponentType(componentData.componentType);
-      setDate(componentData.date);
-      setMileage(componentData.mileage);
-      setFrequency(componentData.frequency);
+      setDate(componentData.dateLastExchange.toISOString().split("T")[0]);
+      setMileage(componentData.kilometersLastExchange);
+      setFrequency(componentData.maintenanceFrequency);
 
       setType("edit");
     }
@@ -116,23 +120,27 @@ const VehicheComponentForm = ({
 
     const dateErrorMessage = Validation.validateDate(date);
     if (dateErrorMessage !== "") {
-      setErrorMessage(dateErrorMessage);
+      setErrorMessageDate(dateErrorMessage);
       return;
+    } else {
+      setErrorMessageDate("");
     }
 
     if (
       type === "edit" &&
-      componentData?.mileage &&
+      componentData?.kilometersLastExchange &&
       mileage !== null &&
-      mileage > componentData?.mileage
+      mileage > componentData?.kilometersLastExchange
     ) {
       const mileageErrorMessage = Validation.validateMileage(
         mileage,
-        componentData.mileage
+        componentData.kilometersLastExchange
       );
       if (mileageErrorMessage !== "") {
-        setErrorMessage(mileageErrorMessage);
+        setErrorMessageMileage(mileageErrorMessage);
         return;
+      } else {
+        setErrorMessageMileage("");
       }
     }
 
@@ -145,8 +153,15 @@ const VehicheComponentForm = ({
       try {
         if (type === "edit" && componentData) {
           await vehicheComponentService.updateComponent(
-            { componentType, date, mileage, frequency },
             componentData.id,
+            componentData.vehicleId,
+            componentData.userId,
+            {
+              componentType: componentType,
+              dateLastExchange: date,
+              kilometersLastExchange: mileage,
+              maintenanceFrequency: frequency,
+            },
             navigation,
             "Componente editado com sucesso!"
           );
@@ -158,9 +173,11 @@ const VehicheComponentForm = ({
           );
         }
         setErrorMessage("");
-        navigation.navigate("LoginForm" as never); //APAGAR DEPOIS
+        navigation.navigate("VehicleList" as never); //TROCAR DEPOIS
       } catch (error) {
         setErrorMessage("Dados inválidos");
+        setErrorMessageDate("Dados inválidos");
+        setErrorMessageMileage("Dados inválidos");
       }
     }
   };
@@ -181,7 +198,7 @@ const VehicheComponentForm = ({
     <View style={{ width: "100%", marginTop: -30 }}>
       <View>
         {type === "new" ? (
-          <MainTitle title={"Cadastro do\nEstabelecimento"} />
+          <MainTitle title={"Cadastro de\nComponente"} />
         ) : (
           <MainTitle title={`${componentData?.componentType}`} />
         )}
@@ -218,10 +235,11 @@ const VehicheComponentForm = ({
             onPress={handleDatePress}
             errorMessage={Validation.generateErrorMessage(
               isRequiredDate,
-              errorMessage
+              errorMessageDate
             )}
             errorStyle={{
-              color: isRequiredDate || errorMessage !== "" ? "red" : "black",
+              color:
+                isRequiredDate || errorMessageDate !== "" ? "red" : "black",
             }}
           />
         </View>
@@ -240,13 +258,15 @@ const VehicheComponentForm = ({
                     0
                   ).getDate();
 
-                if (!isLastDayOfMonth) {
-                  selectedDate.setDate(selectedDate.getDate() - 1);
-                } else {
-                  selectedDate.setDate(selectedDate.getDate() - 1);
-                  setShowPicker(false);
-                }
-                setDate(selectedDate.toISOString().split("T")[0]);
+                const day = selectedDate.getDate();
+                const month = selectedDate.getMonth() + 1;
+                const year = selectedDate.getFullYear();
+
+                const formattedDate = `${String(day).padStart(2, "0")}/${String(
+                  month
+                ).padStart(2, "0")}/${year}`;
+
+                setDate(formattedDate);
               }
               setShowPicker(false);
             }}
@@ -271,10 +291,13 @@ const VehicheComponentForm = ({
             value={mileage ? mileage.toString() : ""}
             errorMessage={Validation.generateErrorMessage(
               isRequiredMileage,
-              errorMessage
+              errorMessageMileage
             )}
             errorStyle={{
-              color: isRequiredMileage || errorMessage !== "" ? "red" : "black",
+              color:
+                isRequiredMileage || errorMessageMileage !== ""
+                  ? "red"
+                  : "black",
             }}
           />
         </View>

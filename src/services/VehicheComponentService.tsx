@@ -26,13 +26,15 @@ class VehicheComponentService extends ServiceBase {
   }
 
   async updateComponent(
+    id: number,
+    vehicleId: number,
+    userId: number,
     data: Data,
-    id: string,
     navigation: any,
     message?: string
   ): Promise<void> {
     try {
-      await this.put(data, `vehicle_components/${id}`);
+      await this.put(data, `vehicle_components/${userId}/${id}/${vehicleId}/`);
       navigation.navigate("LoginForm");
       message &&
         ToastComponent({

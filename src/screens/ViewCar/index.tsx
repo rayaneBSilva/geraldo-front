@@ -5,18 +5,6 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import Plus from '../../../assets/icons/plus.svg';
 import { AppFrame } from "../../components/app-frame";
-import { RouteProp } from '@react-navigation/native';
-
-type ViewCarRoutes = {
-    ViewCar: {
-        kilometers: number;
-        model: string;
-    };
-};
-  
-type ScreenProps = {
-  route: RouteProp<ViewCarRoutes, 'ViewCar'>;
-};
 
 const BackCard = () => {
     return (
@@ -33,10 +21,7 @@ type FrontCardProps = {
     model: string;
 }
 
-const FrontCard: React.FC<FrontCardProps> = ({
-    kilometers,
-    model
-}: FrontCardProps) => {
+const FrontCard = () => {
     return (
         <>
         <ImageBackground
@@ -62,7 +47,7 @@ const FrontCard: React.FC<FrontCardProps> = ({
                 color: "#13164B"
             }}
             >
-                { model }
+                Fiat Uno
             </Text>
         </View>
         <View
@@ -105,7 +90,7 @@ const FrontCard: React.FC<FrontCardProps> = ({
                 style={{
                     color: "white"
                 }}
-                >{ kilometers } km</Text>
+                >10 km</Text>
             </View>
             <View 
             style={{
@@ -219,11 +204,7 @@ const FrontCard: React.FC<FrontCardProps> = ({
     )
 }
 
-const ViewCar = ({ route }: ScreenProps) => {
-    const { 
-        kilometers,
-        model
-    } = route.params;
+const ViewCar = () => {
     const [isToShowBack, setIsToShowBack] = useState(false)
     const offset = useSharedValue({ x: 0 });
 
@@ -278,8 +259,6 @@ const ViewCar = ({ route }: ScreenProps) => {
                                 <BackCard/>
                             ) : (
                                 <FrontCard
-                                kilometers={kilometers}
-                                model={model}
                                 />
                             )
                         }

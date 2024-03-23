@@ -4,10 +4,10 @@ import { MaskedTextInput } from "react-native-mask-text";
 import { SvgProps } from "react-native-svg";
 
 type InputProps = TextInputProps & {
-    icon: React.FC<SvgProps>
-    error?: string;
-    mask?: string;
-  }
+  icon: React.FC<SvgProps>
+  error?: string;
+  mask?: string;
+}
   
 const Input = ({
   "icon":Icon,

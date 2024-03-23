@@ -5,13 +5,15 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/geraldo-login.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/tela_de_carregamento.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -23,6 +25,9 @@
     },
     "web": {
       "favicon": "./assets/geraldo-login.png"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

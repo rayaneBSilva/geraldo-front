@@ -1,7 +1,7 @@
 
 import React, { useEffect } from "react";
 import { View, Image, Text, ImageBackground } from "react-native";
-import { RegisterSuccesfullyStyles } from "./RegistSuccesStyles";
+import { Styles } from "./RegistSuccesStyles";
 import { registerDriverStyles } from "../DriverRegisterForm/DriverRegisterStyles";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
@@ -19,14 +19,14 @@ const RegisterSuccesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
   return (
     <ImageBackground
       source={require("../../../assets/splashScreen.png")}
-      style={RegisterSuccesfullyStyles.backgroundImage}
+      style={Styles.backgroundImage}
     >
       <View style={registerDriverStyles.container}>
         <Image
           source={require("../../../assets/geraldo-login.png")}
-          style={RegisterSuccesfullyStyles.logo}
+          style={Styles.logo}
         />
-        <Text style={RegisterSuccesfullyStyles.text}>
+        <Text style={Styles.text}>
           Cadastro realizado com sucesso!
         </Text>
       </View>

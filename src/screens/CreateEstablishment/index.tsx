@@ -1,3 +1,4 @@
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Maybe, just, none } from '@sweet-monads/maybe';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from "react";
@@ -18,12 +19,16 @@ import { FindAddressQuery } from '../../api/queries/FindAddress';
 import { Input } from '../../components/input';
 import { Picker } from '../../components/picker';
 
+interface CreateEstablishmentProps {
+  navigation: NavigationProp<ParamListBase>;
+}
+
 const defaultValidator = (value: any): Maybe<Error> => {
   if (!value) return just(new Error("Campo Obrigatório"))
   return none()
 }
 
-function createFields(): Record<string, string>  {
+function createFields(): Record<string, string> {
   return Object
   .keys(Fields)
   .reduce((prev, curr) => {
@@ -48,7 +53,7 @@ enum Fields {
   number = "number"
 }
 
-const CreateEstablishment = () => {
+const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation }) => {
   const [fieldsValues, setFieldsValues] = useState<Record<string, string>>(createFields())
   const [fieldsErrors, setFieldsErrors] = useState<Record<string, string>>(createFields())
 
@@ -64,7 +69,13 @@ const CreateEstablishment = () => {
             error: error.message
           }
         ]
-      } else return prev
+      } else return [
+        ...prev,
+        {
+          name: curr,
+          error: ""
+        }
+      ]
     }, [] as Array<{
       name: string;
       error: string;
@@ -97,6 +108,7 @@ const CreateEstablishment = () => {
     } else {
       alert("Estabelecimento cadastrado com sucesso.")
       setFieldsValues(createFields())
+      navigation.navigate("Login")
     }
   }
 
@@ -142,6 +154,7 @@ const CreateEstablishment = () => {
         }}
         >
           <ScrollView 
+          automaticallyAdjustKeyboardInsets={true}
           contentContainerStyle={{
             alignItems: "center",
             marginTop: 50,

@@ -2,44 +2,28 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/themed";
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { vehicleListStyles } from "./VehicleListStyles";
+import vehicleServiceList from "../../services/VehicleServiceList";
+import { VehicleData } from "../../services/VehicleServiceList";
 
 
 const VehicleList = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [vehicles, setVehicles] = useState<VehicleData[]>([]);
     const navigation = useNavigation();
-
-
-    const data = [
-        {
-            id: 1,
-            title: "Gol",
-            imageUrl: "https://www.16valvulas.com.ar/wp-content/uploads/2016/08/nuevo-volkswagen-gol.jpg"
-        },
-        {
-            id: 2,
-            title: "Bugatti",
-            imageUrl: "https://autonxt.net/wp-content/uploads/2021/05/Bugatti-Divo-Ladybug4-2048x1229.jpg"
-        },
-        {
-            id: 3,
-            title: "Zenovo TS1",
-            imageUrl: "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5"
-        },
-        {
-            id: 4,
-            title: "Hilux",
-            imageUrl: "https://www.centromotorsa.com.ar/wp-content/uploads/2023/12/Hilux-SRX.jpg"
-        },
-        {
-            id: 5,
-            title: "Hilux",
-            imageUrl: "https://www.centromotorsa.com.ar/wp-content/uploads/2023/12/Hilux-SRX.jpg"
-        }
-    ];
+    const imageUrl =  "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5"
+    
+    useEffect(() => {
+        const fetchVehicles = async () =>{
+                const vehicles = await vehicleServiceList.getVehicles();
+                setVehicles(vehicles);
+            }
+                fetchVehicles();
+        },[]);
+   
 
     const handleSharePress = (id:any) => {
         navigation.navigate("CarSharing" as never);
@@ -49,8 +33,8 @@ const VehicleList = () => {
         navigation.navigate("VehicleRegistration" as never);
 
     }
-    const filteredData = data.filter(item =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredVehicles = vehicles.filter(item =>
+        item.model.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
@@ -90,7 +74,7 @@ const VehicleList = () => {
             </View>
             <View style={{ paddingHorizontal: 4, paddingTop: 0, paddingBottom: 20, flex: 1 }}> 
                 <FlatList
-                    data={filteredData}
+                    data={filteredVehicles}
                     renderItem={({ item }) =>
                         <LinearGradient
                             colors={['rgba(252,255,88,1)', 'rgba(254,197,0,1)']} //cores
@@ -98,7 +82,7 @@ const VehicleList = () => {
                             end={{ x: 1, y: 0.5 }} //fim do gradiente na horizontal
                             style={vehicleListStyles.flatListContainer}
                         >
-                            <Image source={{ uri: item.imageUrl }} style={vehicleListStyles.imageCard} />
+                            <Image source={{ uri: imageUrl }} style={vehicleListStyles.imageCard} />
                             <TouchableOpacity onPress={() => handleSharePress(item.id)} style={vehicleListStyles.shareItem}>
                                 <FontAwesome
                                     name="user-plus"
@@ -106,7 +90,7 @@ const VehicleList = () => {
                                     color={"white"}
                                 />
                             </TouchableOpacity>
-                            <Text style={vehicleListStyles.Text}>{item.title.toString()}</Text>
+                            <Text style={vehicleListStyles.Text}>{item.model.toString()}</Text>
                         </LinearGradient>
                     }
                     contentContainerStyle={{ paddingBottom: 20 }}

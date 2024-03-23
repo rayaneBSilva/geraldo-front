@@ -82,25 +82,27 @@ const VehicleList = () => {
                 <FlatList
                     data={filteredVehicles}
                     renderItem={({ item }) =>
-                        <LinearGradient
-                            colors={['rgba(252,255,88,1)', 'rgba(254,197,0,1)']} //cores
-                            start={{ x: 0, y: 0.5 }} //início do gradiente na horizontal
-                            end={{ x: 1, y: 0.5 }} //fim do gradiente na horizontal
-                            style={vehicleListStyles.flatListContainer}
-                        >
-                            <Image source={{ uri: imageUrl }} style={vehicleListStyles.imageCard} />
-                            <TouchableOpacity onPress={() => handleSharePress(item.id)} style={vehicleListStyles.shareItem}>
-                                <FontAwesome
-                                    name="user-plus"
-                                    size={24}
-                                    color={"white"}
-                                />
-                            </TouchableOpacity>
-                            <Text style={vehicleListStyles.Text}>{item.model.toString()}</Text>
-                        </LinearGradient>
-                    }
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                />
+        <TouchableOpacity onPress={() => navigation.navigate("MapaProvisorio")}>
+            <LinearGradient
+                colors={['rgba(252,255,88,1)', 'rgba(254,197,0,1)']} //cores
+                start={{ x: 0, y: 0.5 }} //início do gradiente na horizontal
+                end={{ x: 1, y: 0.5 }} //fim do gradiente na horizontal
+                style={vehicleListStyles.flatListContainer}
+            >
+                <Image source={{ uri: imageUrl }} style={vehicleListStyles.imageCard} />
+                <TouchableOpacity onPress={() => handleSharePress(item.id)} style={vehicleListStyles.shareItem}>
+                    <FontAwesome
+                        name="user-plus"
+                        size={24}
+                        color={"white"}
+                    />
+                </TouchableOpacity>
+                <Text style={vehicleListStyles.Text}>{item.model.toString()}</Text>
+            </LinearGradient>
+        </TouchableOpacity>
+    }
+    contentContainerStyle={{ paddingBottom: 20 }}
+/>
             </View>
         </ImageBackground>
     );

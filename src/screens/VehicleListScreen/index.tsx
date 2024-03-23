@@ -9,7 +9,6 @@ import { vehicleListStyles } from "./VehicleListStyles";
 import vehicleServiceList from "../../services/VehicleServiceList";
 import { VehicleData } from "../../services/VehicleServiceList";
 
-
 const VehicleList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [vehicles, setVehicles] = useState<VehicleData[]>([]);
@@ -69,8 +68,10 @@ const VehicleList = () => {
                         style={vehicleListStyles.iconPlus}
                     />
                 </TouchableOpacity>
-
                 </View>
+                {filteredVehicles.length === 0 && (
+        <Text style={{ color: 'white', marginTop: 10 }}>Nenhum modelo encontrado.</Text>
+    )}
             </View>
             <View style={{ paddingHorizontal: 4, paddingTop: 0, paddingBottom: 20, flex: 1 }}> 
                 <FlatList

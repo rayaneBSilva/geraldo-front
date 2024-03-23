@@ -136,12 +136,6 @@ const LoginForm = () => {
       >
         Cadastrar Estabelecimento
       </Text>
-      <Text
-        style={loginStyles.textButton}
-        onPress={() => navigation.navigate("CarSharing" as never)}
-      >
-        Compartilhamento de veiculo 
-      </Text>
     </View>
   );
 };

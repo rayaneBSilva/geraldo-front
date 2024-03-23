@@ -21,8 +21,8 @@ function Routes() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
         <Stack.Screen name="VehicleList" component={VehicleList}/>
         <Stack.Screen name="CreateEstablishment" component={CreateEstablishment} />
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>

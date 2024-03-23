@@ -7,22 +7,31 @@ import CustomButton from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { cpf } from 'cpf-cnpj-validator'; 
 import Succesfully from "../Succesfully";
+import userServiceCarSharing from "../../services/UserServiceCarSharing";
+
 
 const CarSharingForm = () => {
   const [userName, setUserName] = useState("");
   const [isRequiredUsername, setIsRequiredUsername] = useState(false);
   const [isInvalidCPF, setIsInvalidCPF] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
-
-  const handleLoginPress = async () => {
+  const idVehicle = "15";
+  
+  const handleCarSharingPress = async () => {
     setIsRequiredUsername(userName.trim() === "");
 
     if (userName.trim() !== "") {
       if (cpf.isValid(userName.trim())) { 
         try {
-          navigation.navigate("VehicleList" as never);
-        } catch (error) {
+          await userServiceCarSharing.carSharing({cpf:userName}, idVehicle);
+          navigation.navigate("Succesfully" as never);
+        } catch (error: any) {
           console.log(error);
+          if (error.response) {
+            setErrorMessage(error.response.data.message);
+            
+          }
         }
       } else {
         setIsInvalidCPF(true); 
@@ -33,6 +42,7 @@ const CarSharingForm = () => {
   const handleCancel = () => {
     setUserName("");
     setIsInvalidCPF(false); 
+    setErrorMessage("");
   };
 
   return (
@@ -63,16 +73,14 @@ const CarSharingForm = () => {
           errorStyle={{ color: isRequiredUsername || isInvalidCPF ? "red" : "black" }}
         />
       </View>
+      {errorMessage !== "" && (
+        <Text style={{ color: "red" }}>{errorMessage}</Text>
+      )}
       <View style={carSharingStyles.button}>
-      <CustomButton
+        <CustomButton
           title="Compartilhar"
-          onPress={
-            () => {
-              handleLoginPress();
-              navigation.navigate("Succesfully" as never);
-            }}
-        ></CustomButton>
-        
+          onPress={handleCarSharingPress}
+        />
       </View>
       <Text
         style={carSharingStyles.textButton}

@@ -15,7 +15,7 @@ const VehicleList = () => {
     const {
         authState
     } = useAuth()
-    const navigation = useNavigation();
+    const navigation:any = useNavigation();
     const imageUrl =  "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5"
     
     useEffect(() => {
@@ -27,9 +27,10 @@ const VehicleList = () => {
         })();
     },[]);
    
-
+    
     const handleSharePress = (id:any) => {
-        navigation.navigate("CarSharing" as never);
+        console.log(id);
+        navigation.navigate("CarSharing" , {id});
     }
 
     const handlePlusPress = (id:any) => {

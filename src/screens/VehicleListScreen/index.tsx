@@ -5,24 +5,27 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../../context/authContext";
+import vehicleServiceList, { VehicleData } from "../../services/VehicleServiceList";
 import { vehicleListStyles } from "./VehicleListStyles";
-import vehicleServiceList from "../../services/VehicleServiceList";
-import { VehicleData } from "../../services/VehicleServiceList";
-
 
 const VehicleList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [vehicles, setVehicles] = useState<VehicleData[]>([]);
+    const {
+        authState
+    } = useAuth()
     const navigation:any = useNavigation();
     const imageUrl =  "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5"
     
     useEffect(() => {
-        const fetchVehicles = async () =>{
-                const vehicles = await vehicleServiceList.getVehicles();
+        (async () => {
+            if (authState?.token) {
+                const vehicles = await vehicleServiceList.getVehicles(authState.token);
                 setVehicles(vehicles);
             }
-                fetchVehicles();
-        },[]);
+        })();
+    },[]);
    
     
     const handleSharePress = (id:any) => {
@@ -70,8 +73,10 @@ const VehicleList = () => {
                         style={vehicleListStyles.iconPlus}
                     />
                 </TouchableOpacity>
-
                 </View>
+                {filteredVehicles.length === 0 && (
+        <Text style={{ color: 'white', marginTop: 10 }}>Nenhum modelo encontrado.</Text>
+    )}
             </View>
             <View style={{ paddingHorizontal: 4, paddingTop: 0, paddingBottom: 20, flex: 1 }}> 
                 <FlatList

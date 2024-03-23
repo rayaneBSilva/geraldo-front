@@ -16,6 +16,11 @@ const BackCard = () => {
     )
 }
 
+type FrontCardProps = {
+    kilometers: number;
+    model: string;
+}
+
 const FrontCard = () => {
     return (
         <>
@@ -85,7 +90,7 @@ const FrontCard = () => {
                 style={{
                     color: "white"
                 }}
-                >2.455,45 km</Text>
+                >10 km</Text>
             </View>
             <View 
             style={{
@@ -253,7 +258,8 @@ const ViewCar = () => {
                             isToShowBack ? (
                                 <BackCard/>
                             ) : (
-                                <FrontCard/>
+                                <FrontCard
+                                />
                             )
                         }
                     </View>

@@ -1,7 +1,7 @@
 import ServiceBase from "./ServiceBase";
 import axios from "axios";
 import Config from "../utils/Config";
-import token from "./token";
+
 
 interface UserData {
   [key: string]: any;
@@ -10,7 +10,7 @@ interface UserData {
 
 
 class UserServiceCarSharing extends ServiceBase {
-    async carSharing(data: UserData , idVehicle: string): Promise<any> {
+    async carSharing(data: UserData , idVehicle: string, token:string): Promise<any> {
     
         const headers = {
           'Authorization': `Bearer ${token}`

@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { cpf } from 'cpf-cnpj-validator'; 
 import Succesfully from "../Succesfully";
 import userServiceCarSharing from "../../services/UserServiceCarSharing";
+import { useAuth } from "../../context/authContext";
 
 
 const CarSharingForm = () => {
@@ -18,6 +19,10 @@ const CarSharingForm = () => {
   const navigation = useNavigation();
   const route:any = useRoute();
 
+  const {
+    authState
+} = useAuth()
+
 
   
   const handleCarSharingPress = async () => {
@@ -26,9 +31,9 @@ const CarSharingForm = () => {
     if (userName.trim() !== "") {
       if (cpf.isValid(userName.trim())) { 
         try {
-          if(route.params){
+          if(route.params && authState?.token){
             const id:string =  route.params.id;
-            await userServiceCarSharing.carSharing({cpf:userName} , id);
+            await userServiceCarSharing.carSharing({cpf:userName} , id, authState.token);
             navigation.navigate("Succesfully" as never);
           }
          

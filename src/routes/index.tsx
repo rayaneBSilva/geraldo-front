@@ -21,7 +21,6 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="MapaProvisorio" component={MapaProvisorio} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ViewCarScreen" component={ViewCar} />
@@ -33,6 +32,7 @@ function Routes() {
         <Stack.Screen name="VehicleRegistration" component={VehicleRegistration}/>
         <Stack.Screen name="CarSharing" component={CarSharing}/>
         <Stack.Screen name="Succesfully" component={Succesfully}/>
+        <Stack.Screen name="MapaProvisorio" component={MapaProvisorio} />
       </Stack.Navigator>
     </NavigationContainer>
   );

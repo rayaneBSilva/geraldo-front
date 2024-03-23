@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, Pressable } from "react-native";
-import { Input } from "@rneui/themed";
-import { vehicheComponent } from "./VehicheComponentStyles";
-import CustomButton from "../../components/button";
-import MainTitle from "../../../components/title/mainTitle";
-import FrequencyButton from "../../../components/button/frequencyButton";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
+import { Input } from "@rneui/themed";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, Text, TextInput, View } from "react-native";
+import { VehicheComponentProps, VehicheComponentRoute } from ".";
+import FrequencyButton from "../../../components/button/frequencyButton";
+import MainTitle from "../../../components/title/mainTitle";
+import CustomButton from "../../components/button";
+import ComponentTypeEnum from "../../enum/ComponentTypeEnum";
 import vehicheComponentService from "../../services/VehicheComponentService";
 import Validation from "../../validation";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { vehicheComponent } from "./VehicheComponentStyles";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
@@ -53,20 +55,11 @@ const CustomInput = ({
     </Pressable>
   );
 };
-interface ComponentData {
-  id: number;
-  vehicleId: number;
-  userId: number;
-  componentType: string;
-  dateLastExchange: Date;
-  kilometersLastExchange: number;
-  maintenanceFrequency: number;
-}
 
 const VehicheComponentForm = ({
   componentData,
 }: {
-  componentData?: ComponentData;
+  componentData: VehicheComponentProps;
 }) => {
   const [selectedFrequency, setSelectedFrequency] = useState<number | null>(
     null
@@ -75,8 +68,10 @@ const VehicheComponentForm = ({
   const [isRequiredDate, setIsRequiredDate] = useState(false);
   const [isRequiredMileage, setIsRequiredMileage] = useState(false);
   const [isRequiredFrequency, setIsRequiredFrequency] = useState(false);
-  const [componentType, setComponentType] = useState("");
-  const [date, setDate] = useState("");
+  const [componentType, setComponentType] = useState<ComponentTypeEnum | null>(
+    null
+  );
+  const [date, setDate] = useState<Date>(new Date());
   const [mileage, setMileage] = useState<number | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -87,11 +82,11 @@ const VehicheComponentForm = ({
   const [showPicker, setShowPicker] = useState(false);
 
   useEffect(() => {
-    if (componentData) {
+    if (componentData.componentType) {
       setComponentType(componentData.componentType);
-      setDate(componentData.dateLastExchange.toISOString().split("T")[0]);
-      setMileage(componentData.kilometersLastExchange);
-      setFrequency(componentData.maintenanceFrequency);
+      setDate(componentData.dateLastExchange as Date);
+      setMileage(componentData.kilometersLastExchange as number);
+      setFrequency(componentData.maintenanceFrequency as number);
 
       setType("edit");
     }
@@ -99,7 +94,7 @@ const VehicheComponentForm = ({
 
   useEffect(() => {
     if (showPicker) {
-      setDate(new Date().toISOString().split("T")[0]);
+      setDate(new Date());
     }
   }, [showPicker]);
 
@@ -113,8 +108,10 @@ const VehicheComponentForm = ({
   };
 
   const handleCustomButtonPress = async () => {
-    setIsRequiredComponentType(componentType.trim() === "");
-    setIsRequiredDate(date.trim() === "");
+    setIsRequiredComponentType(
+      componentType ? componentType.trim() === "" : false
+    );
+    setIsRequiredDate(!date);
     setIsRequiredMileage(mileage === null || mileage === undefined);
     setIsRequiredFrequency(frequency === null || frequency === undefined);
 
@@ -145,17 +142,15 @@ const VehicheComponentForm = ({
     }
 
     if (
-      componentType.trim() !== "" &&
-      date.trim() !== "" &&
+      componentType?.trim() !== "" &&
+      date !== null &&
       mileage?.toString().trim() !== "" &&
       frequency?.toString().trim() !== ""
     ) {
       try {
-        if (type === "edit" && componentData) {
+        if (type === "edit" && componentData && componentData.componentId) {
           await vehicheComponentService.updateComponent(
-            componentData.id,
-            componentData.vehicleId,
-            componentData.userId,
+            componentData.componentId,
             {
               componentType: componentType,
               dateLastExchange: date,
@@ -168,6 +163,7 @@ const VehicheComponentForm = ({
         } else {
           await vehicheComponentService.save(
             { componentType, date, mileage, frequency },
+            componentData.vehicleId,
             navigation,
             "Componente salvo com sucesso!"
           );
@@ -175,6 +171,7 @@ const VehicheComponentForm = ({
         setErrorMessage("");
         navigation.navigate("VehicleList" as never); //TROCAR DEPOIS
       } catch (error) {
+        console.log(error);
         setErrorMessage("Dados inválidos");
         setErrorMessageDate("Dados inválidos");
         setErrorMessageMileage("Dados inválidos");
@@ -183,8 +180,8 @@ const VehicheComponentForm = ({
   };
 
   const handleCustomButtonCancel = async () => {
-    setComponentType("");
-    setDate("");
+    setComponentType(null);
+    setDate(new Date());
     setMileage(null);
     setFrequency(null);
     navigation.navigate("VehicleList" as never);
@@ -212,8 +209,8 @@ const VehicheComponentForm = ({
           <CustomInput
             placeholder="Tipo do Componente"
             icon={PranchetaIcon}
-            onChangeText={(text) => setComponentType(text)}
-            value={componentType}
+            onChangeText={(text) => setComponentType(text as ComponentTypeEnum)}
+            value={componentType ? componentType.toString() : ""}
             errorMessage={Validation.generateErrorMessage(
               isRequiredComponentType,
               errorMessage
@@ -230,8 +227,8 @@ const VehicheComponentForm = ({
           <CustomInput
             placeholder="Data da troca"
             icon={CalendarIcon}
-            onChangeText={(text) => setDate(text)}
-            value={date}
+            onChangeText={(text) => setDate(new Date(text))}
+            value={date.toLocaleDateString("pt-BR")}
             onPress={handleDatePress}
             errorMessage={Validation.generateErrorMessage(
               isRequiredDate,
@@ -247,27 +244,12 @@ const VehicheComponentForm = ({
           <DateTimePicker
             mode="date"
             display="spinner"
-            value={new Date(date)}
+            value={date ? new Date(date) : new Date()}
             onChange={(event, selectedDate) => {
               if (selectedDate) {
-                const isLastDayOfMonth =
-                  selectedDate.getDate() ===
-                  new Date(
-                    selectedDate.getFullYear(),
-                    selectedDate.getMonth() + 1,
-                    0
-                  ).getDate();
-
-                const day = selectedDate.getDate();
-                const month = selectedDate.getMonth() + 1;
-                const year = selectedDate.getFullYear();
-
-                const formattedDate = `${String(day).padStart(2, "0")}/${String(
-                  month
-                ).padStart(2, "0")}/${year}`;
-
-                setDate(formattedDate);
+                setDate(selectedDate);
               }
+
               setShowPicker(false);
             }}
           />

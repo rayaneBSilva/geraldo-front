@@ -10,12 +10,14 @@ class Validation {
     }
     return "";
   }
-  static validateDate(date: string): string {
-    const currentDate = new Date();
-    const inputDate = new Date(date);
+  static validateDate(date: Date | undefined): string {
+    if (date) {
+      const currentDate = new Date();
+      const inputDate = new Date(date);
 
-    if (inputDate > currentDate) {
-      return "A data de atualização não pode ser maior do que a data atual";
+      if (inputDate > currentDate) {
+        return "A data de atualização não pode ser maior do que a data atual";
+      }
     }
 
     return "";

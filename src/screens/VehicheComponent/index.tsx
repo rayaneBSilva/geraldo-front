@@ -1,49 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { View, ImageBackground } from "react-native";
+import { RouteProp } from "@react-navigation/native";
+import React from "react";
+import { View } from "react-native";
+import * as Animatable from "react-native-animatable";
+import Toast from "react-native-toast-message";
+import { AppFrame } from "../../components/app-frame";
+import toastConfig from "../../components/toastMessage/toastConfig";
 import VehicheComponentForm from "./VehicheComponentForm";
 import { vehicheComponent } from "./VehicheComponentStyles";
-import * as Animatable from "react-native-animatable";
-import vehicheComponentService from "../../services/VehicheComponentService";
-import { useRoute } from "@react-navigation/native";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-import toastConfig from "../../components/toastMessage/toastConfig";
-import { AppFrame } from "../../components/app-frame";
+import ComponentTypeEnum from "../../enum/ComponentTypeEnum";
 
-interface ComponentData {
-  id: number;
+export type VehicheComponentProps = {
   vehicleId: number;
-  userId: number;
-  componentType: string;
-  dateLastExchange: Date;
-  kilometersLastExchange: number;
-  maintenanceFrequency: number;
-}
+  componentId?: number;
+  componentType?: ComponentTypeEnum;
+  dateLastExchange?: Date;
+  kilometersLastExchange?: number;
+  maintenanceFrequency?: number;
+};
 
-const VehicheComponent = () => {
-  const route = useRoute();
-  const [componentData, setComponentData] = useState<
-    ComponentData | undefined
-  >();
+export type VehicheComponentRoute = {
+  VehicheComponent: VehicheComponentProps;
+};
 
-  useEffect(() => {
-    const fetchComponentData = async (id: string) => {
-      try {
-        const data = await vehicheComponentService.getComponentById(id);
-        setComponentData(data as ComponentData);
-      } catch (error) {
-        console.error("Error fetching component data:", error);
-      }
-    };
+type Props = {
+  route: RouteProp<VehicheComponentRoute, "VehicheComponent">;
+};
 
-    if (
-      route.params &&
-      typeof route.params === "object" &&
-      "id" in route.params
-    ) {
-      const id = route.params.id as string;
-      fetchComponentData(id);
-    }
-  }, [route.params]);
+const VehicheComponent = ({ route }: Props) => {
+  const componentData = route.params;
 
   return (
     <AppFrame>
@@ -53,6 +37,7 @@ const VehicheComponent = () => {
       <View style={vehicheComponent.container}>
         <Animatable.View animation="fadeInUp" style={{ alignItems: "center" }}>
           {<VehicheComponentForm componentData={componentData} />}
+          {/* {<VehicheComponentForm componentData={{ vehicleId: 14 }} />} */}
         </Animatable.View>
       </View>
     </AppFrame>

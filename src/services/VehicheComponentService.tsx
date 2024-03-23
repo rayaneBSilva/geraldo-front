@@ -4,7 +4,12 @@ interface Data {
   [key: string]: any;
 }
 class VehicheComponentService extends ServiceBase {
-  async save(data: Data, navigation: any, message?: string): Promise<void> {
+  async save(
+    data: Data,
+    vehicleId: number,
+    navigation: any,
+    message?: string
+  ): Promise<void> {
     try {
       await this.post(data, "vehicle_components");
       navigation.navigate("LoginForm");
@@ -15,11 +20,11 @@ class VehicheComponentService extends ServiceBase {
           text1: message,
         });
     } catch (error: any) {
-      console.log(error);
+      console.log(error.response.data);
       ToastComponent({
         type: "error",
         text1: "Erro",
-        text2: error.message,
+        text2: error.response.data.message.join("\n"),
       });
       throw error;
     }
@@ -27,14 +32,12 @@ class VehicheComponentService extends ServiceBase {
 
   async updateComponent(
     id: number,
-    vehicleId: number,
-    userId: number,
     data: Data,
     navigation: any,
     message?: string
   ): Promise<void> {
     try {
-      await this.put(data, `vehicle_components/${userId}/${id}/${vehicleId}/`);
+      await this.put(data, `vehicle_components/${id}`);
       navigation.navigate("LoginForm");
       message &&
         ToastComponent({

@@ -5,6 +5,18 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import Plus from '../../../assets/icons/plus.svg';
 import { AppFrame } from "../../components/app-frame";
+import { RouteProp } from '@react-navigation/native';
+
+type ViewCarRoutes = {
+    ViewCar: {
+        kilometers: number;
+        model: string;
+    };
+};
+  
+type ScreenProps = {
+  route: RouteProp<ViewCarRoutes, 'ViewCar'>;
+};
 
 const BackCard = () => {
     return (
@@ -16,7 +28,15 @@ const BackCard = () => {
     )
 }
 
-const FrontCard = () => {
+type FrontCardProps = {
+    kilometers: number;
+    model: string;
+}
+
+const FrontCard: React.FC<FrontCardProps> = ({
+    kilometers,
+    model
+}: FrontCardProps) => {
     return (
         <>
         <ImageBackground
@@ -42,7 +62,7 @@ const FrontCard = () => {
                 color: "#13164B"
             }}
             >
-                Fiat Uno
+                { model }
             </Text>
         </View>
         <View
@@ -85,7 +105,7 @@ const FrontCard = () => {
                 style={{
                     color: "white"
                 }}
-                >2.455,45 km</Text>
+                >{ kilometers } km</Text>
             </View>
             <View 
             style={{
@@ -199,7 +219,11 @@ const FrontCard = () => {
     )
 }
 
-const ViewCar = () => {
+const ViewCar = ({ route }: ScreenProps) => {
+    const { 
+        kilometers,
+        model
+    } = route.params;
     const [isToShowBack, setIsToShowBack] = useState(false)
     const offset = useSharedValue({ x: 0 });
 
@@ -253,7 +277,10 @@ const ViewCar = () => {
                             isToShowBack ? (
                                 <BackCard/>
                             ) : (
-                                <FrontCard/>
+                                <FrontCard
+                                kilometers={kilometers}
+                                model={model}
+                                />
                             )
                         }
                     </View>

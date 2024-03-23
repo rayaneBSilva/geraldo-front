@@ -4,7 +4,7 @@ import { Input } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { carSharingStyles } from "./CarSharingStyle";
 import CustomButton from "../../components/button";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { cpf } from 'cpf-cnpj-validator'; 
 import Succesfully from "../Succesfully";
 import userServiceCarSharing from "../../services/UserServiceCarSharing";
@@ -16,16 +16,22 @@ const CarSharingForm = () => {
   const [isInvalidCPF, setIsInvalidCPF] = useState(false); 
   const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
-  const idVehicle = "15";
+  const route:any = useRoute();
+
+
   
   const handleCarSharingPress = async () => {
     setIsRequiredUsername(userName.trim() === "");
-
+ 
     if (userName.trim() !== "") {
       if (cpf.isValid(userName.trim())) { 
         try {
-          await userServiceCarSharing.carSharing({cpf:userName}, idVehicle);
-          navigation.navigate("Succesfully" as never);
+          if(route.params){
+            const id:string =  route.params.id;
+            await userServiceCarSharing.carSharing({cpf:userName} , id);
+            navigation.navigate("Succesfully" as never);
+          }
+         
         } catch (error: any) {
           console.log(error);
           if (error.response) {

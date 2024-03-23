@@ -1,5 +1,6 @@
 import axios from "axios";
 import ServiceBase from "./ServiceBase";
+import token from "./token"
 
 export interface VehicleData {
   id: number
@@ -9,7 +10,7 @@ export interface VehicleData {
 class VehicleServiceList extends ServiceBase{
   async getVehicles(): Promise<VehicleData[]>{
   try {
-    const response = await axios.get("https://geraldo-backend.vercel.app/vehicles", {headers:{Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsInVzZXJUeXBlIjoiRFJJVkVSIiwicmVzZXRQYXNzd29yZCI6dHJ1ZSwidmVoaWNsZUlkIjoyLCJpYXQiOjE3MTExNTQ3MzMsImV4cCI6MTgxMTE1NDczM30.B6hyo09s8PTSvjUrLWqACrNMIkZpl8wQKiPQkIIBVI0"}});
+    const response = await axios.get("https://geraldo-backend.vercel.app/vehicles", {headers:{Authorization:"Bearer " + token}});
     return response.data.data.map((vehicle:any) => ({
       id: vehicle.id,
       model: vehicle.model

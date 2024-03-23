@@ -53,7 +53,7 @@ export const AppFrame = ({
             }}
             >
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCar")}
+                onPress={() => navigateToScreen("ViewCarScreen")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -67,7 +67,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCar")}
+                onPress={() => navigateToScreen("ViewCarScreen")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -81,7 +81,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCar")}
+                onPress={() => navigateToScreen("ViewCarScreen")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -95,7 +95,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCar")}
+                onPress={() => navigateToScreen("ViewCarScreen")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -109,7 +109,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCar")}
+                onPress={() => navigateToScreen("ViewCarScreen")}
                 style={{
                     flex: 1,
                     height: "100%",

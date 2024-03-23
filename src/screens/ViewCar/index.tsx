@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import Plus from '../../../assets/icons/plus.svg';
 import { AppFrame } from "../../components/app-frame";
 
@@ -14,11 +14,6 @@ const BackCard = () => {
             <Text>Costas</Text>
         </View>
     )
-}
-
-type FrontCardProps = {
-    kilometers: number;
-    model: string;
 }
 
 const FrontCard = () => {
@@ -221,16 +216,16 @@ const ViewCar = () => {
         if (e.translationX >= 0 && offset.value.x > 0) {
             const newOffset = offset.value.x - e.translationX
             const result = newOffset <= 0 ? 0 : newOffset
-            offset.value = {
+            offset.value = withSpring({
                 x: result
-            }
+            }, { damping: 10, stiffness: 100 })
             if (result < 90 && isToShowBack) runOnJS(setIsToShowBack)(false)
         } else if (e.translationX <= 0 && offset.value.x < 180) {
             const newOffset = offset.value.x + Math.abs(e.translationX)
             const result = newOffset >= 180 ? 180 : newOffset
-            offset.value = {
+            offset.value = withSpring({
                 x: result
-            }
+            }, { damping: 10, stiffness: 100 })
             if (result > 90 && !isToShowBack) runOnJS(setIsToShowBack)(true)
         }
     })

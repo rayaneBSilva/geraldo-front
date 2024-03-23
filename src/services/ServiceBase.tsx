@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import Config from "../utils/Config";
+import axiosInstance from "../utils/axiosInstance";
 
 interface UserData {
   [key: string]: any;
@@ -7,7 +8,7 @@ interface UserData {
 
 class ServiceBase {
   async post(data: UserData, endpoint: string): Promise<AxiosResponse> {
-    return await axios.post(`${Config.API_URL}/${endpoint}`, data);
+    return await axiosInstance.post(`${Config.API_URL}/${endpoint}`, data);
   }
 
   async put(data: UserData, endpoint: string): Promise<AxiosResponse> {

@@ -93,6 +93,12 @@ const VehicheComponentForm = ({
     }
   }, [componentData]);
 
+  useEffect(() => {
+    if (showPicker) {
+      setDate(new Date().toISOString().split("T")[0]);
+    }
+  }, [showPicker]);
+
   const handleSelectFrequency = (frequency: string | null) => {
     if (frequency !== null) {
       const frequencyNumber = parseInt(frequency);
@@ -167,30 +173,7 @@ const VehicheComponentForm = ({
     navigation.navigate("VehicleList" as never);
   };
 
-  const [date2, setDate2] = useState(new Date());
-
-  const renderDateTimePicker = () => {
-    if (showPicker) {
-      return (
-        <DateTimePicker
-          mode="date"
-          display="spinner"
-          value={date2}
-          onChange={(event, selectedDate) => {
-            if (selectedDate) {
-              setDate2(selectedDate);
-            }
-            setShowPicker(false);
-          }}
-        />
-      );
-    } else {
-      return null;
-    }
-  };
-
   const handleDatePress = () => {
-    alert("entrei aqui");
     setShowPicker(true);
   };
 
@@ -248,10 +231,10 @@ const VehicheComponentForm = ({
             display="spinner"
             value={new Date(date)}
             onChange={(event, selectedDate) => {
-              setShowPicker(false);
               if (selectedDate) {
                 setDate(selectedDate.toISOString().split("T")[0]);
               }
+              setShowPicker(false);
             }}
           />
         )}
@@ -339,11 +322,6 @@ const VehicheComponentForm = ({
       >
         Cancelar
       </Text>
-      <View>
-        {showPicker && (
-          <DateTimePicker mode="date" display="spinner" value={date2} />
-        )}
-      </View>
     </View>
   );
 };

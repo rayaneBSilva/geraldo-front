@@ -1,14 +1,14 @@
 import ServiceBase from "./ServiceBase";
-interface vehicleData {
-    placa: string,
-    anoDeFabricação: number,
-    modelo: string,
-    quilometragemAtual: string
+export interface vehicleDTO {
+    plate: string,
+    year: number,
+    model: string,
+    kilometers: number
 }
 
 
 class VehicleService extends ServiceBase {
-  async createVehicle(data: vehicleData): Promise<any> {
+  async createVehicle(data: vehicleDTO): Promise<any> {
     try {
       const response = await this.post(data, "vehicle");
       return response

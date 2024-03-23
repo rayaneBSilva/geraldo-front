@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Modal,
   FlatList,
 } from "react-native";
 
@@ -22,49 +21,48 @@ const FrequencyButton: React.FC<SelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState(title);
 
-  const toggleModal = () => {
+  const toggleOptions = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSelectOption = (option: string) => {
-    setSelectedTitle(option); // Atualiza o título selecionado
+    setSelectedTitle(option);
     onSelect(option);
-    toggleModal();
+    toggleOptions();
   };
 
   return (
-    <View>
-      <TouchableOpacity style={styles.button} onPress={toggleModal}>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.button} onPress={toggleOptions}>
         <Text style={styles.buttonText}>
           {selectedTitle} {isOpen ? "▲" : "▼"}
         </Text>
       </TouchableOpacity>
-      <Modal visible={isOpen} transparent={true} animationType="slide">
-        <View style={[styles.modalContainer, { justifyContent: "flex-end" }]}>
-          <View style={styles.modalContent}>
-            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
-              <Text style={styles.closeButtonText}>X</Text>
-            </TouchableOpacity>
-            <FlatList
-              data={options}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.option}
-                  onPress={() => handleSelectOption(item)}
-                >
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
+      {isOpen && (
+        <View style={styles.optionsContainer}>
+          <FlatList
+            data={options}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.option}
+                onPress={() => handleSelectOption(item)}
+              >
+                <Text>{item}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </View>
-      </Modal>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+    zIndex: 1,
+  },
   button: {
     backgroundColor: "#eee",
     padding: 10,
@@ -76,32 +74,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
+  optionsContainer: {
+    position: "absolute",
+    top: "100%",
+    left: 0,
+    right: 0,
     backgroundColor: "#fff",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    padding: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    zIndex: 2,
   },
   option: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-  },
-  closeButton: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    padding: 10,
-    zIndex: 1,
-  },
-  closeButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 

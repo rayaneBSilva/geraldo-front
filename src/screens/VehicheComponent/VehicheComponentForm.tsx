@@ -232,6 +232,20 @@ const VehicheComponentForm = ({
             value={new Date(date)}
             onChange={(event, selectedDate) => {
               if (selectedDate) {
+                const isLastDayOfMonth =
+                  selectedDate.getDate() ===
+                  new Date(
+                    selectedDate.getFullYear(),
+                    selectedDate.getMonth() + 1,
+                    0
+                  ).getDate();
+
+                if (!isLastDayOfMonth) {
+                  selectedDate.setDate(selectedDate.getDate() - 1);
+                } else {
+                  selectedDate.setDate(selectedDate.getDate() - 1);
+                  setShowPicker(false);
+                }
                 setDate(selectedDate.toISOString().split("T")[0]);
               }
               setShowPicker(false);

@@ -6,10 +6,17 @@ import Home from '../../../assets/icons/home.svg';
 import Loc from '../../../assets/icons/locb.svg';
 import User from '../../../assets/icons/userb.svg';
 import React, { PropsWithChildren } from 'react';
+import { useNavigation } from "@react-navigation/native";
 
 export const AppFrame = ({
     children
 }: PropsWithChildren) => {
+    const navigation = useNavigation<any>();
+
+    function navigateToScreen(screen: string) {
+        navigation.navigate(screen);
+    }
+
     return (
         <SafeAreaView
         style={{
@@ -46,6 +53,7 @@ export const AppFrame = ({
             }}
             >
                 <TouchableOpacity
+                onPress={() => navigateToScreen("ViewCar")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -59,6 +67,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
+                onPress={() => navigateToScreen("ViewCar")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -72,6 +81,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
+                onPress={() => navigateToScreen("ViewCar")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -85,6 +95,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
+                onPress={() => navigateToScreen("ViewCar")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -98,6 +109,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
+                onPress={() => navigateToScreen("ViewCar")}
                 style={{
                     flex: 1,
                     height: "100%",

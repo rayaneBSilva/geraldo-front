@@ -10,11 +10,12 @@ interface SplashScreenProps {
 
 const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       navigation.navigate("Login");
     }, 2000);
-  }, []);
 
+    return () => clearTimeout(timer);
+  }, [navigation]);
   return (
     <ImageBackground
       source={require("../../../assets/splashScreen.png")}

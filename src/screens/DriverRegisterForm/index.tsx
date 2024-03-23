@@ -6,9 +6,6 @@ import DriverRegisterForm from "./DriverRegisterForm";
 
 const DriverRegister = () => {
     const navigation = useNavigation();
-    //   const handleNavRegister = () => {
-    //     navigation.navigate("Register");
-    //   };
     return (
       <ImageBackground
         source={require("../../../assets/splashScreen.png")}

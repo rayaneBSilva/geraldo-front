@@ -1,7 +1,7 @@
 
 import React, { useEffect } from "react";
 import { View, Image, Text, ImageBackground } from "react-native";
-import { Styles } from "./RegistSuccesStyles";
+import { Styles } from "./SuccesfullyStyles";
 import { registerDriverStyles } from "../DriverRegisterForm/DriverRegisterStyles";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
@@ -9,10 +9,10 @@ interface SplashScreenProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const RegisterSuccesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
+const Succesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("Login"); 
+      navigation.navigate("VehicleList"); 
     }, 2000); // Atraso de 3 segundos
   }, []);
 
@@ -27,11 +27,11 @@ const RegisterSuccesfully: React.FC<SplashScreenProps> = ({ navigation }) => {
           style={Styles.logo}
         />
         <Text style={Styles.text}>
-          Cadastro realizado com sucesso!
+           Veículo compartilhado com sucesso!
         </Text>
       </View>
     </ImageBackground>
   );
 };
 
-export default RegisterSuccesfully;
+export default Succesfully;

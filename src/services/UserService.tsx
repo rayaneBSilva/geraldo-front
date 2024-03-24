@@ -9,7 +9,7 @@ class UserService extends ServiceBase {
       const response = await this.post(data, "login");
       //TO-DO redirecionar para a pagina de vehicle component
       navigation.navigate("VehicleList");
-      return response
+      return response;
     } catch (error: any) {
       throw error;
     }

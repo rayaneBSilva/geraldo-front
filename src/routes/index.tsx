@@ -13,6 +13,7 @@ import SplashScreen from "../screens/SplashScreen";
 import VehicleList from "../screens/VehicleListScreen";
 import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
+import MapaProvisorio from "../screens/Mapa/MapaProvisorio";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,11 +23,16 @@ function Routes() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
         <Stack.Screen name="ViewCarScreen" component={ViewCar} />
+        <Stack.Screen name="VehicleList" component={VehicleList} />
+        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
         <Stack.Screen
           name="CreateEstablishment"
           component={CreateEstablishment}
+        />
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
         />
         <Stack.Screen name="DriverRegister" component={DriverRegister} />
         <Stack.Screen
@@ -34,16 +40,12 @@ function Routes() {
           component={RegistrationSuccesfully}
         />
         <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-        />
-        <Stack.Screen
           name="VehicleRegistration"
           component={VehicleRegistration}
         />
-        <Stack.Screen name="VehicleList" component={VehicleList} />
         <Stack.Screen name="CarSharing" component={CarSharing} />
         <Stack.Screen name="Succesfully" component={Succesfully} />
+        <Stack.Screen name="MapaProvisorio" component={MapaProvisorio} />
       </Stack.Navigator>
     </NavigationContainer>
   );

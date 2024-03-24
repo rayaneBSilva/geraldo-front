@@ -21,11 +21,15 @@ class VehicheComponentService extends ServiceBase {
         });
     } catch (error: any) {
       console.log(error.response.data);
-      ToastComponent({
-        type: "error",
-        text1: "Erro",
-        text2: error.response.data.message.join("\n"),
-      });
+      const errors = error.response.data.message;
+      for (let index = 0; index < errors.length; index++) {
+        ToastComponent({
+          type: "error",
+          text1: "Erro",
+          text2: errors[index],
+        });
+      }
+
       throw error;
     }
   }

@@ -37,7 +37,6 @@ const VehicheComponent = ({ route }: Props) => {
       <View style={vehicheComponent.container}>
         <Animatable.View animation="fadeInUp" style={{ alignItems: "center" }}>
           {<VehicheComponentForm componentData={componentData} />}
-          {/* {<VehicheComponentForm componentData={{ vehicleId: 14 }} />} */}
         </Animatable.View>
       </View>
     </AppFrame>

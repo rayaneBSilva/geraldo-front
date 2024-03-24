@@ -165,10 +165,12 @@ const VehicheComponentForm = ({
             { componentType, date, mileage, frequency },
             componentData.vehicleId,
             navigation,
-            "Componente salvo com sucesso!"
+            "Componente cadastrado com sucesso!"
           );
         }
         setErrorMessage("");
+        setErrorMessageDate("");
+        setErrorMessageMileage("");
         navigation.navigate("VehicleList" as never); //TROCAR DEPOIS
       } catch (error) {
         console.log(error);

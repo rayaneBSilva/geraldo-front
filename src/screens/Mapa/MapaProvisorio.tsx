@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import UpdateMileageModal from "../../components/updateMileageModal";
+import { useRoute } from "@react-navigation/native"; // Importe o useRoute
+
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState<boolean>(true); 

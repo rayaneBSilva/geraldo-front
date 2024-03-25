@@ -17,6 +17,8 @@ import vehicleServiceList, {
   VehicleData,
 } from "../../services/VehicleServiceList";
 import { vehicleListStyles } from "./VehicleListStyles";
+import axios from "axios";
+import Config from "../../utils/Config";
 
 const VehicleList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,7 +102,7 @@ const VehicleList = () => {
           data={filteredVehicles}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("MapaProvisorio")}
+              onPress={() => handleCarTap(item.id)}
             >
               <LinearGradient
                 colors={["rgba(252,255,88,1)", "rgba(254,197,0,1)"]} //cores

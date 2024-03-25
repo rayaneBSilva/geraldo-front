@@ -5,16 +5,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import Plus from '../../../assets/icons/plus.svg';
 import { AppFrame } from "../../components/app-frame";
-
-const BackCard = () => {
-    return (
-        <View style={{
-            transform: "rotateY(180deg)"
-        }}>
-            <Text>Costas</Text>
-        </View>
-    )
-}
+import BackCard from './car_component_component';
 
 const FrontCard = () => {
     return (

@@ -9,6 +9,7 @@ import forgotPasswordService from '../../services/ForgotPasswordService';
 import CustomButton from '../../components/button';
 import { FontAwesome } from '@expo/vector-icons';
 import { NavigationProp, ParamListBase } from '@react-navigation/core';
+import { Input } from '@rneui/base';
 
 
 interface ForgotPasswordProps {
@@ -31,9 +32,10 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
       if (response.status == 200) {
         alert(response.data["message"]);
         navigation.navigate("Login");
-      }
+      } 
     } catch (error) {
       console.log(error);
+      setisEmailInvalid(true);
     }
   };
 
@@ -83,15 +85,15 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
                 color="white"
                 style={{ marginRight: 10, }}
               />
-              {/* <Input
-                // containerStyle={{ width: "90%" }}
-                // style={{ color: "white" }}
-                // placeholder="Email"
-                // onChangeText={(text) => setEmail(text)}
-                // value={email}
-                // errorMessage={isEmailInvalid ? "Insira um email válido" : ""}
-                // errorStyle={{ color: isEmailInvalid ? "red" : "black" }}
-              /> */}
+              <Input
+                 containerStyle={{ width: "90%" }}
+                 style={{ color: "white" }}
+                placeholder="Email"
+                 onChangeText={(text) => setEmail(text)}
+                 value={email}
+                 errorMessage={isEmailInvalid ? "Insira um email válido" : ""}
+                 errorStyle={{ color: isEmailInvalid ? "red" : "black" }}
+              />
             </View>
             <View style={{ width: "85%" }}>
               <CustomButton title="Recuperar Senha" onPress={onForgotTap} />

@@ -68,10 +68,8 @@ const VehicheComponentForm = ({
   const [isRequiredDate, setIsRequiredDate] = useState(false);
   const [isRequiredMileage, setIsRequiredMileage] = useState(false);
   const [isRequiredFrequency, setIsRequiredFrequency] = useState(false);
-  const [componentType, setComponentType] = useState<ComponentTypeEnum | null>(
-    null
-  );
-  const [date, setDate] = useState<Date>(new Date());
+  const [componentType, setComponentType] = useState<string | null>(null);
+  const [date, setDate] = useState("");
   const [mileage, setMileage] = useState<number | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -84,7 +82,7 @@ const VehicheComponentForm = ({
   useEffect(() => {
     if (componentData.componentType) {
       setComponentType(componentData.componentType);
-      setDate(componentData.dateLastExchange as Date);
+      setDate(componentData.dateLastExchange as string);
       setMileage(componentData.kilometersLastExchange as number);
       setFrequency(componentData.maintenanceFrequency as number);
 
@@ -94,7 +92,7 @@ const VehicheComponentForm = ({
 
   useEffect(() => {
     if (showPicker) {
-      setDate(new Date());
+      setDate("");
     }
   }, [showPicker]);
 
@@ -162,7 +160,12 @@ const VehicheComponentForm = ({
           );
         } else {
           await vehicheComponentService.save(
-            { componentType, date, mileage, frequency },
+            {
+              componentType,
+              dateLastExchange: date,
+              kilometersLastExchange: mileage,
+              maintenanceFrequency: frequency,
+            },
             componentData.vehicleId,
             navigation,
             "Componente cadastrado com sucesso!"
@@ -183,7 +186,7 @@ const VehicheComponentForm = ({
 
   const handleCustomButtonCancel = async () => {
     setComponentType(null);
-    setDate(new Date());
+    setDate("");
     setMileage(null);
     setFrequency(null);
     navigation.navigate("VehicleList" as never);
@@ -229,8 +232,8 @@ const VehicheComponentForm = ({
           <CustomInput
             placeholder="Data da troca"
             icon={CalendarIcon}
-            onChangeText={(text) => setDate(new Date(text))}
-            value={date.toLocaleDateString("pt-BR")}
+            onChangeText={(text) => setDate(text)}
+            value={date}
             onPress={handleDatePress}
             errorMessage={Validation.generateErrorMessage(
               isRequiredDate,
@@ -249,7 +252,14 @@ const VehicheComponentForm = ({
             value={date ? new Date(date) : new Date()}
             onChange={(event, selectedDate) => {
               if (selectedDate) {
-                setDate(selectedDate);
+                selectedDate.setDate(selectedDate.getDate() - 1);
+                setShowPicker(false);
+
+                const selectedDateString = selectedDate
+                  .toISOString()
+                  .split("T")[0];
+
+                setDate(selectedDateString);
               }
 
               setShowPicker(false);

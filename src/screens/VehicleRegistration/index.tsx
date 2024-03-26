@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { vehicleSchema } from '../../utils/yupSchemas';
 import vehicleService, { vehicleDTO } from '../../services/VehicleService';
 import {useNavigation} from "@react-navigation/native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type VehicleForm = {
   placa: string,
@@ -20,7 +21,7 @@ type VehicleForm = {
 
 function VehicleRegistration() {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation<NativeStackNavigationProp<any>>()
   const [isMakingRequest, setIsMakingRequest] = useState(false)
 
   const {control, handleSubmit, formState: { errors } } = useForm<VehicleForm>({
@@ -28,7 +29,6 @@ function VehicleRegistration() {
     resolver: yupResolver(vehicleSchema)
   })
 
-  //To-Do colocar modal de aviso sobre a requisao na tela anterior
   const handleCreateVehicle = async (e : VehicleForm ) => {
     const data: vehicleDTO = {
       kilometers: parseInt(e.quilometragemAtual),
@@ -41,7 +41,7 @@ function VehicleRegistration() {
     const response = await vehicleService.createVehicle(data)
 
     setIsMakingRequest(false)
-    navigation.goBack()
+    navigation.navigate('VehicleList', {registerVehicleCode: response.data.statusCode} )
   }
 
   return (
@@ -54,7 +54,7 @@ function VehicleRegistration() {
            <View style={
             {height: "100%", width: "100%", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "rgba(128, 128, 128, 0.9)", position: "absolute", zIndex: 100 }}>
               <View style={{height: 80, width: 80,  display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white", borderRadius: 10}}>
-                <ActivityIndicator size={'large'} color={"red"}></ActivityIndicator>
+                <ActivityIndicator size={'large'} color={"blue"}></ActivityIndicator>
               </View>
            </View>
         }
@@ -74,6 +74,7 @@ function VehicleRegistration() {
                 placeholder="Placa"
                 style={{ color: "white" }}
                 iconName='user'
+                maxLength={7}
                 containerStyle={{ width: "92%", marginLeft: 10, transform: "uppercase" }}
               >
 

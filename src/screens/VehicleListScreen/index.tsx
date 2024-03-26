@@ -1,9 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/themed";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   ImageBackground,
@@ -20,14 +21,15 @@ import { vehicleListStyles } from "./VehicleListStyles";
 import axios from "axios";
 import Config from "../../utils/Config";
 
-const VehicleList = () => {
+const VehicleList = ( { route } : any) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [vehicles, setVehicles] = useState<VehicleData[]>([]);
-  const { authState } = useAuth();
-  const { onTokenUpdated } = useAuth();
+  const { authState, onTokenUpdated } = useAuth();
   const navigation: any = useNavigation();
   const imageUrl =
     "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5";
+
+  const isFocused = useIsFocused() //Só para forçar re-render
 
   useEffect(() => {
     (async () => {
@@ -35,8 +37,23 @@ const VehicleList = () => {
         const vehicles = await vehicleServiceList.getVehicles(authState.token);
         setVehicles(vehicles);
       }
+
+      if(route?.params?.registerVehicleCode){
+        let alertText = route.params.registerVehicleCode >= 200 ? "Veículo cadastrado com sucesso." : "Erro ao cadastrar veículo."
+        Alert.alert('Cadastro de Veículo', alertText, [
+          {
+            text: "Fechar",
+            style: "cancel"
+          }
+        ])
+        navigation.setParams({ registerVehicleCode: null })
+      }
     })();
-  }, []);
+  }, [isFocused]);
+
+  console.log(route)
+
+
 
   const handleSharePress = (id: any) => {
     console.log(id);
@@ -46,7 +63,7 @@ const VehicleList = () => {
   const handleCarTap = async (id: number) =>{
     if(authState?.token){
       const newToken = await vehicleServiceList.selectVehicle(authState.token, {vehicleId: id});
-      await onTokenUpdated(newToken);
+      await onTokenUpdated!(newToken);
       console.log(newToken)
       navigation.navigate("ViewCarScreen" as never);
     }

@@ -25,7 +25,7 @@ function Routes() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ViewCarScreen" component={ViewCar} />
         <Stack.Screen name="VehicleList" component={VehicleList} />
-<Stack.Screen name="VehicheComponent" component={VehicheComponent} />
+        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
         <Stack.Screen
           name="CreateEstablishment"
           component={CreateEstablishment}

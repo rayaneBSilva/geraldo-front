@@ -10,7 +10,7 @@ class Validation {
     }
     return "";
   }
-  static validateDate(date: Date | undefined): string {
+  static validateDate(date: string | undefined): string {
     if (date) {
       const currentDate = new Date();
       const inputDate = new Date(date);

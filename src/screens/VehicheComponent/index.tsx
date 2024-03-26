@@ -12,8 +12,8 @@ import ComponentTypeEnum from "../../enum/ComponentTypeEnum";
 export type VehicheComponentProps = {
   vehicleId: number;
   componentId?: number;
-  componentType?: ComponentTypeEnum;
-  dateLastExchange?: Date;
+  componentType?: string | undefined;
+  dateLastExchange?: string;
   kilometersLastExchange?: number;
   maintenanceFrequency?: number;
 };

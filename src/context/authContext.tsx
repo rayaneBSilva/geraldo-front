@@ -9,6 +9,7 @@ interface AuthProps {
     authState?: {token: string | null; authenticated: boolean | null};
     onLogin?: (cpf: string, password: string, navigation: any) => Promise<any>
     onLogout?: () => Promise<any>
+    onTokenUpdated?: (newToken: string) => Promise<any>
 }
 
 const AuthContext = createContext<AuthProps>({});
@@ -58,6 +59,15 @@ export const AuthProvider = ({ children }: any) => {
         }
     }
 
+    const updateToken = async (newToken: string) => {
+        setAuthState({
+            token: newToken,
+            authenticated: true
+        })
+        await SecureStore.setItemAsync("token", newToken)
+        console.log("deu bom");
+    }
+
     const logout = async () => {
         setAuthState({
             token: null,
@@ -71,6 +81,7 @@ export const AuthProvider = ({ children }: any) => {
     const value = {
         onLogin: login,
         onLogout: logout,
+        onTokenUpdated: updateToken,
         authState
     }
 

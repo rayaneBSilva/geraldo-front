@@ -78,7 +78,7 @@ const BackCard = () => {
     useEffect(() => {
         (async () => {
             if (authState?.token) {
-                const components = await vehicheComponentService.listAllComponents("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJUeXBlIjoiRFJJVkVSIiwicmVzZXRQYXNzd29yZCI6dHJ1ZSwidmVoaWNsZUlkIjoxNCwiaWF0IjoxNzExMzIyMjI5LCJleHAiOjE4MTEzMjIyMjl9.arTsfYUhc20iYU9Kot7-MctAOLlB1dN7R91uQtESBOg");
+                const components = await vehicheComponentService.listAllComponents(authState.token);
                 setComponents(components);
             }
         })();
@@ -91,7 +91,7 @@ const BackCard = () => {
 
     const refreshItem = async() => {
         if (authState?.token) {
-            const components = await vehicheComponentService.listAllComponents("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJUeXBlIjoiRFJJVkVSIiwicmVzZXRQYXNzd29yZCI6dHJ1ZSwidmVoaWNsZUlkIjoxNCwiaWF0IjoxNzExMzIyMjI5LCJleHAiOjE4MTEzMjIyMjl9.arTsfYUhc20iYU9Kot7-MctAOLlB1dN7R91uQtESBOg");
+            const components = await vehicheComponentService.listAllComponents(authState.token);
             setComponents(components);
         }
     }
@@ -102,10 +102,10 @@ const BackCard = () => {
 
     const handleDeleteTap = async () => {
         if (authState?.token){
-            vehicheComponentService.deleteComponent(tappedItemId,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTgsInVzZXJUeXBlIjoiRFJJVkVSIiwicmVzZXRQYXNzd29yZCI6dHJ1ZSwidmVoaWNsZUlkIjoxNCwiaWF0IjoxNzExMzIyMjI5LCJleHAiOjE4MTEzMjIyMjl9.arTsfYUhc20iYU9Kot7-MctAOLlB1dN7R91uQtESBOg","Componente excluído com sucesso!");
+            await vehicheComponentService.deleteComponent(tappedItemId,authState.token,"Componente excluído com sucesso!");
         }
-        setModalVisible(false);
-        refreshItem();
+        await setModalVisible(false);
+        await refreshItem();
     };
 
     return (

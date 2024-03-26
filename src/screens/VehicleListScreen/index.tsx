@@ -24,6 +24,7 @@ const VehicleList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [vehicles, setVehicles] = useState<VehicleData[]>([]);
   const { authState } = useAuth();
+  const { onTokenUpdated } = useAuth();
   const navigation: any = useNavigation();
   const imageUrl =
     "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5";
@@ -41,6 +42,15 @@ const VehicleList = () => {
     console.log(id);
     navigation.navigate("CarSharing", { id });
   };
+
+  const handleCarTap = async (id: number) =>{
+    if(authState?.token){
+      const newToken = await vehicleServiceList.selectVehicle(authState.token, {vehicleId: id});
+      await onTokenUpdated(newToken);
+      console.log(newToken)
+      navigation.navigate("ViewCarScreen" as never);
+    }
+  }
 
   const handlePlusPress = (id: any) => {
     navigation.navigate("VehicleRegistration" as never);

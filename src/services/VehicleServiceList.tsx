@@ -7,6 +7,10 @@ export interface VehicleData {
   model: string
 }
 
+interface selectVehicleId {
+  [key: string]: any;
+}
+
 class VehicleServiceList extends ServiceBase{
   async getVehicles(token: string): Promise<VehicleData[]>{
   try {
@@ -21,6 +25,18 @@ class VehicleServiceList extends ServiceBase{
     console.log(error.response);
     console.log(error.toJSON());
     return[];
+  }
+}
+async selectVehicle(token: string, selectedId: selectVehicleId): Promise<string>{
+  try {
+    const response = await axios.post("https://geraldo-backend.vercel.app/select_vehicle",selectedId, {headers:{Authorization: `Bearer ${token}`}});
+     return response.data.data.access_token;
+  } catch(error:any){
+    console.error("Erro ao selecionar veículo", error);
+    console.log(error.message);
+    console.log(error.response);
+    console.log(error.toJSON());
+    return "";
   }
 }
 }

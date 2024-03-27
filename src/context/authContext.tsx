@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }: any) => {
             authenticated: true
         })
         await SecureStore.setItemAsync("token", newToken)
-        console.log("deu bom");
     }
 
     const logout = async () => {

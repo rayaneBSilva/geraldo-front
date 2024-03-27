@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import ServiceBase from "./ServiceBase";
 export interface vehicleDTO {
     id?: number,
@@ -14,6 +15,7 @@ class VehicleService extends ServiceBase {
       const response = await this.post(data, "vehicle");
       return response
     } catch (error: any) {
+      Alert.alert("Erro ao criar veículo",error)
       return error;
     }
   }

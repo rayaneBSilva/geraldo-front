@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Button, Alert } from 'react-native';
 import { forgotPasswordStyles } from './styles';
 // import { Input } from "@rneui/themed";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -30,7 +30,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps>  = ({ navigation }) =>
     try {
       const response = await forgotPasswordService.recovery({ email });
       if (response.status == 200) {
-        alert(response.data["message"]);
+        Alert.alert("Senha alterada com sucesso!", response.data["message"]);
         navigation.navigate("Login");
       } 
     } catch (error) {

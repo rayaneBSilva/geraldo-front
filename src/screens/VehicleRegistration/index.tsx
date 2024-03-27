@@ -34,12 +34,12 @@ function VehicleRegistration() {
       kilometers: parseInt(e.quilometragemAtual),
       model: e.modelo,
       plate: e.placa,
-      year: e.anoDeFabricação
+      year: e.anoDeFabricação,
+      id: 0
     } 
 
     setIsMakingRequest(true)
     const response = await vehicleService.createVehicle(data)
-
     setIsMakingRequest(false)
     navigation.navigate('VehicleList', {registerVehicleCode: response.data.statusCode} )
   }

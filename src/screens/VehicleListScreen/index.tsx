@@ -33,8 +33,12 @@ const VehicleList = ( { route } : any) => {
 
   useEffect(() => {
     (async () => {
+      if (route.params){
+        route.params.reloading = false;
+      }
       if (authState?.token) {
         const vehicles = await vehicleServiceList.getVehicles(authState.token);
+        console.log(vehicles);
         setVehicles(vehicles);
       }
 
@@ -69,9 +73,10 @@ const VehicleList = ( { route } : any) => {
     }
   }
 
-  const handlePlusPress = (id: any) => {
+  const handlePlusPress = async (id: any) => {
     navigation.navigate("VehicleRegistration" as never);
   };
+
   const filteredVehicles = vehicles.filter((item) =>
     item.model.toLowerCase().includes(searchTerm.toLowerCase())
   );

@@ -18,6 +18,7 @@ import { CreateEstablishmentCommand } from '../../api/commands/CreateEstablishme
 import { FindAddressQuery } from '../../api/queries/FindAddress';
 import { Input } from '../../components/input';
 import { Picker } from '../../components/picker';
+import CustomButton from '../../components/button';
 
 interface CreateEstablishmentProps {
   navigation: NavigationProp<ParamListBase>;
@@ -30,13 +31,13 @@ const defaultValidator = (value: any): Maybe<Error> => {
 
 function createFields(): Record<string, string> {
   return Object
-  .keys(Fields)
-  .reduce((prev, curr) => {
-    return {
-      ...prev,
-      [curr]: ""
-    }
-  }, {})
+    .keys(Fields)
+    .reduce((prev, curr) => {
+      return {
+        ...prev,
+        [curr]: ""
+      }
+    }, {})
 }
 
 enum Fields {
@@ -140,32 +141,32 @@ const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation })
       backgroundColor: "grey",
       flex: 1
     }}>
-        <LinearGradient
+      <LinearGradient
         colors={['rgba(35, 34, 138, 1)', 'rgba(13, 13, 51, 1)']}
         style={{
           flex: 1
         }}
-        >
+      >
         <ImageBackground
-        source={require("../../../assets/create-establishment-background.png")}
-        resizeMode="cover"
-        style={{
-          flex: 1
-        }}
+          source={require("../../../assets/create-establishment-background.png")}
+          resizeMode="cover"
+          style={{
+            flex: 1
+          }}
         >
-          <ScrollView 
-          automaticallyAdjustKeyboardInsets={true}
-          contentContainerStyle={{
-            alignItems: "center",
-            marginTop: 50,
-          }}>
+          <ScrollView
+            automaticallyAdjustKeyboardInsets={true}
+            contentContainerStyle={{
+              alignItems: "center",
+              marginTop: 50,
+            }}>
             <Text
-            style={{
-              fontSize: 35,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "white"
-            }}
+              style={{
+                fontSize: 35,
+                fontWeight: "bold",
+                textAlign: "center",
+                color: "white"
+              }}
             >
               Cadastro do {"\n"} Estabelecimento
             </Text>
@@ -173,168 +174,163 @@ const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation })
               marginTop: 30
             }}>
               <Input
-              placeholder="CNPJ"
-              keyboardType="numeric"
-              icon={Id}
-              value={fieldsValues[Fields.cnpj]}
-              error={fieldsErrors[Fields.cnpj]}
-              mask="99.999.999/9999-99"
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
-                  ...values,
-                  [Fields.cnpj]: text
-                }))
-              }}
+                placeholder="CNPJ"
+                keyboardType="numeric"
+                icon={Id}
+                value={fieldsValues[Fields.cnpj]}
+                error={fieldsErrors[Fields.cnpj]}
+                mask="99.999.999/9999-99"
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.cnpj]: text
+                  }))
+                }}
               />
               <Input
-              placeholder="Nome Fantasia"
-              icon={User}
-              value={fieldsValues[Fields.name]}
-              error={fieldsErrors[Fields.name]}
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
-                  ...values,
-                  [Fields.name]: text
-                }))
-              }}
+                placeholder="Nome Fantasia"
+                icon={User}
+                value={fieldsValues[Fields.name]}
+                error={fieldsErrors[Fields.name]}
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.name]: text
+                  }))
+                }}
               />
               <Picker
-              icon={Form}
-              error={fieldsErrors[Fields.category]}
-              placeholder={
-                { label: 'Selecione uma Categoria', value: null }
-              }
-              textInputProps={fieldsValues[Fields.category] ? {
-                style: {
-                  color: "white"
+                icon={Form}
+                error={fieldsErrors[Fields.category]}
+                placeholder={
+                  { label: 'Selecione uma Categoria', value: null }
                 }
-              } as any : {}}
-              pickerProps={{
-                style: {
-                  color: "red"
-                }
-              }}
-              style={{
-                placeholder: {
-                  color: "rgba(255, 255, 255, 0.5)"
-                },
-                viewContainer: {
-                  borderBottomWidth: 2,
-                  borderBottomColor: "white",
-                  paddingVertical: 3,
-                  alignSelf: "center",
-                  flex: 1
-                }
-              }}
-              value={fieldsValues[Fields.category]}
-              onValueChange={(value) => setFieldsValues(values => ({
-                ...values,
-                [Fields.category]: value
-              }))}
-              items={[
-                { label: 'Posto de Gasolina', value: 'GAS_STATION' }
-              ]}
-              />
-              <Input
-              placeholder="E-mail"
-              keyboardType="email-address"
-              icon={Mail}
-              value={fieldsValues[Fields.email]}
-              error={fieldsErrors[Fields.email]}
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
+                textInputProps={fieldsValues[Fields.category] ? {
+                  style: {
+                    color: "white"
+                  }
+                } as any : {}}
+                pickerProps={{
+                  style: {
+                    color: "red"
+                  }
+                }}
+                style={{
+                  placeholder: {
+                    color: "rgba(255, 255, 255, 0.5)"
+                  },
+                  viewContainer: {
+                    borderBottomWidth: 2,
+                    borderBottomColor: "white",
+                    paddingVertical: 3,
+                    alignSelf: "center",
+                    flex: 1
+                  }
+                }}
+                value={fieldsValues[Fields.category]}
+                onValueChange={(value) => setFieldsValues(values => ({
                   ...values,
-                  [Fields.email]: text
-                }))
-              }}
+                  [Fields.category]: value
+                }))}
+                items={[
+                  { label: 'Posto de Gasolina', value: 'GAS_STATION' }
+                ]}
               />
               <Input
-              placeholder="Telefone"
-              keyboardType="numeric"
-              icon={Phone}
-              mask="(99) 99999-9999"
-              value={fieldsValues[Fields.phone]}
-              error={fieldsErrors[Fields.phone]}
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
-                  ...values,
-                  [Fields.phone]: text
-                }))
-              }}
+                placeholder="E-mail"
+                keyboardType="email-address"
+                icon={Mail}
+                value={fieldsValues[Fields.email]}
+                error={fieldsErrors[Fields.email]}
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.email]: text
+                  }))
+                }}
               />
               <Input
-              placeholder="CEP"
-              keyboardType="numeric"
-              icon={Loc}
-              value={fieldsValues[Fields.cep]}
-              error={fieldsErrors[Fields.cep]}
-              mask="99.999-999"
-              onEndEditing={fillFieldByCEPQuery}
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
-                  ...values,
-                  [Fields.cep]: text
-                }))
-              }}
+                placeholder="Telefone"
+                keyboardType="numeric"
+                icon={Phone}
+                mask="(99) 99999-9999"
+                value={fieldsValues[Fields.phone]}
+                error={fieldsErrors[Fields.phone]}
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.phone]: text
+                  }))
+                }}
               />
               <Input
-              placeholder="Estado"
-              icon={State}
-              value={fieldsValues[Fields.state]}
-              readOnly={true}
+                placeholder="CEP"
+                keyboardType="numeric"
+                icon={Loc}
+                value={fieldsValues[Fields.cep]}
+                error={fieldsErrors[Fields.cep]}
+                mask="99.999-999"
+                onEndEditing={fillFieldByCEPQuery}
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.cep]: text
+                  }))
+                }}
               />
               <Input
-              placeholder="Cidade"
-              icon={City}
-              value={fieldsValues[Fields.city]}
-              readOnly={true}
+                placeholder="Estado"
+                icon={State}
+                value={fieldsValues[Fields.state]}
+                readOnly={true}
               />
               <Input
-              placeholder="Bairro"
-              icon={Neighborhood}
-              value={fieldsValues[Fields.neighborhood]}
-              readOnly={true}
+                placeholder="Cidade"
+                icon={City}
+                value={fieldsValues[Fields.city]}
+                readOnly={true}
               />
               <Input
-              placeholder="Rua"
-              icon={Street}
-              value={fieldsValues[Fields.street]}
-              readOnly={true}
+                placeholder="Bairro"
+                icon={Neighborhood}
+                value={fieldsValues[Fields.neighborhood]}
+                readOnly={true}
               />
               <Input
-              placeholder="Número"
-              keyboardType="numeric"
-              icon={Number}
-              value={fieldsValues[Fields.number]}
-              error={fieldsErrors[Fields.number]}
-              onChangeText={(text: string) => {
-                setFieldsValues(values => ({
-                  ...values,
-                  [Fields.number]: text
-                }))
-              }}
+                placeholder="Rua"
+                icon={Street}
+                value={fieldsValues[Fields.street]}
+                readOnly={true}
+              />
+              <Input
+                placeholder="Número"
+                keyboardType="numeric"
+                icon={Number}
+                value={fieldsValues[Fields.number]}
+                error={fieldsErrors[Fields.number]}
+                onChangeText={(text: string) => {
+                  setFieldsValues(values => ({
+                    ...values,
+                    [Fields.number]: text
+                  }))
+                }}
               />
             </View>
-            <LinearGradient
-            colors={['#FCFF58', '#FEC500']}
-            end={{x: 0.85, y: 0}}
-            style={{
-              width: "65%",
-              marginTop: 15,
-              borderRadius: 15,
-              paddingVertical: 3,
-              marginBottom: 70
-            }}
+            <View
+              style={{
+                width: "85%",
+                marginTop: 15,
+                borderRadius: 15,
+                paddingVertical: 3,
+                marginBottom: 70
+              }}
             >
-              <Button
-              title="Cadastrar"
-              color="#2D207C"
-              onPress={handleSubmit}
-              />
-            </LinearGradient>
+              <CustomButton title="Cadastrar" onPress={handleSubmit} />
+            </View>
+
           </ScrollView>
         </ImageBackground>
-        </LinearGradient>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

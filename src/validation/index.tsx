@@ -1,3 +1,5 @@
+import ComponentTypeEnum from "../enum/ComponentTypeEnum";
+
 class Validation {
   static generateErrorMessage(
     isRequired: boolean,
@@ -35,6 +37,19 @@ class Validation {
       return "A quilometragem da última troca não pode ser maior do que a quilometragem atual";
     }
 
+    return "";
+  }
+
+  static validateTypeComponent(componentType: string | undefined): string {
+    if (
+      !(
+        componentType === ComponentTypeEnum.AIR_FILTER ||
+        componentType === ComponentTypeEnum.BALANCE ||
+        componentType === ComponentTypeEnum.MOTOR_OIL
+      )
+    ) {
+      return "O tipo do componente é invalido";
+    }
     return "";
   }
 }

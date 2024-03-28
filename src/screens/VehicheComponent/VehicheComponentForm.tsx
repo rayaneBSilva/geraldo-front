@@ -11,6 +11,7 @@ import ComponentTypeEnum from "../../enum/ComponentTypeEnum";
 import vehicheComponentService from "../../services/VehicheComponentService";
 import Validation from "../../validation";
 import { vehicheComponent } from "./VehicheComponentStyles";
+import { useAuth } from "../../context/authContext";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
@@ -35,24 +36,29 @@ const CustomInput = ({
   errorMessage,
   errorStyle,
 }: InputProps) => {
+  const isCalendarIcon = Icon === CalendarIcon;
   return (
-    <Pressable onPress={onPress}>
-      <View style={{ height: 80 }}>
-        <View style={vehicheComponent.view}>
+    <View style={{ height: 80 }}>
+      <View style={vehicheComponent.view}>
+        {isCalendarIcon ? (
+          <Pressable onPress={onPress}>
+            <Image source={CalendarIcon} style={vehicheComponent.icon} />
+          </Pressable>
+        ) : (
           <Image source={Icon} style={vehicheComponent.icon} />
-          <TextInput
-            placeholder={placeholder}
-            placeholderTextColor="rgba(255, 255, 255, 0.5)"
-            style={vehicheComponent.textInput}
-            onChangeText={onChangeText}
-            value={value}
-          />
-        </View>
-        {errorMessage && (
-          <Text style={[errorStyle, { paddingLeft: 35 }]}>{errorMessage}</Text>
         )}
+        <TextInput
+          placeholder={placeholder}
+          placeholderTextColor="rgba(255, 255, 255, 0.5)"
+          style={vehicheComponent.textInput}
+          onChangeText={onChangeText}
+          value={value}
+        />
       </View>
-    </Pressable>
+      {errorMessage && (
+        <Text style={[errorStyle, { paddingLeft: 35 }]}>{errorMessage}</Text>
+      )}
+    </View>
   );
 };
 
@@ -72,12 +78,15 @@ const VehicheComponentForm = ({
   const [date, setDate] = useState("");
   const [mileage, setMileage] = useState<number | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
+  const [errorMessageTypeComponente, setErrorMessageTypeComponente] =
+    useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorMessageDate, setErrorMessageDate] = useState("");
   const [errorMessageMileage, setErrorMessageMileage] = useState("");
   const navigation = useNavigation();
   const [type, setType] = useState("new");
   const [showPicker, setShowPicker] = useState(false);
+  const { authState } = useAuth();
 
   useEffect(() => {
     if (componentData.componentType) {
@@ -106,9 +115,7 @@ const VehicheComponentForm = ({
   };
 
   const handleCustomButtonPress = async () => {
-    setIsRequiredComponentType(
-      componentType ? componentType.trim() === "" : false
-    );
+    setIsRequiredComponentType(componentType ? false : true);
     setIsRequiredDate(!date);
     setIsRequiredMileage(mileage === null || mileage === undefined);
     setIsRequiredFrequency(frequency === null || frequency === undefined);
@@ -119,6 +126,16 @@ const VehicheComponentForm = ({
       return;
     } else {
       setErrorMessageDate("");
+    }
+
+    const typeComponentErrorMessage = Validation.validateTypeComponent(
+      componentType as string
+    );
+    if (typeComponentErrorMessage !== "") {
+      setErrorMessageTypeComponente(typeComponentErrorMessage);
+      return;
+    } else {
+      setErrorMessageTypeComponente("");
     }
 
     if (
@@ -146,9 +163,15 @@ const VehicheComponentForm = ({
       frequency?.toString().trim() !== ""
     ) {
       try {
-        if (type === "edit" && componentData && componentData.componentId) {
+        if (
+          type === "edit" &&
+          componentData &&
+          componentData.componentId &&
+          authState?.token
+        ) {
           await vehicheComponentService.updateComponent(
             componentData.componentId,
+            authState.token,
             {
               componentType: componentType,
               dateLastExchange: date,
@@ -174,12 +197,13 @@ const VehicheComponentForm = ({
         setErrorMessage("");
         setErrorMessageDate("");
         setErrorMessageMileage("");
-        navigation.navigate("VehicleList" as never); //TROCAR DEPOIS
+        setErrorMessageTypeComponente("");
       } catch (error) {
         console.log(error);
         setErrorMessage("Dados inválidos");
         setErrorMessageDate("Dados inválidos");
         setErrorMessageMileage("Dados inválidos");
+        setErrorMessageTypeComponente("Dados inválidos");
       }
     }
   };
@@ -218,11 +242,11 @@ const VehicheComponentForm = ({
             value={componentType ? componentType.toString() : ""}
             errorMessage={Validation.generateErrorMessage(
               isRequiredComponentType,
-              errorMessage
+              errorMessageTypeComponente
             )}
             errorStyle={{
               color:
-                isRequiredComponentType || errorMessage !== ""
+                isRequiredComponentType || errorMessageTypeComponente !== ""
                   ? "red"
                   : "black",
             }}

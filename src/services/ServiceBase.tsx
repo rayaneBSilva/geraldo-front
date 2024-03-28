@@ -11,16 +11,26 @@ class ServiceBase {
     return await axiosInstance.post(`${Config.API_URL}/${endpoint}`, data);
   }
 
-  async put(data: UserData, endpoint: string): Promise<AxiosResponse> {
-    return await axios.put(`${Config.API_URL}/${endpoint}`, data);
+  async put(
+    data: UserData,
+    endpoint: string,
+    token: string
+  ): Promise<AxiosResponse> {
+    return await axios.put(`${Config.API_URL}/${endpoint}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
 
   async get(endpoint: string, token: string): Promise<AxiosResponse> {
-    return await axios.get(`${Config.API_URL}/${endpoint}`,{headers:{Authorization: `Bearer ${token}`}});
+    return await axios.get(`${Config.API_URL}/${endpoint}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
 
-  async delete(endpoint: string,token: string): Promise<AxiosResponse> {
-    return await axios.delete(`${Config.API_URL}/${endpoint}`,{headers:{Authorization: `Bearer ${token}`}});
+  async delete(endpoint: string, token: string): Promise<AxiosResponse> {
+    return await axios.delete(`${Config.API_URL}/${endpoint}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
 }
 

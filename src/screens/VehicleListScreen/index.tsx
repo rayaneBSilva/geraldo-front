@@ -21,7 +21,7 @@ import { vehicleListStyles } from "./VehicleListStyles";
 import axios from "axios";
 import Config from "../../utils/Config";
 
-const VehicleList = ( { route } : any) => {
+const VehicleList = ({ route }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [vehicles, setVehicles] = useState<VehicleData[]>([]);
   const { authState, onTokenUpdated } = useAuth();
@@ -29,11 +29,11 @@ const VehicleList = ( { route } : any) => {
   const imageUrl =
     "https://static0.topspeedimages.com/wordpress/wp-content/uploads/jpg/201508/2010-zenvo-st1-5.jpg?q=50&amp;fit=contain&amp;w=755&amp;h=430&amp;dpr=1.5";
 
-  const isFocused = useIsFocused() //Só para forçar re-render
+  const isFocused = useIsFocused(); //Só para forçar re-render
 
   useEffect(() => {
     (async () => {
-      if (route.params){
+      if (route.params) {
         route.params.reloading = false;
       }
       if (authState?.token) {
@@ -42,36 +42,39 @@ const VehicleList = ( { route } : any) => {
         setVehicles(vehicles);
       }
 
-      if(route?.params?.registerVehicleCode){
-        let alertText = route.params.registerVehicleCode >= 200 ? "Veículo cadastrado com sucesso." : "Erro ao cadastrar veículo."
-        Alert.alert('Cadastro de Veículo', alertText, [
+      if (route?.params?.registerVehicleCode) {
+        let alertText =
+          route.params.registerVehicleCode >= 200
+            ? "Veículo cadastrado com sucesso."
+            : "Erro ao cadastrar veículo.";
+        Alert.alert("Cadastro de Veículo", alertText, [
           {
             text: "Fechar",
-            style: "cancel"
-          }
-        ])
-        navigation.setParams({ registerVehicleCode: null })
+            style: "cancel",
+          },
+        ]);
+        navigation.setParams({ registerVehicleCode: null });
       }
     })();
   }, [isFocused]);
 
-  console.log(route)
-
-
+  console.log(route);
 
   const handleSharePress = (id: any) => {
     console.log(id);
     navigation.navigate("CarSharing", { id });
   };
 
-  const handleCarTap = async (id: number) =>{
-    if(authState?.token){
-      const newToken = await vehicleServiceList.selectVehicle(authState.token, {vehicleId: id});
+  const handleCarTap = async (id: number) => {
+    if (authState?.token) {
+      const newToken = await vehicleServiceList.selectVehicle(authState.token, {
+        vehicleId: id,
+      });
       await onTokenUpdated!(newToken);
-      console.log(newToken)
-      navigation.navigate("ViewCarScreen" as never);
+      console.log(newToken);
+      navigation.navigate("ViewCarScreen", { id });
     }
-  }
+  };
 
   const handlePlusPress = async (id: any) => {
     navigation.navigate("VehicleRegistration" as never);
@@ -133,9 +136,7 @@ const VehicleList = ( { route } : any) => {
         <FlatList
           data={filteredVehicles}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => handleCarTap(item.id)}
-            >
+            <TouchableOpacity onPress={() => handleCarTap(item.id)}>
               <LinearGradient
                 colors={["rgba(252,255,88,1)", "rgba(254,197,0,1)"]} //cores
                 start={{ x: 0, y: 0.5 }} //início do gradiente na horizontal

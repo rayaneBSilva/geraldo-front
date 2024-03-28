@@ -142,7 +142,7 @@ const RegisterForm = () => {
           style={{ color: "white" }}
           placeholder="CPF"
           onChangeText={(text) => setUserName(text)} // Chame handleCpfChange para formatação imediata
-          value={username} // Exiba o CPF formatado
+          value={formatCPF(username)} // Exiba o CPF formatado
           errorMessage={isRequiredUserName ? invalidUserNameMessage : ""}
           errorStyle={{ color: "red", marginLeft: -1 }}
           onFocus={handleUserCPFFocus}

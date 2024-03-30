@@ -5,18 +5,21 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  ViewStyle,
 } from "react-native";
 
 interface SelectProps {
   title: string;
   options: string[];
-  onSelect: (option: string) => void;
+  onSelect: (option: string | boolean) => void;
+  style?: ViewStyle;
 }
 
 const FrequencyButton: React.FC<SelectProps> = ({
   title,
   options,
   onSelect,
+  style,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState(title);
@@ -33,8 +36,16 @@ const FrequencyButton: React.FC<SelectProps> = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={toggleOptions}>
-        <Text style={styles.buttonText}>
+      <TouchableOpacity
+        style={style ? style : styles.button}
+        onPress={toggleOptions}
+      >
+        <Text
+          style={[
+            styles.buttonText,
+            style ? { color: "white" } : { color: "black" },
+          ]}
+        >
           {selectedTitle} {isOpen ? "▲" : "▼"}
         </Text>
       </TouchableOpacity>

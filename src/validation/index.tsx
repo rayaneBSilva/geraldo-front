@@ -1,4 +1,5 @@
 import ComponentTypeEnum from "../enum/ComponentTypeEnum";
+import FuelCatalogTypeEnum from "../enum/FuelCatalogTypeEnum";
 
 class Validation {
   static generateErrorMessage(
@@ -49,6 +50,26 @@ class Validation {
       )
     ) {
       return "O tipo do componente é invalido";
+    }
+    return "";
+  }
+
+  static validateFuelTypeComponent(componentType: string): string {
+    if (
+      !(
+        componentType === FuelCatalogTypeEnum.DIESEL ||
+        componentType === FuelCatalogTypeEnum.ETHANOL ||
+        componentType === FuelCatalogTypeEnum.GASOLINE
+      )
+    ) {
+      return "O tipo do combustível é invalido";
+    }
+    return "";
+  }
+
+  static validateValue(value: number): string {
+    if (value < 0) {
+      return "O valor não pode ser menor que 0";
     }
     return "";
   }

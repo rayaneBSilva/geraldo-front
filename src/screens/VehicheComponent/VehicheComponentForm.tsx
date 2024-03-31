@@ -298,7 +298,8 @@ const VehicheComponentForm = ({
               if (text.trim() === "") {
                 setMileage(null);
               } else {
-                const parsedValue = parseFloat(text);
+                const textWithDot = text.replace(",", ".");
+                const parsedValue = parseFloat(textWithDot);
                 if (!isNaN(parsedValue)) {
                   setMileage(parsedValue);
                 } else {
@@ -306,7 +307,6 @@ const VehicheComponentForm = ({
                 }
               }
             }}
-            value={mileage ? mileage.toString() : ""}
             errorMessage={Validation.generateErrorMessage(
               isRequiredMileage,
               errorMessageMileage
@@ -324,7 +324,9 @@ const VehicheComponentForm = ({
             <FrequencyButton
               title="Dias"
               options={["Dias", "Mes(es)", "Ano(s)"]}
-              onSelect={handleSelectFrequency}
+              onSelect={() => {
+                handleSelectFrequency;
+              }}
             />
           </View>
 
@@ -367,7 +369,7 @@ const VehicheComponentForm = ({
         }}
       ></View>
       <CustomButton
-        title="Cadastrar"
+        title={type === "new" ? "Cadastrar" : "Atualizar"}
         onPress={handleCustomButtonPress}
         style={{ marginTop: 20 }}
       />

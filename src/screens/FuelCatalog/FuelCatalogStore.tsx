@@ -17,8 +17,8 @@ const FuelCatalogForm = () => {
   const [errorMessageValue, setErrorMessageValue] = useState("");
 
   const validateFuelCatalogEmptyField = () => {
-    setIsRequiredFuelCatalogType(fuelType ? false : true);
-    setIsRequiredFuelTitle(fuelTitle ? false : true);
+    setIsRequiredFuelCatalogType(!fuelType);
+    setIsRequiredFuelTitle(!fuelTitle);
     setIsRequiredValue(value === null || value === undefined);
   };
 
@@ -48,6 +48,18 @@ const FuelCatalogForm = () => {
     setProductStatus(false);
   };
 
+  const clearMessageError = () => {
+    setErrorMessageFuelType("");
+    setErrorMessageFuelTitle("");
+    setErrorMessageValue("");
+  };
+
+  const setInvalidDataErrorMessages = () => {
+    setErrorMessageFuelType("Dados inválidos");
+    setErrorMessageFuelTitle("Dados inválidos");
+    setErrorMessageValue("Dados inválidos");
+  };
+
   return {
     fuelType,
     setFuelType,
@@ -58,21 +70,17 @@ const FuelCatalogForm = () => {
     productStatus,
     setProductStatus,
     isRequiredFuelCatalogType,
-    setIsRequiredFuelCatalogType,
     isRequiredFuelTitle,
-    setIsRequiredFuelTitle,
-    isRequiredValue,
-    setIsRequiredValue,
     errorMessageFuelType,
-    setErrorMessageFuelType,
+    isRequiredValue,
     errorMessageFuelTitle,
     errorMessageValue,
-    setErrorMessageValue,
-    setErrorMessageFuelTitle,
     validateFuelCatalogEmptyField,
     validateFuelCatalogMessageError,
     validateRequiredFields,
     resetValues,
+    clearMessageError,
+    setInvalidDataErrorMessages,
   };
 };
 

@@ -75,8 +75,7 @@ export const fuelCatalog = StyleSheet.create({
     alignItems: "center",
   },
   fuelCatalogFormContainer: {
-    width: "85%",
-    paddingLeft: 20,
+    width: "95%",
     paddingRight: 20,
   },
   containerRow: {

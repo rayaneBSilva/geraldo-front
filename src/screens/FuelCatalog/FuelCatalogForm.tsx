@@ -1,17 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
-import { Input } from "@rneui/themed";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
-import { FuelCatalogProps, FuelCatalogRoute } from ".";
+import { FuelCatalogProps } from ".";
 import FrequencyButton from "../../../components/button/frequencyButton";
 import MainTitle from "../../../components/title/mainTitle";
 import CustomButton from "../../components/button";
 import FuelCatalogTypeEnum from "../../enum/FuelCatalogTypeEnum";
-import vehicheComponentService from "../../services/VehicheComponentService";
 import Validation from "../../validation";
 import { fuelCatalog } from "./FuelCatalogStyles";
 import { useAuth } from "../../context/authContext";
 import FuelCatalogStore from "./FuelCatalogStore";
+import fuelCatalogService from "../../services/FuelCatalogService";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
@@ -27,6 +26,7 @@ type InputProps = {
   errorMessage?: string;
   errorStyle?: object;
   children?: ReactNode;
+  keyboardType?: "default" | "decimal-pad";
 };
 
 const CustomInput = ({
@@ -38,6 +38,7 @@ const CustomInput = ({
   errorMessage,
   errorStyle,
   children,
+  keyboardType,
 }: InputProps) => {
   const isCalendarIcon = Icon === CalendarIcon;
   return (
@@ -58,6 +59,7 @@ const CustomInput = ({
             style={fuelCatalog.textInput}
             onChangeText={onChangeText}
             value={value}
+            keyboardType={keyboardType}
           />
         )}
         {children && (
@@ -69,7 +71,7 @@ const CustomInput = ({
                   style={{
                     borderBottomColor: "white",
                     borderBottomWidth: 2,
-                    width: 200,
+                    width: 235,
                     marginLeft: 2,
                     paddingBottom: 5,
                   }}
@@ -81,7 +83,7 @@ const CustomInput = ({
       </View>
 
       {errorMessage && (
-        <Text style={[errorStyle, { paddingLeft: 35 }]}>{errorMessage}</Text>
+        <Text style={[errorStyle, { paddingLeft: 55 }]}>{errorMessage}</Text>
       )}
     </View>
   );
@@ -93,6 +95,9 @@ const FuelCatalogForm = ({
   componentData: FuelCatalogProps;
 }) => {
   const [type, setType] = useState("new");
+  const navigation = useNavigation();
+  const { authState } = useAuth();
+
   const {
     fuelType,
     setFuelType,
@@ -103,24 +108,18 @@ const FuelCatalogForm = ({
     productStatus,
     setProductStatus,
     isRequiredFuelCatalogType,
-    setIsRequiredFuelCatalogType,
     isRequiredFuelTitle,
-    setIsRequiredFuelTitle,
     errorMessageFuelType,
-    setErrorMessageFuelType,
     isRequiredValue,
-    setIsRequiredValue,
     errorMessageFuelTitle,
-    setErrorMessageFuelTitle,
     errorMessageValue,
-    setErrorMessageValue,
     validateFuelCatalogEmptyField,
     validateFuelCatalogMessageError,
     validateRequiredFields,
     resetValues,
+    clearMessageError,
+    setInvalidDataErrorMessages,
   } = FuelCatalogStore();
-
-  // const { authState } = useAuth();
 
   useEffect(() => {
     if (componentData.fuelType) {
@@ -132,81 +131,57 @@ const FuelCatalogForm = ({
   }, [componentData]);
 
   const handleCustomButtonPress = async () => {
+    clearMessageError();
     validateFuelCatalogEmptyField();
     validateFuelCatalogMessageError();
 
-    if (errorMessageFuelType !== "" || errorMessageFuelTitle !== "") {
+    if (
+      errorMessageFuelType !== "" ||
+      errorMessageFuelTitle !== "" ||
+      errorMessageValue !== ""
+    ) {
       return;
     }
 
-    //   if (
-    //     type === "edit" &&
-    //     componentData?.kilometersLastExchange &&
-    //     mileage !== null &&
-    //     mileage > componentData?.kilometersLastExchange
-    //   ) {
-    //     const mileageErrorMessage = Validation.validateMileage(
-    //       mileage,
-    //       componentData.kilometersLastExchange
-    //     );
-    //     if (mileageErrorMessage !== "") {
-    //       setErrorMessageMileage(mileageErrorMessage);
-    //       return;
-    //     } else {
-    //       setErrorMessageMileage("");
-    //     }
-
     if (validateRequiredFields()) {
       try {
-        if (
-          type === "edit"
-          // componentData &&
-          // componentData.componentId &&
-          // authState?.token
-        ) {
-          //         await vehicheComponentService.updateComponent(
-          //           componentData.componentId,
-          //           authState.token,
-          //           {
-          //             fuelType: fuelType,
-          //             dateLastExchange: date,
-          //             kilometersLastExchange: mileage,
-          //             maintenanceFrequency: frequency,
-          //           },
-          //           navigation,
-          //           "Componente editado com sucesso!"
-          //         );
+        if (type === "edit" && authState?.token) {
+          await fuelCatalogService.updateComponent(
+            componentData.establishmentId,
+            authState.token,
+            {
+              fuelType,
+              fuelTitle,
+              value,
+              productStatus,
+            },
+            navigation,
+            "Catálogo editado com sucesso!"
+          );
         } else {
-          //         await vehicheComponentService.save(
-          //           {
-          //             fuelType,
-          //             dateLastExchange: date,
-          //             kilometersLastExchange: mileage,
-          //             maintenanceFrequency: frequency,
-          //           },
-          //           componentData.vehicleId,
-          //           navigation,
-          //           "Componente cadastrado com sucesso!"
-          //         );
+          await fuelCatalogService.save(
+            {
+              fuelType,
+              fuelTitle,
+              value,
+              productStatus,
+            },
+            componentData.establishmentId,
+            navigation,
+            "Catálogo cadastrado com sucesso!"
+          );
         }
-        //       setErrorMessage("");
-        //       setErrorMessageDate("");
-        //       setErrorMessageMileage("");
-        //       setErrorMessageFuelType("");
+        clearMessageError();
       } catch (error) {
-        //       console.log(error);
-        //       setErrorMessage("Dados inválidos");
-        //       setErrorMessageDate("Dados inválidos");
-        //       setErrorMessageMileage("Dados inválidos");
-        //       setErrorMessageFuelType("Dados inválidos");
+        console.log(error);
+        setInvalidDataErrorMessages();
       }
     }
   };
 
   const handleCustomButtonCancel = async () => {
     resetValues();
-
-    //   navigation.navigate("VehicleList" as never);
+    navigation.navigate("VehicleList" as never);
   };
 
   return (
@@ -267,15 +242,11 @@ const FuelCatalogForm = ({
               if (text.trim() === "") {
                 setValue(null);
               } else {
-                const parsedValue = parseFloat(text);
-                if (!isNaN(parsedValue)) {
-                  setValue(parsedValue);
-                } else {
-                  setValue(null);
-                }
+                const textWithDot = text.replace(",", ".");
+                setValue(parseFloat(textWithDot));
               }
             }}
-            value={value ? value.toString() : ""}
+            keyboardType="decimal-pad"
             errorMessage={Validation.generateErrorMessage(
               isRequiredValue,
               errorMessageValue
@@ -306,7 +277,7 @@ const FuelCatalogForm = ({
       </View>
       <View style={fuelCatalog.containerRow}></View>
       <CustomButton
-        title="Cadastrar"
+        title={type === "new" ? "Cadastrar" : "Atualizar"}
         onPress={handleCustomButtonPress}
         style={{ marginTop: 20 }}
       />

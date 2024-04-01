@@ -179,7 +179,7 @@ const VehicheComponentForm = ({
               maintenanceFrequency: frequency,
             },
             navigation,
-            "Componente editado com sucesso!"
+            "Componente atualizado com sucesso!"
           );
         } else {
           await vehicheComponentService.save(
@@ -307,6 +307,7 @@ const VehicheComponentForm = ({
                 }
               }
             }}
+            value={mileage !== null ? mileage.toString() : undefined}
             errorMessage={Validation.generateErrorMessage(
               isRequiredMileage,
               errorMessageMileage

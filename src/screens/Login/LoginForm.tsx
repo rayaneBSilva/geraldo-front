@@ -81,6 +81,7 @@ const LoginForm = () => {
           placeholder="Usuário"
           onChangeText={(text) => setUsername(text)}
           value={username}
+          keyboardType="numeric"
           errorMessage={handleMessageError()}
           errorStyle={{
             color: isRequiredUsername || errorMessage !== "" ? "red" : "black",

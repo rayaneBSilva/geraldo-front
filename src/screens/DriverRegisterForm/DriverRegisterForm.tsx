@@ -141,6 +141,7 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="CPF"
+          keyboardType="numeric"
           onChangeText={(text) =>{
               if(text.length <= 11){
                 setUserName(text)}}} // Chame handleCpfChange para formatação imediata

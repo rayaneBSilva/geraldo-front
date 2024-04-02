@@ -141,7 +141,9 @@ const RegisterForm = () => {
           containerStyle={{ width: "90%" }}
           style={{ color: "white" }}
           placeholder="CPF"
-          onChangeText={(text) => setUserName(text)} // Chame handleCpfChange para formatação imediata
+          onChangeText={(text) =>{
+              if(text.length <= 11){
+                setUserName(text)}}} // Chame handleCpfChange para formatação imediata
           value={formatCPF(username)} // Exiba o CPF formatado
           errorMessage={isRequiredUserName ? invalidUserNameMessage : ""}
           errorStyle={{ color: "red", marginLeft: -1 }}

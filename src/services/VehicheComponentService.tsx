@@ -60,6 +60,7 @@ class VehicheComponentService extends ServiceBase {
   }
 
   async save(
+    id: number,
     data: Data,
     vehicleId: number,
     navigation: any,
@@ -73,7 +74,7 @@ class VehicheComponentService extends ServiceBase {
           text1: message,
         });
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      navigation.navigate("VehicleList");
+      navigation.navigate("ViewCarScreen", { id });
     } catch (error: any) {
       console.log(error.response.data);
       const errors = error.response.data.message;
@@ -106,7 +107,7 @@ class VehicheComponentService extends ServiceBase {
 
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      navigation.navigate("VehicleList");
+      navigation.navigate("ViewCarScreen", { id });
     } catch (error: any) {
       console.log("erro", error.response);
       ToastComponent({

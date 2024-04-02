@@ -14,13 +14,14 @@ class FuelCatalogService extends ServiceBase {
   ): Promise<void> {
     try {
       await this.post(data, "fuels");
-      navigation.navigate("VehicleList");
 
       message &&
         ToastComponent({
           type: "success",
           text1: message,
         });
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      navigation.navigate("VehicleList");
     } catch (error: any) {
       console.log(error.response.data);
       const errors = error.response.data.message;
@@ -43,12 +44,13 @@ class FuelCatalogService extends ServiceBase {
   ): Promise<void> {
     try {
       await this.put(data, `fuels/${establishmentId}`, token);
-      navigation.navigate("VehicleList");
       message &&
         ToastComponent({
           type: "success",
           text1: message,
         });
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      navigation.navigate("VehicleList");
     } catch (error: any) {
       console.log("erro", error.response);
       ToastComponent({

@@ -156,7 +156,7 @@ const FuelCatalogForm = ({
               productStatus,
             },
             navigation,
-            "Catálogo editado com sucesso!"
+            "Catálogo atualizado com sucesso!"
           );
         } else {
           await fuelCatalogService.save(
@@ -193,8 +193,8 @@ const FuelCatalogForm = ({
           <MainTitle title={`${componentData?.fuelType}`} />
         )}
         <Text style={fuelCatalog.paragraph}>
-          Preencha os campos com as informações referentes a última troca do
-          componente
+          Preencha os campos com as informações referentes ao catálogo de
+          combustível
         </Text>
       </View>
       <View style={fuelCatalog.fuelCatalogFormContainer}>
@@ -264,12 +264,22 @@ const FuelCatalogForm = ({
             icon={QuilometragemIcon}
             children={
               <FrequencyButton
-                title={productStatus ? "Disponível" : "Indisponível"}
-                options={["Indisponível", "Disponível"]}
+                title={
+                  productStatus
+                    ? "Disponível                                  "
+                    : "Indisponível                               "
+                }
+                options={[
+                  "Indisponível                               ",
+                  "Disponível                                  ",
+                ]}
                 onSelect={(option) => {
                   setProductStatus(option === "Disponível");
                 }}
-                style={{ backgroundColor: "transparent", width: 150 }}
+                style={{
+                  backgroundColor: "transparent",
+                  width: "100%",
+                }}
               />
             }
           />

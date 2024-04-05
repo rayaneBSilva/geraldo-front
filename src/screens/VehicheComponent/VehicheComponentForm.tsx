@@ -1,7 +1,7 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/themed";
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
 import { VehicheComponentProps, VehicheComponentRoute } from ".";
 import FrequencyButton from "../../../components/button/frequencyButton";
@@ -23,6 +23,7 @@ type InputProps = {
   onChangeText?: (text: string) => void;
   value?: string;
   onPress?: () => void;
+  children?: ReactNode;
   errorMessage?: string;
   errorStyle?: object;
 };
@@ -33,6 +34,7 @@ const CustomInput = ({
   onChangeText,
   value,
   onPress,
+  children,
   errorMessage,
   errorStyle,
 }: InputProps) => {
@@ -47,13 +49,33 @@ const CustomInput = ({
         ) : (
           <Image source={Icon} style={vehicheComponent.icon} />
         )}
-        <TextInput
-          placeholder={placeholder}
-          placeholderTextColor="rgba(255, 255, 255, 0.5)"
-          style={vehicheComponent.textInput}
-          onChangeText={onChangeText}
-          value={value}
-        />
+        {!children && (
+          <TextInput
+            placeholder={placeholder}
+            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            style={vehicheComponent.textInput}
+            onChangeText={onChangeText}
+            value={value}
+          />
+        )}
+        {children && (
+          <View style={{ marginTop: 30 }}>
+            {children}
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    borderBottomColor: "white",
+                    borderBottomWidth: 2,
+                    width: 265,
+                    marginLeft: 2,
+                    paddingBottom: 5,
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+        )}
       </View>
       {errorMessage && (
         <Text style={[errorStyle, { paddingLeft: 35 }]}>{errorMessage}</Text>
@@ -70,12 +92,13 @@ const VehicheComponentForm = ({
   const [selectedFrequency, setSelectedFrequency] = useState<number | null>(
     null
   );
-  const [isRequiredComponentType, setIsRequiredComponentType] = useState(false);
+
   const [isRequiredDate, setIsRequiredDate] = useState(false);
   const [isRequiredMileage, setIsRequiredMileage] = useState(false);
   const [isRequiredFrequency, setIsRequiredFrequency] = useState(false);
   const [componentType, setComponentType] = useState<string | null>(null);
   const [date, setDate] = useState("");
+  const [dateSave, setDateSave] = useState("");
   const [mileage, setMileage] = useState<number | null>(null);
   const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessageTypeComponente, setErrorMessageTypeComponente] =
@@ -91,7 +114,7 @@ const VehicheComponentForm = ({
   useEffect(() => {
     if (componentData.componentType) {
       setComponentType(componentData.componentType);
-      setDate(componentData.dateLastExchange as string);
+      setDate(formatDate(componentData.dateLastExchange as string));
       setMileage(componentData.kilometersLastExchange as number);
       setFrequency(componentData.maintenanceFrequency as number);
 
@@ -105,6 +128,14 @@ const VehicheComponentForm = ({
     }
   }, [showPicker]);
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const selectedDateString = date.toISOString().split("T")[0];
+    const [year, month, day] = selectedDateString.split("-");
+
+    return `${day}-${month}-${year}`;
+  };
+
   const handleSelectFrequency = (frequency: string | null) => {
     if (frequency !== null) {
       const frequencyNumber = parseInt(frequency);
@@ -115,7 +146,6 @@ const VehicheComponentForm = ({
   };
 
   const handleCustomButtonPress = async () => {
-    setIsRequiredComponentType(componentType ? false : true);
     setIsRequiredDate(!date);
     setIsRequiredMileage(mileage === null || mileage === undefined);
     setIsRequiredFrequency(frequency === null || frequency === undefined);
@@ -126,16 +156,6 @@ const VehicheComponentForm = ({
       return;
     } else {
       setErrorMessageDate("");
-    }
-
-    const typeComponentErrorMessage = Validation.validateTypeComponent(
-      componentType as string
-    );
-    if (typeComponentErrorMessage !== "") {
-      setErrorMessageTypeComponente(typeComponentErrorMessage);
-      return;
-    } else {
-      setErrorMessageTypeComponente("");
     }
 
     if (
@@ -174,7 +194,7 @@ const VehicheComponentForm = ({
             authState.token,
             {
               componentType: componentType,
-              dateLastExchange: date,
+              dateLastExchange: dateSave,
               kilometersLastExchange: mileage,
               maintenanceFrequency: frequency,
             },
@@ -183,9 +203,10 @@ const VehicheComponentForm = ({
           );
         } else {
           await vehicheComponentService.save(
+            componentData.vehicleId,
             {
               componentType,
-              dateLastExchange: date,
+              dateLastExchange: dateSave,
               kilometersLastExchange: mileage,
               maintenanceFrequency: frequency,
             },
@@ -238,18 +259,42 @@ const VehicheComponentForm = ({
           <CustomInput
             placeholder="Tipo do Componente"
             icon={PranchetaIcon}
-            onChangeText={(text) => setComponentType(text as ComponentTypeEnum)}
-            value={componentType ? componentType.toString() : ""}
-            errorMessage={Validation.generateErrorMessage(
-              isRequiredComponentType,
-              errorMessageTypeComponente
-            )}
-            errorStyle={{
-              color:
-                isRequiredComponentType || errorMessageTypeComponente !== ""
-                  ? "red"
-                  : "black",
-            }}
+            children={
+              <FrequencyButton
+                title={
+                  componentData.componentType
+                    ? componentData.componentType +
+                      "                                     "
+                    : " MOTOR_OIL                                     "
+                }
+                options={[
+                  " MOTOR_OIL                                     ",
+                  " BALANCE                                         ",
+                  " AIR_FILTER                                      ",
+                ]}
+                onSelect={(option) => {
+                  if (
+                    typeof option === "string" &&
+                    option.trim() === "AIR_FILTER"
+                  ) {
+                    setComponentType(ComponentTypeEnum.AIR_FILTER);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "MOTOR_OIL"
+                  ) {
+                    setComponentType(ComponentTypeEnum.MOTOR_OIL);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "BALANCE"
+                  ) {
+                    setComponentType(ComponentTypeEnum.BALANCE);
+                  }
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                }}
+              />
+            }
           />
         </View>
         <View style={vehicheComponent.containerLoginForm}>
@@ -275,18 +320,25 @@ const VehicheComponentForm = ({
             display="spinner"
             value={date ? new Date(date) : new Date()}
             onChange={(event, selectedDate) => {
-              if (selectedDate) {
-                selectedDate.setDate(selectedDate.getDate() - 1);
+              if (selectedDate && event.type === "set") {
+                const modifiedDate = new Date(selectedDate);
+                modifiedDate.setDate(modifiedDate.getDate());
                 setShowPicker(false);
 
-                const selectedDateString = selectedDate
+                const selectedDateString = modifiedDate
                   .toISOString()
                   .split("T")[0];
 
-                setDate(selectedDateString);
+                const [year, month, day] = selectedDateString.split("-");
+                const invertedDate = `${day}-${month}-${year}`;
+                setDate(invertedDate);
+                setDateSave(selectedDateString);
+                setShowPicker(false);
+              } else {
+                setShowPicker(false);
+                setDate(date);
+                setDateSave(dateSave);
               }
-
-              setShowPicker(false);
             }}
           />
         )}

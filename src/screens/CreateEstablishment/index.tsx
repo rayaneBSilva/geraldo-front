@@ -2,7 +2,8 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { Maybe, just, none } from '@sweet-monads/maybe';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from "react";
-import { Button, ImageBackground, SafeAreaView, ScrollView, Text, View } from "react-native";
+import { ImageBackground, SafeAreaView, ScrollView, Text, View } from "react-native";
+import Toast from "react-native-toast-message";
 import City from '../../../assets/icons/city.svg';
 import Id from '../../../assets/icons/cnpj.svg';
 import Form from '../../../assets/icons/form.svg';
@@ -16,9 +17,9 @@ import Street from '../../../assets/icons/street.svg';
 import User from '../../../assets/icons/user.svg';
 import { CreateEstablishmentCommand } from '../../api/commands/CreateEstablishment';
 import { FindAddressQuery } from '../../api/queries/FindAddress';
+import CustomButton from '../../components/button';
 import { Input } from '../../components/input';
 import { Picker } from '../../components/picker';
-import CustomButton from '../../components/button';
 
 interface CreateEstablishmentProps {
   navigation: NavigationProp<ParamListBase>;
@@ -82,7 +83,7 @@ const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation })
       error: string;
     }>)
 
-    if (validationErrors.length > 0) {
+    if (validationErrors.some(obj => !!obj.error)) {
       const newFieldsErrorsState = validationErrors.reduce((prev, curr) => {
         return {
           ...prev,
@@ -105,9 +106,18 @@ const CreateEstablishment: React.FC<CreateEstablishmentProps> = ({ navigation })
     })
 
     if (result.isLeft()) {
-      alert("Não foi possível criar o estabelecimento agora.")
+      const errorMessage = result.value.message;
+      Toast.show({
+        type: "error",
+        text1: "Erro no cadastro",
+        text2: errorMessage
+      })
     } else {
-      alert("Estabelecimento cadastrado com sucesso.")
+      Toast.show({
+        type: "success",
+        text1: "Estabelecimento cadastrado",
+        text2: "O estabelecimento foi cadastrado com sucesso"
+      })
       setFieldsValues(createFields())
       navigation.navigate("Login")
     }

@@ -46,7 +46,11 @@ export class CreateEstablishmentCommand {
             });
             return right(response.data);
         } catch (error: any) {
-            return left(new Error(error))
+            let errorMessage = error.response.data.message
+            if (Array.isArray(errorMessage)) {
+                errorMessage = errorMessage.join("\n")
+            }
+            return left(new Error(errorMessage))
         }
     }
 }

@@ -125,6 +125,8 @@ const FuelCatalogForm = ({
     if (componentData.fuelType) {
       setFuelType(componentData.fuelType);
       setFuelTitle(componentData.fuelTitle as string);
+      setValue(componentData.value as number);
+      setProductStatus(componentData.productStatus as boolean);
 
       setType("edit");
     }
@@ -145,9 +147,9 @@ const FuelCatalogForm = ({
 
     if (validateRequiredFields()) {
       try {
-        if (type === "edit" && authState?.token) {
+        if (type === "edit" && authState?.token && componentData.fuelId) {
           await fuelCatalogService.updateComponent(
-            componentData.establishmentId,
+            componentData.fuelId,
             authState.token,
             {
               fuelType,
@@ -202,20 +204,44 @@ const FuelCatalogForm = ({
           <CustomInput
             placeholder="Tipo do Combustível"
             icon={PranchetaIcon}
-            onChangeText={(text) => setFuelType(text as FuelCatalogTypeEnum)}
-            value={fuelType}
-            errorMessage={Validation.generateErrorMessage(
-              isRequiredFuelCatalogType,
-              errorMessageFuelType
-            )}
-            errorStyle={{
-              color:
-                isRequiredFuelCatalogType || errorMessageFuelType !== ""
-                  ? "red"
-                  : "black",
-            }}
+            children={
+              <FrequencyButton
+                title={
+                  componentData.fuelType
+                    ? componentData.fuelType + "                              "
+                    : " GASOLINE                              "
+                }
+                options={[
+                  " GASOLINE                              ",
+                  " DIESEL                                    ",
+                  " ETHANOL                               ",
+                ]}
+                onSelect={(option) => {
+                  if (
+                    typeof option === "string" &&
+                    option.trim() === "GASOLINE"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.GASOLINE);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "DIESEL"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.DIESEL);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "ETHANOL"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.ETHANOL);
+                  }
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                }}
+              />
+            }
           />
         </View>
+
         <View style={fuelCatalog.containerLoginForm}>
           <CustomInput
             placeholder="Título do Combustível"
@@ -274,7 +300,9 @@ const FuelCatalogForm = ({
                   "Disponível                                  ",
                 ]}
                 onSelect={(option) => {
-                  setProductStatus(option === "Disponível");
+                  if (typeof option === "string") {
+                    setProductStatus(option.trim() === "Disponível");
+                  }
                 }}
                 style={{
                   backgroundColor: "transparent",

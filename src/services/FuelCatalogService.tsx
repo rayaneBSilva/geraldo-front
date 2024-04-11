@@ -36,14 +36,14 @@ class FuelCatalogService extends ServiceBase {
   }
 
   async updateComponent(
-    establishmentId: number,
+    fuelId: number,
     token: string,
     data: Data,
     navigation: any,
     message?: string
   ): Promise<void> {
     try {
-      await this.put(data, `fuels/${establishmentId}`, token);
+      await this.put(data, `fuels/${fuelId}`, token);
       message &&
         ToastComponent({
           type: "success",

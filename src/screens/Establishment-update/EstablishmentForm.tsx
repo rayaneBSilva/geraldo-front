@@ -23,8 +23,21 @@ const EstablishmentUpdateForm = () =>{
                 placeholder={"Nome Fantasia"}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
-      </View>
-        
+ </View>
+ <View style={establishmentStyles.containerUpdateForm}>
+            <FontAwesome
+                name="envelope"
+                size={28}
+                color={"white"}
+              style={establishmentStyles.icon}
+            />
+            <Input
+                containerStyle={{ width: "90%" }}
+                style={{ color: "white" }}
+                placeholder={"Email"}
+                errorStyle={{ color: "red", marginLeft: -1 }}
+        />
+ </View>
         </View>
 
          

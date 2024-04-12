@@ -1,6 +1,9 @@
 import React from "react";
 import { View } from "react-native";
 import { Input, Text } from "@rneui/themed";
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+
 
 import { establishmentStyles } from "./EstablishmentUpdateStyles";
 import { FontAwesome } from "@expo/vector-icons";
@@ -35,6 +38,21 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder={"Email"}
+                errorStyle={{ color: "red", marginLeft: -1 }}
+        />
+ </View>
+
+ <View style={establishmentStyles.containerUpdateForm}>
+            <FontAwesome6
+                name="phone-volume"
+                size={28}
+                color={"white"}
+              style={establishmentStyles.icon}
+            />
+            <Input
+                containerStyle={{ width: "90%" }}
+                style={{ color: "white" }}
+                placeholder={"Telefone"}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>

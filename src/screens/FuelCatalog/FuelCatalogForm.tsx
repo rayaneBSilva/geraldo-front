@@ -106,6 +106,8 @@ const FuelCatalogForm = ({
     setFuelTitle,
     value,
     setValue,
+    valueStr,
+    setValueStr,
     productStatus,
     setProductStatus,
     isRequiredFuelTitle,
@@ -130,6 +132,7 @@ const FuelCatalogForm = ({
       setFuelType(componentData.fuelType);
       setFuelTitle(componentData.fuelTitle as string);
       setValue(componentData.value);
+      setValueStr(componentData.value.toString());
       setProductStatus(componentData.productStatus);
 
       setType("edit");
@@ -196,7 +199,7 @@ const FuelCatalogForm = ({
         {type === "new" ? (
           <MainTitle title={"Cadastro de catálogo\nde combustíveis"} />
         ) : (
-          <MainTitle title={`${componentData?.fuelType}`} />
+          <MainTitle title={"Atualização de catálogo\nde combustíveis"} />
         )}
         <Text style={fuelCatalog.paragraph}>
           Preencha os campos com as informações referentes ao catálogo de
@@ -268,13 +271,15 @@ const FuelCatalogForm = ({
           <CustomInput
             placeholder="Valor"
             icon={Dolar}
-            value={value?.toString()}
+            value={valueStr}
             onChangeText={(text) => {
               if (text.trim() === "") {
                 setValue(null);
+                setValueStr("");
               } else {
                 const textWithDot = text.replace(",", ".");
                 setValue(parseFloat(textWithDot));
+                setValueStr(text);
               }
             }}
             keyboardType="decimal-pad"

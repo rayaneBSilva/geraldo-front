@@ -15,6 +15,7 @@ import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
 import MapaProvisorio from "../screens/Mapa/MapaProvisorio";
 import FuelCatalog from "../screens/FuelCatalog";
+import EstablishmentUpdate from "../screens/Establishment-update";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="EstablishmentUpdate" component={EstablishmentUpdate} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="FuelCatalog" component={FuelCatalog} />

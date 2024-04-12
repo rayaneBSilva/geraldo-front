@@ -1,12 +1,33 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Input, Text } from "@rneui/themed";
+
 import { establishmentStyles } from "./EstablishmentUpdateStyles";
+import { FontAwesome } from "@expo/vector-icons";
+
 
 const EstablishmentUpdateForm = () =>{
     return(
         <View style={{width: "85%", flexDirection: "column"}}>
             <Text style={establishmentStyles.text}>Atualização de Estabelecimento</Text>
+            <View style={establishmentStyles.containerUpdateForm}>
+            <FontAwesome
+                name="user"
+                size={34}
+                color={"white"}
+              style={establishmentStyles.icon}
+            />
+            <Input
+                containerStyle={{ width: "90%", marginLeft: 3.5 }}
+                style={{ color: "white" }}
+                placeholder={"Nome Fantasia"}
+                errorStyle={{ color: "red", marginLeft: -1 }}
+        />
+      </View>
+        
         </View>
+
+         
     );
 };
 

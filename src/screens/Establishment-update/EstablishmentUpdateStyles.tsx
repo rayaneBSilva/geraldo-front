@@ -22,5 +22,14 @@ export const establishmentStyles = StyleSheet.create({
     fontSize: 41.5,
     fontWeight: "bold",
     textAlign: "center",
-      },
+    },
+    containerUpdateForm: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: -10,
+    },
+    icon: {
+      marginRight: 10,
+      marginBottom: 20,
+    },
 });

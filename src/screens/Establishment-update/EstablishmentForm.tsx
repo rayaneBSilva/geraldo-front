@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Input, Text } from "@rneui/themed";
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6, Fontisto } from '@expo/vector-icons';
 
 
 import { establishmentStyles } from "./EstablishmentUpdateStyles";
@@ -53,6 +52,21 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder={"Telefone"}
+                errorStyle={{ color: "red", marginLeft: -1 }}
+        />
+ </View>
+
+ <View style={establishmentStyles.containerUpdateForm}>
+            <Fontisto
+                name="map-marker-alt"
+                size={36}
+                color={"white"}
+              style={establishmentStyles.icon}
+            />
+            <Input
+                containerStyle={{ width: "90%" }}
+                style={{ color: "white" }}
+                placeholder={"CEP"}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>

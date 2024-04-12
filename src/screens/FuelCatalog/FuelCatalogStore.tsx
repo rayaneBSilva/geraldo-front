@@ -69,7 +69,6 @@ const FuelCatalogForm = () => {
     setValue,
     productStatus,
     setProductStatus,
-    isRequiredFuelCatalogType,
     isRequiredFuelTitle,
     errorMessageFuelType,
     isRequiredValue,

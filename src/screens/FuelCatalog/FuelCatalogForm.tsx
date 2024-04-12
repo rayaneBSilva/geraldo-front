@@ -15,6 +15,7 @@ import fuelCatalogService from "../../services/FuelCatalogService";
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
 const QuilometragemIcon = require("../../../assets/icons/quilometragem.png");
+const Dolar = require("../../../assets/icons/Dollar.png");
 
 type InputProps = {
   placeholder: string;
@@ -107,7 +108,6 @@ const FuelCatalogForm = ({
     setValue,
     productStatus,
     setProductStatus,
-    isRequiredFuelCatalogType,
     isRequiredFuelTitle,
     errorMessageFuelType,
     isRequiredValue,
@@ -122,11 +122,15 @@ const FuelCatalogForm = ({
   } = FuelCatalogStore();
 
   useEffect(() => {
-    if (componentData.fuelType) {
+    if (
+      componentData.fuelType &&
+      componentData.value &&
+      componentData.productStatus
+    ) {
       setFuelType(componentData.fuelType);
       setFuelTitle(componentData.fuelTitle as string);
-      setValue(componentData.value as number);
-      setProductStatus(componentData.productStatus as boolean);
+      setValue(componentData.value);
+      setProductStatus(componentData.productStatus);
 
       setType("edit");
     }
@@ -245,7 +249,7 @@ const FuelCatalogForm = ({
         <View style={fuelCatalog.containerLoginForm}>
           <CustomInput
             placeholder="Título do Combustível"
-            icon={PranchetaIcon}
+            icon={CalendarIcon}
             onChangeText={(text) => setFuelTitle(text)}
             value={fuelTitle}
             errorMessage={Validation.generateErrorMessage(
@@ -263,7 +267,8 @@ const FuelCatalogForm = ({
         <View style={fuelCatalog.containerLoginForm}>
           <CustomInput
             placeholder="Valor"
-            icon={QuilometragemIcon}
+            icon={Dolar}
+            value={value?.toString()}
             onChangeText={(text) => {
               if (text.trim() === "") {
                 setValue(null);
@@ -288,10 +293,11 @@ const FuelCatalogForm = ({
           <CustomInput
             placeholder={productStatus ? "Disponível" : "Indisponível"}
             icon={QuilometragemIcon}
+            value={productStatus ? "Disponível" : "Indisponível"}
             children={
               <FrequencyButton
                 title={
-                  productStatus
+                  componentData.productStatus
                     ? "Disponível                                  "
                     : "Indisponível                               "
                 }

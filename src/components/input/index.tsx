@@ -59,7 +59,7 @@ const Input = ({
             borderBottomWidth: 2,
             paddingVertical: 3,
             color: "white",
-          }}
+          }}  
         />
         ) : (
           <TextInput

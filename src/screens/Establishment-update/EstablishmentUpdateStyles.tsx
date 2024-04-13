@@ -32,4 +32,14 @@ export const establishmentStyles = StyleSheet.create({
       marginRight: 10,
       marginBottom: 20,
     },
+    iconCity: {
+      marginRight: 12,
+      marginLeft:-3,
+      marginBottom: 20,
+    },
+    iconBairro: {
+      marginRight: 12,
+      marginLeft:-7,
+      marginBottom: 20,
+    },
 });

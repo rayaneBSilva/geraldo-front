@@ -147,7 +147,7 @@ const EstablishmentUpdateForm = () =>{
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
- <CustomButton title="Atualizar" />
+ <CustomButton title="Atualizar" style={establishmentStyles.button}/>
 
         </View>
 

@@ -5,6 +5,7 @@ const FuelCatalogForm = () => {
   const [fuelType, setFuelType] = useState<string>("");
   const [fuelTitle, setFuelTitle] = useState<string>("");
   const [value, setValue] = useState<number | null>(null);
+  const [valueStr, setValueStr] = useState<string>("");
   const [productStatus, setProductStatus] = useState<boolean>(false);
 
   const [isRequiredFuelCatalogType, setIsRequiredFuelCatalogType] =
@@ -45,6 +46,7 @@ const FuelCatalogForm = () => {
     setFuelType("");
     setFuelTitle("");
     setValue(null);
+    setValueStr("");
     setProductStatus(false);
   };
 
@@ -67,9 +69,10 @@ const FuelCatalogForm = () => {
     setFuelTitle,
     value,
     setValue,
+    valueStr,
+    setValueStr,
     productStatus,
     setProductStatus,
-    isRequiredFuelCatalogType,
     isRequiredFuelTitle,
     errorMessageFuelType,
     isRequiredValue,

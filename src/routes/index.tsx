@@ -15,7 +15,7 @@ import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
 import MapaProvisorio from "../screens/Mapa/MapaProvisorio";
 import FuelCatalog from "../screens/FuelCatalog";
-import Notificacao from "../screens/Notificacao";
+import Notificacao from "../screens/NotificacaoTeste";
 
 const Stack = createNativeStackNavigator();
 

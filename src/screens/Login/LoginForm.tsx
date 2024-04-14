@@ -137,12 +137,6 @@ const LoginForm = () => {
       >
         Cadastrar Estabelecimento
       </Text>
-      <Text
-        style={loginStyles.textButton}
-        onPress={() => navigation.navigate("HoursRegistration" as never)}
-      >
-        Cadastrar horario 
-      </Text>
     </View>
   );
 };

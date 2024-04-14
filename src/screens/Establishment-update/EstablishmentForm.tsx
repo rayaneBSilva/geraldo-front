@@ -22,6 +22,12 @@ const EstablishmentUpdateForm = () =>{
   const [cep, setCep] = useState("");
   const [cepErrorMessage, setCepErrorMessage] = useState("");
 
+  const [estado, setEstado] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+
   const [address, setAddress] = useState({
       estado: "",
       cidade: "",
@@ -43,6 +49,10 @@ const EstablishmentUpdateForm = () =>{
             bairro: data.bairro || "",
             rua: data.logradouro || ""
           });
+          setEstado(data.uf || "");
+          setCidade(data.localidade || "");
+          setBairro(data.bairro || "");
+          setRua(data.lograduro || "");
         } catch (error) {
          
         }
@@ -83,6 +93,7 @@ const EstablishmentUpdateForm = () =>{
     const handleTelefoneChange = (telefone:any) => {
       setTelefone(telefone);
     }
+
 
     /**
      * Using the validation function when the field 

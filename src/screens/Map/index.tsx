@@ -7,6 +7,7 @@ import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
+import MapViewDirections from "react-native-maps-directions"
 
 const EstablishmentModal = () => {
     return (
@@ -197,17 +198,17 @@ const MapScreen = () => {
                             latitude: 37.78825,
                             longitude: -122.4324
                         }}
-                        // image={{
-                        //     uri:"../../../assets/icons/number.svg"
-                        // }}
+                        image={{
+                            uri:"../../../assets/icons/number.svg"
+                        }}
                         />
                     ))
                 } */}
-                {/* <MapViewDirections
+                <MapViewDirections
                 origin={origin}
                 destination={destination}
                 apikey={GOOGLE_MAPS_APIKEY}
-                /> */}
+                />
             </MapView>
             {
                 selectedEstablishment && <EstablishmentModal/>

@@ -5,12 +5,21 @@ import { FontAwesome5, FontAwesome6, Fontisto, MaterialCommunityIcons } from '@e
 import { establishmentStyles } from "./EstablishmentUpdateStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../components/button";
-import Button2 from "../../components/button";
+import { validateEmail, validateCEP, validateName, formatCEP } from "./EstablishmentUpdateValidations";
 
 
 
 const EstablishmentUpdateForm = () =>{
-    const [address, setAddress] = useState({
+  const [nomeFantasia, setNomeFantasia] = useState("");
+  const [nomeFantasiaErrorMessage, setNomeFantasiaErrorMessage] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+
+  const [cep, setCep] = useState("");
+  const [cepErrorMessage, setCepErrorMessage] = useState("");
+
+  const [address, setAddress] = useState({
       estado: "",
       cidade: "",
       bairro: "",
@@ -40,6 +49,14 @@ const EstablishmentUpdateForm = () =>{
     };
 
     /**Clears the fields in case the CEP code is not complete */
+    /**
+    * Actions as fields change
+   */
+    const handleNameChange = (nomeFantasia:any) =>{
+      setNomeFantasia(nomeFantasia);
+      setNomeFantasiaErrorMessage(validateName(nomeFantasia));
+    }
+
       const handleCepChange = (cep:any) => {
         if (cep === "" || cep.length < 8 ) {
           setAddress({
@@ -51,7 +68,31 @@ const EstablishmentUpdateForm = () =>{
         } else {
           fetchAddressInfo(cep);
         }
+        setCep(cep);
+        setCepErrorMessage(validateCEP(cep))
       };
+
+    const handleEmailChange = (text:any) => {
+      setEmail(text);
+      setEmailErrorMessage(validateEmail(text));
+    }
+
+
+    /**
+     * Using the validation function when the field 
+     * loses focus
+     */
+    const handleNameBlur = () => {
+      setNomeFantasiaErrorMessage(validateName(nomeFantasia));
+    }
+
+    const handleEmailBlur = ()=> {
+      setEmailErrorMessage(validateEmail(email)); 
+    }
+
+    const handleCepBlur = ()=> {
+      setCepErrorMessage(validateCEP(cep)); 
+    }
 
 
     return(
@@ -68,6 +109,9 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%", marginLeft: 3.5 }}
                 style={{ color: "white" }}
                 placeholder={"Nome Fantasia"}
+                onChangeText={handleNameChange}
+                onBlur={handleNameBlur}
+                errorMessage={nomeFantasiaErrorMessage}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -82,6 +126,9 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder={"Email"}
+                onChangeText={handleEmailChange}
+                onBlur={handleEmailBlur}
+                errorMessage={emailErrorMessage}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -111,8 +158,12 @@ const EstablishmentUpdateForm = () =>{
             <Input
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
+                keyboardType={"numeric"}
                 placeholder={"CEP"}
                 onChangeText={(cep) => handleCepChange(cep)}
+                onBlur={handleCepBlur}
+                value={formatCEP(cep)} // name only displayed
+                errorMessage={cepErrorMessage}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>

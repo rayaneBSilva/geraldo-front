@@ -16,6 +16,9 @@ const EstablishmentUpdateForm = () =>{
   const [email, setEmail] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
 
+  const [telefone, setTelefone] = useState("");
+  const [telefoneMessageError, setTelefoneMessageErrror] = useState("");
+
   const [cep, setCep] = useState("");
   const [cepErrorMessage, setCepErrorMessage] = useState("");
 
@@ -77,6 +80,9 @@ const EstablishmentUpdateForm = () =>{
       setEmailErrorMessage(validateEmail(text));
     }
 
+    const handleTelefoneChange = (telefone:any) => {
+      setTelefone(telefone);
+    }
 
     /**
      * Using the validation function when the field 
@@ -144,6 +150,7 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder={"Telefone"}
+                onChangeText={(telefone) => handleTelefoneChange(telefone)}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -160,6 +167,7 @@ const EstablishmentUpdateForm = () =>{
                 style={{ color: "white" }}
                 keyboardType={"numeric"}
                 placeholder={"CEP"}
+                maxLength={10}
                 onChangeText={(cep) => handleCepChange(cep)}
                 onBlur={handleCepBlur}
                 value={formatCEP(cep)} // name only displayed

@@ -23,6 +23,15 @@ export const establishmentStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     },
+    textButton: {
+      color: "white",
+      marginTop: -7,
+      fontSize: 14,
+      textAlign: "center",
+      justifyContent: "center",
+      alignItems: "center",
+
+    },
     containerUpdateForm: {
       flexDirection: "row",
       alignItems: "center",
@@ -43,11 +52,7 @@ export const establishmentStyles = StyleSheet.create({
       marginBottom: 20,
     },
     button: {
-      marginTop: 10,
-      flexDirection: "row",
-      justifyContent: "center",
-      textAlign: "center",
-      alignItems: "center",
-      width: "100%"
-    },
+      marginTop: 4
+    }
+    
 });

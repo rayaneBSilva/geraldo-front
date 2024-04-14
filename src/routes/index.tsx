@@ -15,6 +15,7 @@ import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
 import MapaProvisorio from "../screens/Mapa/MapaProvisorio";
 import FuelCatalog from "../screens/FuelCatalog";
+import EstablishmentUpdate from "../screens/Establishment-update";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,8 @@ function Routes() {
         <Stack.Screen name="CarSharing" component={CarSharing} />
         <Stack.Screen name="Succesfully" component={Succesfully} />
         <Stack.Screen name="MapaProvisorio" component={MapaProvisorio} />
+        <Stack.Screen name="EstablishmentUpdate" component={EstablishmentUpdate} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

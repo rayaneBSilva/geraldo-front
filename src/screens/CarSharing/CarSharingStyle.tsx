@@ -40,7 +40,15 @@ export const carSharingStyles = StyleSheet.create({
     color:"#FFF",
     marginTop: 150,
     marginBottom:45,
-    fontSize: 44,
+    fontSize: 37,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  text2:{
+    color:"#FFF",
+    marginTop: -50,
+    marginBottom:45,
+    fontSize: 37,
     fontWeight: "bold",
     textAlign: "center"
   },

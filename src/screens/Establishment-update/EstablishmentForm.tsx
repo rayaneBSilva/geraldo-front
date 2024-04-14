@@ -39,8 +39,21 @@ const EstablishmentUpdateForm = () =>{
       }
     };
 
+    /**Clears the fields in case the CEP code is not complete */
+      const handleCepChange = (cep:any) => {
+        if (cep === "" || cep.length < 8 ) {
+          setAddress({
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: ""
+          });
+        } else {
+          fetchAddressInfo(cep);
+        }
+      };
 
-    
+
     return(
         <View style={{width: "85%", flexDirection: "column"}}>
             <Text style={establishmentStyles.text}>Atualização de Estabelecimento</Text>
@@ -99,7 +112,7 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%" }}
                 style={{ color: "white" }}
                 placeholder={"CEP"}
-                onChangeText={(cep) => fetchAddressInfo(cep)}
+                onChangeText={(cep) => handleCepChange(cep)}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -116,6 +129,7 @@ const EstablishmentUpdateForm = () =>{
                 style={{ color: "white", marginLeft:-1 }}
                 placeholder={"Estado"}
                 value={address.estado}
+                editable={false}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -131,6 +145,7 @@ const EstablishmentUpdateForm = () =>{
                 containerStyle={{ width: "90%", marginLeft:-9}}
                 style={{ color: "white", marginLeft:-1 }}
                 placeholder={"Cidade"}
+                editable={false}
                 value={address.cidade}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
@@ -148,6 +163,7 @@ const EstablishmentUpdateForm = () =>{
                 style={{ color: "white", marginLeft:-1 }}
                 placeholder={"Bairro"}
                 value={address.bairro}
+                editable={false}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>
@@ -164,6 +180,7 @@ const EstablishmentUpdateForm = () =>{
                 style={{ color: "white", marginLeft:-1 }}
                 placeholder={"Rua"}
                 value={address.rua}
+                editable={false}
                 errorStyle={{ color: "red", marginLeft: -1 }}
         />
  </View>

@@ -10,16 +10,16 @@ interface UserData {
 
 
 class UserServiceHoursRegistration extends ServiceBase {
-    async hoursRegistration(data: UserData , idEstablishment: string, token:string): Promise<any> {
+    async hoursRegistration(data: UserData , token:string): Promise<any> {
     
         const headers = {
           'Authorization': `Bearer ${token}`
 
         }
-         const result = await axios.post(`${Config.API_URL}/share_vehicle/${idEstablishment}`, data, {headers});
+         const result = await axios.post(`${Config.API_URL}/establishment/${data}`,{headers});
          return result.data; 
   }
 }
 const userServiceHoursRegistration = new UserServiceHoursRegistration;
 
-export default UserServiceHoursRegistration;
+export default userServiceHoursRegistration;

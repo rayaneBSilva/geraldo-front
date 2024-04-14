@@ -8,6 +8,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Succesfully from "../Succesfully";
 import { useAuth } from "../../context/authContext";
 import { formatDate,formatDateBack} from "../DriverRegisterForm/DriverRegisterValidation";
+import UserServiceHoursRegistration from "../../services/UserServiceHoursRegistration";
 
 const HoursRegistrationForm = () => {
     const [diaDaSemana, setDiaDaSemana] = useState("");
@@ -21,14 +22,19 @@ const HoursRegistrationForm = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const navigation = useNavigation();
     const route = useRoute();
-    const { authState } = useAuth();
+ 
+
+    const {
+        authState
+    } = useAuth()
+    
 
     const handleDateChange = (diaDaSemana: any) => {
       setDiaDaSemana(formatDate(diaDaSemana));
     };
 
     
-    const date = formatDateBack(diaDaSemana);
+    
   
     const validarTurno = (turno:string) => {
         if (!turno) {
@@ -52,9 +58,10 @@ const HoursRegistrationForm = () => {
       // Verificando validade dos campos
       if (diaDaSemanaValido.valido && turnoInicialValido.valido && turnoFinalValido.valido) {
           try {
-              //const id = route.params.id;
-              // await userServiceCarSharing.carSharing({cpf:userName} , id, authState.token);
-              navigation.navigate("Login" as never);
+            if(route.params && authState?.token){
+                const openinghours = turnoInicial + turnoFinal;
+                await UserServiceHoursRegistration.hoursRegistration({openinghours: openinghours} , authState.token);
+            }
           } catch (error: any) {
               console.log(error);
               if (error.response) {

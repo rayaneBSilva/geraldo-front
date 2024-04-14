@@ -15,6 +15,7 @@ import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
 import FuelCatalog from "../screens/FuelCatalog";
 import MapScreen from "../screens/Map";
+import { Chat } from "../screens/Chat";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ function Routes() {
         <Stack.Screen name="CarSharing" component={CarSharing} />
         <Stack.Screen name="Succesfully" component={Succesfully} />
         <Stack.Screen name="MapScreen" component={MapScreen} />
+        <Stack.Screen name="ChatScreen" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );

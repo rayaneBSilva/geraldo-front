@@ -5,7 +5,7 @@ const date = new Date().getFullYear() + 2
 export const vehicleSchema = yup.object({
     placa: yup.string()
       .required('Por favor, informe a placa do veículo.')
-      .matches(/^[A-Za-z]{3}\d{4}$/, 'Por favor, informe uma placa válida no formato AAA1234.'),
+      .matches(/[A-z]{3}\d[A-z0-9]\d{2}/, 'Por favor, informe uma placa válida no formato AAA1234 ou AAA1A34.'),
     anoDeFabricação: yup.number()
       .required('Por favor, informe o ano de fabricação do veículo.')
       .typeError('Por favor, informe o ano de fabricação do veículo.')

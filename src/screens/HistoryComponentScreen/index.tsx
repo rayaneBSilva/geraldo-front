@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Modal, Text, View, Pressable, ImageBackground } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
-import { ScrollView } from "react-native-gesture-handler";
 import HistoryComponentForm from "./HistoryComponentForm";
 
 export type ComponentVehicleProps = {
@@ -44,9 +43,13 @@ const HistoryComponentScreen = ({ route }: Props) => {
           style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
           <View style={{ flex: 1 }}>
-            <ImageBackground
-              source={require("../../../assets/splashScreen.png")}
-              style={{ flex: 1, marginTop: 50 }}
+            <View
+              style={{
+                flex: 0.9,
+                marginTop: 50,
+                borderRadius: 40,
+                backgroundColor: "rgba(19, 22, 75, 0.5)",
+              }}
             >
               <Animatable.View
                 animation="slideInUp"
@@ -66,7 +69,9 @@ const HistoryComponentScreen = ({ route }: Props) => {
                     }}
                     onPress={() => {
                       setModalVisible(false);
-                      navigation.goBack();
+                      setTimeout(() => {
+                        navigation.goBack();
+                      }, 200);
                     }}
                   >
                     <Text style={{ fontSize: 20, color: "white" }}>X</Text>
@@ -78,16 +83,14 @@ const HistoryComponentScreen = ({ route }: Props) => {
                     fontWeight: "bold",
                     textAlign: "center",
                     color: "white",
-                    marginBottom: 20,
+                    marginBottom: 30,
                   }}
                 >
                   Histórico de alterações
                 </Text>
-                <ScrollView>
-                  <HistoryComponentForm componentData={componentData} />
-                </ScrollView>
+                <HistoryComponentForm componentData={componentData} />
               </Animatable.View>
-            </ImageBackground>
+            </View>
           </View>
         </Modal>
       </ImageBackground>

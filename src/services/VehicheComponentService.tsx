@@ -9,7 +9,6 @@ interface Data {
 
 export interface ComponentData {
   id: number;
-  componentType: string;
   dateLastExchange: string;
   maintenanceFrequency: number;
   kilometersLastExnchange: number;

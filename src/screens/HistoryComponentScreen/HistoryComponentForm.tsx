@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, ScrollView } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { useAuth } from "../../context/authContext";
 import vehicheComponentService, {
   ComponentData,
@@ -12,7 +12,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 interface HistoryItem {
   id: number;
-  // outras propriedades do item de histórico
 }
 
 interface Props {
@@ -49,42 +48,48 @@ const HistoryComponentForm = ({
         const components: ComponentData[] = [
           {
             id: 1,
-            componentType: "MOTOR_OIL",
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 1,
             kilometersLastExnchange: 50000,
           },
           {
             id: 2,
-            componentType: "MOTOR_OIL",
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 2,
             kilometersLastExnchange: 1000,
           },
           {
             id: 3,
-            componentType: "MOTOR_OIL",
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 3,
             kilometersLastExnchange: 3000,
           },
           {
             id: 4,
-            componentType: "MOTOR_OIL",
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 4,
             kilometersLastExnchange: 50000,
           },
           {
             id: 5,
-            componentType: "MOTOR_OIL",
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 5,
             kilometersLastExnchange: 1000,
           },
           {
             id: 6,
-            componentType: "MOTOR_OIL",
+            dateLastExchange: "2024-04-10",
+            maintenanceFrequency: 6,
+            kilometersLastExnchange: 3000,
+          },
+          {
+            id: 7,
+            dateLastExchange: "2024-04-10",
+            maintenanceFrequency: 5,
+            kilometersLastExnchange: 1000,
+          },
+          {
+            id: 8,
             dateLastExchange: "2024-04-10",
             maintenanceFrequency: 6,
             kilometersLastExnchange: 3000,
@@ -99,7 +104,6 @@ const HistoryComponentForm = ({
   return (
     <View>
       <FlatList
-        style={{ flex: 1 }}
         data={components}
         ItemSeparatorComponent={FlatListItemSeparator}
         renderItem={({ item }) => {

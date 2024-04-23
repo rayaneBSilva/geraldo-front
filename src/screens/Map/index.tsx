@@ -36,11 +36,15 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
 }) => {
     const { height } = Dimensions.get('window');
     const ref = useRef<Animatable.AnimatableComponent<ViewProps, ViewStyle>>(null)
+    const firstTimeTransition = useRef(true);
 
     return (
         <Animatable.View
         ref={ref}
-        animation={isVisible ? slideInUp(height) : slideOutDown(height)}
+        animation={isVisible ? slideInUp(height) : (!firstTimeTransition.current ? slideOutDown(height) : "")}
+        onAnimationBegin={() => {
+            firstTimeTransition.current = false
+        }}
         style={{
             width: "100%",
             height: "45%",

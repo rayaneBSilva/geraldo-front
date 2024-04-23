@@ -1,6 +1,8 @@
 import ToastComponent from "../components/toastMessage";
 import { useAuth } from "../context/authContext";
 import ServiceBase from "./ServiceBase";
+import axios from "axios";
+
 interface Data {
   [key: string]: any;
 }
@@ -11,6 +13,11 @@ export interface ComponentData {
   dateLastExchange: string;
   maintenanceFrequency: number;
   kilometersLastExnchange: number;
+}
+
+export interface HistoryComponentData {
+  id: number;
+  model: string;
 }
 
 class VehicheComponentService extends ServiceBase {
@@ -125,6 +132,30 @@ class VehicheComponentService extends ServiceBase {
     } catch (error) {
       console.error("Erro ao buscar o componente por ID:", error);
       return null;
+    }
+  }
+
+  async getHistoryComponent(
+    componentId: string,
+    token: string
+  ): Promise<ComponentData[]> {
+    try {
+      const response = await this.get(
+        `historic/component/${componentId}`,
+        token
+      );
+      return response.data.data.map((component: any) => ({
+        componentType: component.componentType,
+        dateLastExchange: component.dateLastExchange,
+        maintenanceFrequency: component.maintenanceFrequency,
+        kilometersLastExnchange: component.kilometersLastExnchange,
+      }));
+    } catch (error: any) {
+      console.error("Erro ao obter dados", error);
+      console.log(error.message);
+      console.log(error.response);
+      console.log(error.toJSON());
+      return [];
     }
   }
 }

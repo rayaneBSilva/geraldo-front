@@ -1,9 +1,9 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/themed";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { Image, Pressable, Text, TextInput, View } from "react-native";
-import { VehicheComponentProps, VehicheComponentRoute } from ".";
+import { VehicheComponentProps } from ".";
 import FrequencyButton from "../../../components/button/frequencyButton";
 import MainTitle from "../../../components/title/mainTitle";
 import CustomButton from "../../components/button";
@@ -12,10 +12,12 @@ import vehicheComponentService from "../../services/VehicheComponentService";
 import Validation from "../../validation";
 import { vehicheComponent } from "./VehicheComponentStyles";
 import { useAuth } from "../../context/authContext";
+import * as Animatable from "react-native-animatable";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
 const QuilometragemIcon = require("../../../assets/icons/quilometragem.png");
+const HistoryIcon = require("../../../assets/icons/History.png");
 
 type InputProps = {
   placeholder: string;
@@ -244,8 +246,37 @@ const VehicheComponentForm = ({
     setShowPicker(true);
   };
 
+  const handleHistoryPress = () => {
+    navigation.navigate("HistoryComponentScreen" as never);
+  };
+
   return (
-    <View style={{ width: "100%", marginTop: -30 }}>
+    <View style={{ width: "100%", marginTop: -50 }}>
+      {type === "edit" && (
+        <View>
+          <View
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            }}
+          ></View>
+          <Pressable onPress={handleHistoryPress}>
+            <Image
+              source={HistoryIcon}
+              style={{
+                width: 30,
+                height: 30,
+                position: "relative",
+                top: 80,
+                marginLeft: 315,
+                tintColor: "white",
+              }}
+            />
+          </Pressable>
+        </View>
+      )}
       <View>
         {type === "new" ? (
           <MainTitle title={"Cadastro de\nComponente"} />

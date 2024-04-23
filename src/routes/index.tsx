@@ -13,10 +13,11 @@ import SplashScreen from "../screens/SplashScreen";
 import VehicleList from "../screens/VehicleListScreen";
 import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
-import MapaProvisorio from "../screens/Mapa/MapaProvisorio";
 import FuelCatalog from "../screens/FuelCatalog";
 import EstablishmentUpdate from "../screens/Establishment-update";
 import HoursRegistration from "../screens/OperationHoursRegistration";
+import MapScreen from "../screens/Map";
+import { Chat } from "../screens/Chat";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,9 +51,9 @@ function Routes() {
         <Stack.Screen name="CarSharing" component={CarSharing} />
         <Stack.Screen name="HoursRegistration" component={HoursRegistration} />
         <Stack.Screen name="Succesfully" component={Succesfully} />
-        <Stack.Screen name="MapaProvisorio" component={MapaProvisorio} />
         <Stack.Screen name="EstablishmentUpdate" component={EstablishmentUpdate} />
-
+        <Stack.Screen name="MapScreen" component={MapScreen} />
+        <Stack.Screen name="ChatScreen" component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );

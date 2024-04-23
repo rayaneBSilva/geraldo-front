@@ -1,6 +1,6 @@
-import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef, useState } from "react";
+import * as Location from "expo-location";
+import React, { useEffect, useRef, useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import MapView, { Marker } from 'react-native-maps';
@@ -8,7 +8,6 @@ import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
-import * as Location from "expo-location";
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
@@ -150,11 +149,17 @@ const origin = {latitude: 37.3318456, longitude: -122.0296002};
 const destination = {latitude: 37.771707, longitude: -122.4053769};
 const GOOGLE_MAPS_APIKEY = '';
 
+export type Loc = {
+    lat: number;
+    long: number;
+}
+
 const MapScreen = () => {
     const [establishments, setEstablishments] = useState<Array<any>>([])
     const [selectedEstablishment, setSelectedEstablishment] = useState(null)
+    const [location, setLocation] = useState<Loc | null>(null);
 
-    useFocusEffect(() => {
+    useEffect(() => {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -168,6 +173,11 @@ const MapScreen = () => {
             }
         
             const location = await Location.getCurrentPositionAsync({});
+
+            setLocation({
+                lat: location.coords.latitude,
+                long: location.coords.longitude
+            })
 
             FindEstablishments
             .execute({
@@ -187,59 +197,70 @@ const MapScreen = () => {
                 }
             })
         })()
-    })
+    }, [])
 
     return (
         <AppFrame>
-            <MapView
-            showsBuildings={false}
-            showsPointsOfInterest={false}
-            onPress={() => setSelectedEstablishment(null)}
-            style={{
-                zIndex: 5,
-                backgroundColor: "red",
-                width: "100%",
-                height: "100%"
-            }}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            >
-                <Marker
-                onPress={(e) => {
-                    e.stopPropagation();
-                    setSelectedEstablishment(10 as any);
-                }}
-                coordinate={destination}
-                image={require("../../../assets/icons/orange-gas-station.png")}
-                />
-                {/* {
-                    establishments.map(establishment => (
+            {
+                location && (
+                    <MapView
+                    showsBuildings={false}
+                    showsPointsOfInterest={false}
+                    onPress={() => setSelectedEstablishment(null)}
+                    style={{
+                        zIndex: 5,
+                        backgroundColor: "red",
+                        width: "100%",
+                        height: "100%"
+                    }}
+                    region={{
+                        latitude: location.lat,
+                        longitude: location.long,
+                        latitudeDelta: 0.01,
+                        longitudeDelta: 0.01
+                    }}
+                    >
                         <Marker
-                        key={establishment.id}
+                        coordinate={{
+                            latitude: location.lat,
+                            longitude: location.long
+                        }}
+                        image={require("../../../assets/icons/orange-car.png")}
+                        />
+                        <Marker
                         onPress={(e) => {
                             e.stopPropagation();
                             setSelectedEstablishment(10 as any);
                         }}
-                        coordinate={{
-                            latitude: 37.78825,
-                            longitude: -122.4324
-                        }}
-                        image={require("../../../assets/icons/gas-station.png")}
+                        coordinate={destination}
+                        image={require("../../../assets/icons/orange-gas-station.png")}
                         />
-                    ))
-                } */}
-                {/* <MapViewDirections
-                origin={origin}
-                destination={destination}
-                apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={3}
-                strokeColor="#FEC500"
-                /> */}
-            </MapView>
+                        {/* {
+                            establishments.map(establishment => (
+                                <Marker
+                                key={establishment.id}
+                                onPress={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedEstablishment(10 as any);
+                                }}
+                                coordinate={{
+                                    latitude: 37.78825,
+                                    longitude: -122.4324
+                                }}
+                                image={require("../../../assets/icons/gas-station.png")}
+                                />
+                            ))
+                        } */}
+                        {/* <MapViewDirections
+                        origin={origin}
+                        destination={destination}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        strokeWidth={3}
+                        strokeColor="#FEC500"
+                        /> */}
+                    </MapView>
+                )
+            }
             <EstablishmentModal
             isVisible={!!selectedEstablishment}
             />

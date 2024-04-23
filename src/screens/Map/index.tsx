@@ -8,6 +8,7 @@ import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
+import * as Location from "expo-location";
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
@@ -154,39 +155,38 @@ const MapScreen = () => {
     const [selectedEstablishment, setSelectedEstablishment] = useState(null)
 
     useFocusEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                FindEstablishments
-                .execute({
-                    lat: position.coords.latitude,
-                    long: position.coords.longitude
-                })
-                .then(response => {
-                    if (response.isLeft()) {
-                        Toast.show({
-                            type: "error",
-                            text1: "Sem estabelecimentos",
-                            text2: "Não conseguimos encontrar estabelecimentos próximos."
-                        })
-                    } else {
-                        const result = response.value;
-                        setEstablishments(result)
-                    }
-                })
-            }, () => {
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+
+            if (status !== "granted") {
                 Toast.show({
                     type: "error",
                     text1: "Erro na localização",
                     text2: "Não conseguimos encontrar sua localização."
                 })
-            });
-        } else {
-            Toast.show({
-                type: "error",
-                text1: "Erro na localização",
-                text2: "Não conseguimos encontrar sua localização."
+                return;
+            }
+        
+            const location = await Location.getCurrentPositionAsync({});
+
+            FindEstablishments
+            .execute({
+                lat: location.coords.latitude,
+                long: location.coords.longitude
             })
-        }
+            .then(response => {
+                if (response.isLeft()) {
+                    Toast.show({
+                        type: "error",
+                        text1: "Sem estabelecimentos",
+                        text2: "Não conseguimos encontrar estabelecimentos próximos."
+                    })
+                } else {
+                    const result = response.value;
+                    setEstablishments(result)
+                }
+            })
+        })()
     })
 
     return (

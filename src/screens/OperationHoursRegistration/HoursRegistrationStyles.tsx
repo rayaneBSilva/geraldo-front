@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const carSharingStyles = StyleSheet.create({
+export const hoursRegistrationStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
@@ -22,7 +22,7 @@ export const carSharingStyles = StyleSheet.create({
   },
   button: {
      fontSize: 50,
-     marginTop: 70,
+     marginTop: 50,
   },
   backgroundImage: {
     flex: 1,
@@ -31,25 +31,19 @@ export const carSharingStyles = StyleSheet.create({
     resizeMode: "cover",
     marginTop: -30,
   },
-  containerCarSharingForm: {
+  containerHoursRegistrationForm: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 60,
+    marginTop: 20,
   },
   text:{
     color:"#FFF",
-    marginTop: 150,
-    marginBottom:45,
-    fontSize: 37,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  text2:{
-    color:"#FFF",
-    marginTop: -50,
-    marginBottom:45,
-    fontSize: 37,
+    marginTop: 90,
+    marginBottom:40,
+    fontSize: 44,
     fontWeight: "bold",
     textAlign: "center"
   },
 });
+
+

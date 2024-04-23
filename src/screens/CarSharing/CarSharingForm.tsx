@@ -59,7 +59,9 @@ const CarSharingForm = () => {
   return (
     <View style={{ width: "85%", flexDirection: "column" }}>
       <View>
-        <Text style={carSharingStyles.text}>Compartilhamento de Veículo</Text>
+        <Text style={carSharingStyles.text}>Compartilhamento</Text>
+        <Text style={carSharingStyles.text2}>de veículo</Text>
+
       </View>
       <View style={carSharingStyles.containerCarSharingForm}>
         <FontAwesome

@@ -3,6 +3,7 @@ import { Modal, Text, View, Pressable, ImageBackground } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import HistoryComponentForm from "./HistoryComponentForm";
+import { historyComponentStyles } from "./HistoryComponentStyles";
 
 export type ComponentVehicleProps = {
   componentId: string;
@@ -43,30 +44,15 @@ const HistoryComponentScreen = ({ route }: Props) => {
           style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
           <View style={{ flex: 1 }}>
-            <View
-              style={{
-                flex: 0.9,
-                marginTop: 50,
-                borderRadius: 40,
-                backgroundColor: "rgba(19, 22, 75, 0.5)",
-              }}
-            >
+            <View style={historyComponentStyles.container}>
               <Animatable.View
                 animation="slideInUp"
                 duration={1000}
-                style={{ marginTop: 22, maxHeight: "80%" }}
+                style={historyComponentStyles.modalContent}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                  }}
-                >
+                <View style={historyComponentStyles.closeButtonContainer}>
                   <Pressable
-                    style={{
-                      padding: 10,
-                      marginRight: 10,
-                    }}
+                    style={historyComponentStyles.closeButton}
                     onPress={() => {
                       setModalVisible(false);
                       setTimeout(() => {
@@ -74,18 +60,12 @@ const HistoryComponentScreen = ({ route }: Props) => {
                       }, 200);
                     }}
                   >
-                    <Text style={{ fontSize: 20, color: "white" }}>X</Text>
+                    <Text style={historyComponentStyles.closeButtonText}>
+                      X
+                    </Text>
                   </Pressable>
                 </View>
-                <Text
-                  style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    color: "white",
-                    marginBottom: 30,
-                  }}
-                >
+                <Text style={historyComponentStyles.textHistory}>
                   Histórico de alterações
                 </Text>
                 <HistoryComponentForm componentData={componentData} />

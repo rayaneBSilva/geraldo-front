@@ -2,49 +2,61 @@ import { StyleSheet } from "react-native";
 
 export const historyComponentStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
+    flex: 0.9,
+    marginTop: 50,
+    borderRadius: 40,
+    backgroundColor: "rgba(19, 22, 75, 0.5)",
+  },
+  textHistory: {
+    fontSize: 24,
+    fontWeight: "bold",
     textAlign: "center",
+    color: "white",
+    marginBottom: 30,
+  },
+  modalContent: {
+    marginTop: 22,
+    maxHeight: "80%",
+  },
+  closeButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
+  closeButton: {
+    padding: 10,
+    marginRight: 10,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    color: "white",
+  },
+  historyItem: {
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    backgroundColor: "#13164B",
   },
-  // text: {
-  //   color: "#FFF",
-  //   marginTop: -60,
-  //   marginBottom: 45,
-  //   fontSize: 45,
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  // },
-  // textButton: {
-  //   color: "white",
-  //   marginTop: 15,
-  //   fontSize: 14,
-  //   textAlign: "center",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  // },
-  // icon: {
-  //   marginRight: 10,
-  //   marginBottom: 20,
-  // },
-
-  // button: {
-  //   flexDirection: "row",
-  //   justifyContent: "center",
-  //   textAlign: "center",
-  //   alignItems: "center",
-  // },
-
-  backgroundImage: {
+  icon: {
+    marginRight: 10,
+  },
+  detailsContainer: {
+    padding: 5,
     flex: 1,
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
   },
-  // containerRegisterForm: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   marginTop: -10,
-  // },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  label: {
+    fontWeight: "bold",
+    color: "white",
+  },
+  value: {
+    color: "white",
+  },
+  backgroundBlue: {
+    backgroundColor: "#1F1546",
+  },
 });

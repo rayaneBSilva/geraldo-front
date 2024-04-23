@@ -9,6 +9,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { ComponentVehicleProps } from ".";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome } from "@expo/vector-icons";
+import { historyComponentStyles } from "./HistoryComponentStyles";
 
 interface HistoryItem {
   id: number;
@@ -108,92 +109,38 @@ const HistoryComponentForm = ({
         ItemSeparatorComponent={FlatListItemSeparator}
         renderItem={({ item }) => {
           return (
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                backgroundColor: "#13164B",
-              }}
-            >
+            <View style={historyComponentStyles.historyItem}>
               <FontAwesome
                 name="gear"
                 size={24}
                 color="white"
                 style={{ marginRight: 10 }}
               />
-              <View
-                style={{
-                  padding: 5,
-                  flex: 1,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
+              <View style={historyComponentStyles.detailsContainer}>
+                <View style={historyComponentStyles.detailRow}>
+                  <Text style={historyComponentStyles.label}>
                     Data de troca:
                   </Text>
-                  <Text
-                    style={{
-                      color: "white",
-                    }}
-                  >
+                  <Text style={historyComponentStyles.value}>
                     {item.dateLastExchange}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
+                <View style={historyComponentStyles.detailRow}>
                   <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: "white",
-                      backgroundColor: "#1F1546",
-                    }}
+                    style={[
+                      historyComponentStyles.label,
+                      historyComponentStyles.backgroundBlue,
+                    ]}
                   >
                     Km até a troca:
                   </Text>
-                  <Text
-                    style={{
-                      color: "white",
-                    }}
-                  >
+                  <Text style={historyComponentStyles.value}>
                     {item.kilometersLastExnchange}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    Lembretes:
-                  </Text>
-                  <Text
-                    style={{
-                      color: "white",
-                    }}
-                  >
+                <View style={historyComponentStyles.detailRow}>
+                  <Text style={historyComponentStyles.label}>Lembretes:</Text>
+                  <Text style={historyComponentStyles.value}>
                     {item.maintenanceFrequency}
                   </Text>
                 </View>

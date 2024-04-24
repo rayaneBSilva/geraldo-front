@@ -12,7 +12,7 @@ import vehicheComponentService from "../../services/VehicheComponentService";
 import Validation from "../../validation";
 import { vehicheComponent } from "./VehicheComponentStyles";
 import { useAuth } from "../../context/authContext";
-import * as Animatable from "react-native-animatable";
+import VehicheComponentStore from "./VehicheComponentStore";
 
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
@@ -91,27 +91,40 @@ const VehicheComponentForm = ({
 }: {
   componentData: VehicheComponentProps;
 }) => {
-  const [selectedFrequency, setSelectedFrequency] = useState<number | null>(
-    null
-  );
+  const {
+    isRequiredDate,
+    isRequiredMileage,
+    isRequiredFrequency,
+    componentType,
+    setComponentType,
+    date,
+    setDate,
+    dateSave,
+    setDateSave,
+    mileage,
+    setMileage,
+    mileageStr,
+    setMileageStr,
+    frequency,
+    setFrequency,
+    errorMessage,
+    errorMessageDate,
+    setErrorMessageDate,
+    errorMessageMileage,
+    setErrorMessageMileage,
+    showPicker,
+    setShowPicker,
+    validateVehicleComponentEmptyField,
+    validateRequiredFields,
+    resetValues,
+    clearMessageError,
+    setInvalidDataErrorMessages,
+    formatDate,
+    handleSelectFrequency,
+  } = VehicheComponentStore();
 
-  const [isRequiredDate, setIsRequiredDate] = useState(false);
-  const [isRequiredMileage, setIsRequiredMileage] = useState(false);
-  const [isRequiredFrequency, setIsRequiredFrequency] = useState(false);
-  const [componentType, setComponentType] = useState<string | null>(null);
-  const [date, setDate] = useState("");
-  const [dateSave, setDateSave] = useState("");
-  const [mileage, setMileage] = useState<number | null>(null);
-  const [mileageStr, setMileageStr] = useState<string>("");
-  const [frequency, setFrequency] = useState<number | null>(null);
-  const [errorMessageTypeComponente, setErrorMessageTypeComponente] =
-    useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorMessageDate, setErrorMessageDate] = useState("");
-  const [errorMessageMileage, setErrorMessageMileage] = useState("");
-  const navigation = useNavigation();
   const [type, setType] = useState("new");
-  const [showPicker, setShowPicker] = useState(false);
+  const navigation: any = useNavigation();
   const { authState } = useAuth();
 
   useEffect(() => {
@@ -124,6 +137,7 @@ const VehicheComponentForm = ({
 
       setType("edit");
     }
+    !componentType && setComponentType(ComponentTypeEnum.MOTOR_OIL);
   }, [componentData]);
 
   useEffect(() => {
@@ -132,27 +146,8 @@ const VehicheComponentForm = ({
     }
   }, [showPicker]);
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const selectedDateString = date.toISOString().split("T")[0];
-    const [year, month, day] = selectedDateString.split("-");
-
-    return `${day}-${month}-${year}`;
-  };
-
-  const handleSelectFrequency = (frequency: string | null) => {
-    if (frequency !== null) {
-      const frequencyNumber = parseInt(frequency);
-      setSelectedFrequency(frequencyNumber);
-    } else {
-      setSelectedFrequency(null);
-    }
-  };
-
   const handleCustomButtonPress = async () => {
-    setIsRequiredDate(!date);
-    setIsRequiredMileage(mileage === null || mileage === undefined);
-    setIsRequiredFrequency(frequency === null || frequency === undefined);
+    validateVehicleComponentEmptyField();
 
     const dateErrorMessage = Validation.validateDate(date);
     if (dateErrorMessage !== "") {
@@ -180,12 +175,7 @@ const VehicheComponentForm = ({
       }
     }
 
-    if (
-      componentType?.trim() !== "" &&
-      date !== null &&
-      mileage?.toString().trim() !== "" &&
-      frequency?.toString().trim() !== ""
-    ) {
+    if (validateRequiredFields()) {
       try {
         if (
           type === "edit" &&
@@ -219,26 +209,16 @@ const VehicheComponentForm = ({
             "Componente cadastrado com sucesso!"
           );
         }
-        setErrorMessage("");
-        setErrorMessageDate("");
-        setErrorMessageMileage("");
-        setErrorMessageTypeComponente("");
+        clearMessageError();
       } catch (error) {
         console.log(error);
-        setErrorMessage("Dados inválidos");
-        setErrorMessageDate("Dados inválidos");
-        setErrorMessageMileage("Dados inválidos");
-        setErrorMessageTypeComponente("Dados inválidos");
+        setInvalidDataErrorMessages();
       }
     }
   };
 
   const handleCustomButtonCancel = async () => {
-    setComponentType(null);
-    setDate("");
-    setMileage(null);
-    setMileageStr("");
-    setFrequency(null);
+    resetValues();
     navigation.navigate("VehicleList" as never);
   };
 
@@ -246,8 +226,8 @@ const VehicheComponentForm = ({
     setShowPicker(true);
   };
 
-  const handleHistoryPress = () => {
-    navigation.navigate("HistoryComponentScreen" as never);
+  const handleHistoryPress = (id: any) => {
+    navigation.navigate("HistoryComponentScreen", { componentId: id });
   };
 
   return (
@@ -262,7 +242,9 @@ const VehicheComponentForm = ({
               backgroundColor: "rgba(0, 0, 0, 0.5)",
             }}
           ></View>
-          <Pressable onPress={handleHistoryPress}>
+          <Pressable
+            onPress={() => handleHistoryPress(componentData.componentId)}
+          >
             <Image
               source={HistoryIcon}
               style={{

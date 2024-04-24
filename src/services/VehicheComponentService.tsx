@@ -8,7 +8,6 @@ interface Data {
 }
 
 export interface ComponentData {
-  id: number;
   dateLastExchange: string;
   maintenanceFrequency: number;
   kilometersLastExnchange: number;
@@ -144,7 +143,6 @@ class VehicheComponentService extends ServiceBase {
         token
       );
       return response.data.data.map((component: any) => ({
-        componentType: component.componentType,
         dateLastExchange: component.dateLastExchange,
         maintenanceFrequency: component.maintenanceFrequency,
         kilometersLastExnchange: component.kilometersLastExnchange,

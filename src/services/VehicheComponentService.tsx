@@ -1,8 +1,5 @@
 import ToastComponent from "../components/toastMessage";
-import { useAuth } from "../context/authContext";
 import ServiceBase from "./ServiceBase";
-import axios from "axios";
-
 interface Data {
   [key: string]: any;
 }
@@ -10,7 +7,7 @@ interface Data {
 export interface ComponentData {
   dateLastExchange: string;
   maintenanceFrequency: number;
-  kilometersLastExnchange: number;
+  kilometersLastExchange: number;
 }
 
 export interface HistoryComponentData {
@@ -27,7 +24,7 @@ class VehicheComponentService extends ServiceBase {
         componentType: component.componentType,
         dateLastExchange: component.dateLastExchange,
         maintenanceFrequency: component.maintenanceFrequency,
-        kilometersLastExnchange: component.kilometersLastExnchange,
+        kilometersLastExchange: component.kilometersLastExnchange,
       }));
     } catch (error: any) {
       console.error("Erro ao obter veículos", error);
@@ -134,8 +131,8 @@ class VehicheComponentService extends ServiceBase {
   }
 
   async getHistoryComponent(
-    componentId: string,
-    token: string
+    token: string,
+    componentId: string
   ): Promise<ComponentData[]> {
     try {
       const response = await this.get(
@@ -145,7 +142,7 @@ class VehicheComponentService extends ServiceBase {
       return response.data.data.map((component: any) => ({
         dateLastExchange: component.dateLastExchange,
         maintenanceFrequency: component.maintenanceFrequency,
-        kilometersLastExnchange: component.kilometersLastExnchange,
+        kilometersLastExchange: component.kilometersLastExchange,
       }));
     } catch (error: any) {
       console.error("Erro ao obter dados", error);

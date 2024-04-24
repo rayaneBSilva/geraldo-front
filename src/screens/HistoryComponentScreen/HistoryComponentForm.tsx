@@ -43,48 +43,6 @@ const HistoryComponentForm = ({
           authState.token,
           componentData.componentId
         );
-        // const components: ComponentData[] = [
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 1,
-        //     kilometersLastExnchange: 50000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 2,
-        //     kilometersLastExnchange: 1000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 3,
-        //     kilometersLastExnchange: 3000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 4,
-        //     kilometersLastExnchange: 50000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 5,
-        //     kilometersLastExnchange: 1000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 6,
-        //     kilometersLastExnchange: 3000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 5,
-        //     kilometersLastExnchange: 1000,
-        //   },
-        //   {
-        //     dateLastExchange: "2024-04-10",
-        //     maintenanceFrequency: 6,
-        //     kilometersLastExnchange: 3000,
-        //   },
-        // ];
         const addIdToComponents = (components: ComponentData[]) => {
           return components.map((component, index) => {
             return { id: `item-${index + 1}`, ...component };
@@ -130,7 +88,7 @@ const HistoryComponentForm = ({
                     Km até a troca:
                   </Text>
                   <Text style={historyComponentStyles.value}>
-                    {item.kilometersLastExnchange}
+                    {item.kilometersLastExchange}
                   </Text>
                 </View>
                 <View style={historyComponentStyles.detailRow}>

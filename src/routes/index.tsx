@@ -14,6 +14,7 @@ import VehicleList from "../screens/VehicleListScreen";
 import CarSharing from "../screens/CarSharing";
 import Succesfully from "../screens/Succesfully";
 import FuelCatalog from "../screens/FuelCatalog";
+import Notificacao from "../screens/NotificacaoTeste";
 import EstablishmentUpdate from "../screens/Establishment-update";
 import HoursRegistration from "../screens/OperationHoursRegistration";
 import MapScreen from "../screens/Map";
@@ -70,6 +71,7 @@ function Routes() {
       }
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Notificacao" component={Notificacao} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="FuelCatalog" component={FuelCatalog} />

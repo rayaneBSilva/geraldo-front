@@ -100,6 +100,7 @@ const VehicheComponentForm = ({
   const [date, setDate] = useState("");
   const [dateSave, setDateSave] = useState("");
   const [mileage, setMileage] = useState<number | null>(null);
+  const [mileageStr, setMileageStr] = useState<string>("");
   const [frequency, setFrequency] = useState<number | null>(null);
   const [errorMessageTypeComponente, setErrorMessageTypeComponente] =
     useState("");
@@ -116,6 +117,7 @@ const VehicheComponentForm = ({
       setComponentType(componentData.componentType);
       setDate(formatDate(componentData.dateLastExchange as string));
       setMileage(componentData.kilometersLastExchange as number);
+      setMileageStr(componentData.kilometersLastExchange?.toString() as string);
       setFrequency(componentData.maintenanceFrequency as number);
 
       setType("edit");
@@ -233,6 +235,7 @@ const VehicheComponentForm = ({
     setComponentType(null);
     setDate("");
     setMileage(null);
+    setMileageStr("");
     setFrequency(null);
     navigation.navigate("VehicleList" as never);
   };
@@ -247,7 +250,7 @@ const VehicheComponentForm = ({
         {type === "new" ? (
           <MainTitle title={"Cadastro de\nComponente"} />
         ) : (
-          <MainTitle title={`${componentData?.componentType}`} />
+          <MainTitle title={"Atualização de\nComponente"} />
         )}
         <Text style={vehicheComponent.paragraph}>
           Preencha os campos com as informações referentes a última troca do
@@ -349,17 +352,20 @@ const VehicheComponentForm = ({
             onChangeText={(text) => {
               if (text.trim() === "") {
                 setMileage(null);
+                setMileageStr("");
               } else {
                 const textWithDot = text.replace(",", ".");
                 const parsedValue = parseFloat(textWithDot);
                 if (!isNaN(parsedValue)) {
                   setMileage(parsedValue);
+                  setMileageStr(text);
                 } else {
                   setMileage(null);
+                  setMileageStr("");
                 }
               }
             }}
-            value={mileage !== null ? mileage.toString() : undefined}
+            value={mileageStr}
             errorMessage={Validation.generateErrorMessage(
               isRequiredMileage,
               errorMessageMileage

@@ -15,6 +15,7 @@ import fuelCatalogService from "../../services/FuelCatalogService";
 const CalendarIcon = require("../../../assets/icons/calendar.png");
 const PranchetaIcon = require("../../../assets/icons/prancheta.png");
 const QuilometragemIcon = require("../../../assets/icons/quilometragem.png");
+const Dolar = require("../../../assets/icons/Dollar.png");
 
 type InputProps = {
   placeholder: string;
@@ -105,9 +106,10 @@ const FuelCatalogForm = ({
     setFuelTitle,
     value,
     setValue,
+    valueStr,
+    setValueStr,
     productStatus,
     setProductStatus,
-    isRequiredFuelCatalogType,
     isRequiredFuelTitle,
     errorMessageFuelType,
     isRequiredValue,
@@ -122,9 +124,16 @@ const FuelCatalogForm = ({
   } = FuelCatalogStore();
 
   useEffect(() => {
-    if (componentData.fuelType) {
+    if (
+      componentData.fuelType &&
+      componentData.value &&
+      componentData.productStatus
+    ) {
       setFuelType(componentData.fuelType);
       setFuelTitle(componentData.fuelTitle as string);
+      setValue(componentData.value);
+      setValueStr(componentData.value.toString());
+      setProductStatus(componentData.productStatus);
 
       setType("edit");
     }
@@ -145,9 +154,9 @@ const FuelCatalogForm = ({
 
     if (validateRequiredFields()) {
       try {
-        if (type === "edit" && authState?.token) {
+        if (type === "edit" && authState?.token && componentData.fuelId) {
           await fuelCatalogService.updateComponent(
-            componentData.establishmentId,
+            componentData.fuelId,
             authState.token,
             {
               fuelType,
@@ -190,7 +199,7 @@ const FuelCatalogForm = ({
         {type === "new" ? (
           <MainTitle title={"Cadastro de catálogo\nde combustíveis"} />
         ) : (
-          <MainTitle title={`${componentData?.fuelType}`} />
+          <MainTitle title={"Atualização de catálogo\nde combustíveis"} />
         )}
         <Text style={fuelCatalog.paragraph}>
           Preencha os campos com as informações referentes ao catálogo de
@@ -202,24 +211,48 @@ const FuelCatalogForm = ({
           <CustomInput
             placeholder="Tipo do Combustível"
             icon={PranchetaIcon}
-            onChangeText={(text) => setFuelType(text as FuelCatalogTypeEnum)}
-            value={fuelType}
-            errorMessage={Validation.generateErrorMessage(
-              isRequiredFuelCatalogType,
-              errorMessageFuelType
-            )}
-            errorStyle={{
-              color:
-                isRequiredFuelCatalogType || errorMessageFuelType !== ""
-                  ? "red"
-                  : "black",
-            }}
+            children={
+              <FrequencyButton
+                title={
+                  componentData.fuelType
+                    ? componentData.fuelType + "                              "
+                    : " GASOLINE                              "
+                }
+                options={[
+                  " GASOLINE                              ",
+                  " DIESEL                                    ",
+                  " ETHANOL                               ",
+                ]}
+                onSelect={(option) => {
+                  if (
+                    typeof option === "string" &&
+                    option.trim() === "GASOLINE"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.GASOLINE);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "DIESEL"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.DIESEL);
+                  } else if (
+                    typeof option === "string" &&
+                    option.trim() === "ETHANOL"
+                  ) {
+                    setFuelType(FuelCatalogTypeEnum.ETHANOL);
+                  }
+                }}
+                style={{
+                  backgroundColor: "transparent",
+                }}
+              />
+            }
           />
         </View>
+
         <View style={fuelCatalog.containerLoginForm}>
           <CustomInput
             placeholder="Título do Combustível"
-            icon={PranchetaIcon}
+            icon={CalendarIcon}
             onChangeText={(text) => setFuelTitle(text)}
             value={fuelTitle}
             errorMessage={Validation.generateErrorMessage(
@@ -237,13 +270,16 @@ const FuelCatalogForm = ({
         <View style={fuelCatalog.containerLoginForm}>
           <CustomInput
             placeholder="Valor"
-            icon={QuilometragemIcon}
+            icon={Dolar}
+            value={valueStr}
             onChangeText={(text) => {
               if (text.trim() === "") {
                 setValue(null);
+                setValueStr("");
               } else {
                 const textWithDot = text.replace(",", ".");
                 setValue(parseFloat(textWithDot));
+                setValueStr(text);
               }
             }}
             keyboardType="decimal-pad"
@@ -262,10 +298,11 @@ const FuelCatalogForm = ({
           <CustomInput
             placeholder={productStatus ? "Disponível" : "Indisponível"}
             icon={QuilometragemIcon}
+            value={productStatus ? "Disponível" : "Indisponível"}
             children={
               <FrequencyButton
                 title={
-                  productStatus
+                  componentData.productStatus
                     ? "Disponível                                  "
                     : "Indisponível                               "
                 }
@@ -274,7 +311,9 @@ const FuelCatalogForm = ({
                   "Disponível                                  ",
                 ]}
                 onSelect={(option) => {
-                  setProductStatus(option === "Disponível");
+                  if (typeof option === "string") {
+                    setProductStatus(option.trim() === "Disponível");
+                  }
                 }}
                 style={{
                   backgroundColor: "transparent",

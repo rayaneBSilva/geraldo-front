@@ -9,6 +9,7 @@ import FuelCatalogForm from "./FuelCatalogForm";
 import { fuelCatalog } from "./FuelCatalogStyles";
 
 export type FuelCatalogProps = {
+  fuelId?: number;
   fuelType?: string;
   fuelTitle?: string;
   value?: number;

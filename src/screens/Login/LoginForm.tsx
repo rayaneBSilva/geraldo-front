@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Input } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";

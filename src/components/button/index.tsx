@@ -27,6 +27,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           onPress={onPress}
           buttonStyle={styles.buttonContainer}
           titleStyle={styles.text}
+          
         />
       </LinearGradient>
     </View>

@@ -72,7 +72,7 @@ const VehicleList = ({ route }: any) => {
       });
       await onTokenUpdated!(newToken);
       console.log(newToken);
-      navigation.navigate("ViewCarScreen", { id });
+      navigation.navigate("MapScreen", { id });
     }
   };
 

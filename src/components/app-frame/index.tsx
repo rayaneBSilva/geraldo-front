@@ -61,27 +61,13 @@ export const AppFrame = ({
                     justifyContent: "center"
                 }}
                 >
-                    <Home
-                    width={40}
-                    height={40}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCarScreen")}
-                style={{
-                    flex: 1,
-                    height: "100%",
-                    alignItems: "center",
-                    justifyContent: "center"
-                }}
-                >
                     <Car
                     width={40}
                     height={40}
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCarScreen")}
+                onPress={() => navigateToScreen("ChatScreen")}
                 style={{
                     flex: 1,
                     height: "100%",
@@ -95,7 +81,7 @@ export const AppFrame = ({
                     />
                 </TouchableOpacity>
                 <TouchableOpacity
-                onPress={() => navigateToScreen("ViewCarScreen")}
+                onPress={() => navigateToScreen("MapScreen")}
                 style={{
                     flex: 1,
                     height: "100%",

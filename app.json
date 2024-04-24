@@ -27,7 +27,15 @@
       "favicon": "./assets/geraldo-login.png"
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Geraldo - Seu Mecânico to use your location.",
+          "locationAlwaysPermission": "Allow Geraldo - Seu Mecânico to use your location.",
+          "locationWhenInUsePermission": "Allow Geraldo - Seu Mecânico to use your location."
+        }
+      ]
     ]
   }
 }

@@ -9,7 +9,7 @@ class UserService extends ServiceBase {
     try {
       const response = await this.post(data, "login");
       if (cnpj.isValid(data.username)){
-        // O correto é MapScreen-To só desenvolvendo a minha tela
+        // O correto é MapScreen-To só desenvolv endo a minha tela
         navigation.navigate("MapScreen");
       }else{
         navigation.navigate("VehicleList");

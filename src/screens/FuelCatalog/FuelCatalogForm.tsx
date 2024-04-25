@@ -122,7 +122,6 @@ const FuelCatalogForm = ({
     clearMessageError,
     setInvalidDataErrorMessages,
   } = FuelCatalogStore();
-  
 
   useEffect(() => {
     if (
@@ -138,6 +137,7 @@ const FuelCatalogForm = ({
 
       setType("edit");
     }
+    !fuelType && setFuelType(FuelCatalogTypeEnum.GASOLINE);
   }, [componentData]);
 
   const handleCustomButtonPress = async () => {

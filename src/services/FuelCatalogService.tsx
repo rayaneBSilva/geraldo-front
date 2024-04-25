@@ -17,6 +17,7 @@ class FuelCatalogService extends ServiceBase {
           type: "success",
           text1: message,
         });
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       navigation.navigate("MapScreen");
     } catch (error: any) {
       console.log(error.response.data);

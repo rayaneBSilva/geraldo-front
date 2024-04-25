@@ -8,8 +8,9 @@ import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
-import getEstablishmentsOrderedByPrice from "../../services/getEstablishmentsOrderedByPrice";
+import getEstablishmentsOrderedByPrice from "../../services/getEstablishments";
 import { useAuth } from "../../context/authContext";
+import getEstablishments from "../../services/getEstablishments";
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
@@ -189,7 +190,7 @@ const MapScreen = () => {
             })
 
             //Como saber o combustivel do veiculo?
-            const closestEstablishmentsByPrice = await getEstablishmentsOrderedByPrice.closestEstablishments(location.coords.latitude, location.coords.longitude, "DIESEL", auth.authState?.token as string)
+            const closestEstablishmentsByPrice = await getEstablishments.closestEstablishments(location.coords.latitude, location.coords.longitude, "", auth.authState?.token as string)
             
             if (auth.authState?.isDriver && !closestEstablishmentsByPrice.isLeft()){
                 setClosestEstablishments(closestEstablishmentsByPrice.value.data.data)
@@ -215,6 +216,22 @@ const MapScreen = () => {
             })
         })()
     }, [])
+
+    // Função para deixar o tipo de combustiveis unicos e pega os de maior preço. - Não sei se isso vai ficar assim
+    const filterFuel = (fuels: any[]) => {
+        
+        const maxValues: { [key: string]: any } = {};
+    
+
+        fuels.forEach((fuel: any) => {
+        const fuelTypeName = fuel.fuelType.name;
+    
+        if (!maxValues[fuelTypeName] || fuel.value > maxValues[fuelTypeName].value) {
+            maxValues[fuelTypeName] = fuel;
+        }
+        });
+    return Object.values(maxValues);
+  };
 
     return (
         <AppFrame>
@@ -268,7 +285,18 @@ const MapScreen = () => {
                                     >
                                         <Callout key={key}>
                                             <View style={{padding: 10}}>
-                                                <Text>Combustivel: R$ 3</Text>
+                                                {
+                                                    item?.fuels.length ? 
+                                                        
+                                                            filterFuel(item?.fuels).map((fuel : any, key : any) => {
+                                                                return (
+                                                                    <Text key={key}>{fuel.fuelType.name}: R$ {fuel.value}</Text>
+                                                                )
+                                                            })
+                                                        :
+                                                        <Text key={key}>Combustivel não cadastrado</Text>
+                                                        
+                                                }
                                             </View>
                                         </Callout>
                                     </Marker>

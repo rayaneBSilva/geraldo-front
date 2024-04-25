@@ -3,11 +3,11 @@ import ServiceBase from "./ServiceBase";
 import { left, right } from "@sweet-monads/either";
 
 
-class GetEstablishmentsOrderedByPrice extends ServiceBase {
+class GetEstablishments extends ServiceBase {
   async closestEstablishments (latitude: number, longitude: number, fuelType: string, token: string): Promise<any> {
     try {
 
-      const endpoint = `https://geraldo-backend.vercel.app/establishments_by_price?latitude=${latitude}&longitude=${longitude}&fuelType=${fuelType}`;
+      const endpoint = `https://geraldo-backend.vercel.app/establishments?latitude=${latitude}&longitude=${longitude}`;
 
       const response: AxiosResponse = await axios.get(endpoint, {
         headers: {
@@ -15,7 +15,7 @@ class GetEstablishmentsOrderedByPrice extends ServiceBase {
         }
       });
 
-      console.log(response.data.data[0].fuels.value)
+      console.log(response.data.data[0].fuels)
     
       return right(response)
     } catch (error: any) {
@@ -24,6 +24,6 @@ class GetEstablishmentsOrderedByPrice extends ServiceBase {
   }
 }
 
-const getEstablishmentsOrderedByPrice = new GetEstablishmentsOrderedByPrice();
+const getEstablishments = new GetEstablishments();
 
-export default getEstablishmentsOrderedByPrice;
+export default getEstablishments;

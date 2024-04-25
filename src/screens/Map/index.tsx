@@ -1,9 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View, ViewProps, ViewStyle, StyleSheet  } from "react-native";
 import * as Animatable from 'react-native-animatable';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout  } from 'react-native-maps';
 import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
@@ -167,6 +167,7 @@ const MapScreen = () => {
     const [closestEstablishments, setClosestEstablishments] = useState<Array<any>>([])
     const auth = useAuth()
 
+
     useEffect(() => {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
@@ -187,10 +188,11 @@ const MapScreen = () => {
                 long: location.coords.longitude
             })
 
+            //Como saber o combustivel do veiculo?
             const closestEstablishmentsByPrice = await getEstablishmentsOrderedByPrice.closestEstablishments(location.coords.latitude, location.coords.longitude, "DIESEL", auth.authState?.token as string)
             
-            if (!closestEstablishmentsByPrice.isLeft()){
-                
+            if (auth.authState?.isDriver && !closestEstablishmentsByPrice.isLeft()){
+                setClosestEstablishments(closestEstablishmentsByPrice.value.data.data)
             }
 
 
@@ -250,6 +252,30 @@ const MapScreen = () => {
                         coordinate={destination}
                         image={require("../../../assets/icons/orange-gas-station.png")}
                         />
+
+                        {
+                            closestEstablishments.map((item, key) => {
+                                return (
+                                    
+                                    <Marker 
+                                        key={key}
+                                        coordinate={{
+                                            latitude: item.address.latitude,
+                                            longitude: item.address.longitude
+                                        }}
+                                        image={require("../../../assets/icons/orange-gas-station.png")}
+                                    
+                                    >
+                                        <Callout key={key}>
+                                            <View style={{padding: 10}}>
+                                                <Text>Combustivel: R$ 3</Text>
+                                            </View>
+                                        </Callout>
+                                    </Marker>
+                                    
+                                )
+                            })
+                        }
                         {/* {
                             establishments.map(establishment => (
                                 <Marker
@@ -282,5 +308,7 @@ const MapScreen = () => {
         </AppFrame>
     )
 }
+
+
 
 export default MapScreen;

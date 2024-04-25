@@ -14,8 +14,9 @@ class GetEstablishmentsOrderedByPrice extends ServiceBase {
           Authorization: `Bearer ${token}`
         }
       });
-      
 
+      console.log(response.data.data[0].fuels.value)
+    
       return right(response)
     } catch (error: any) {
       return left(new Error(error));

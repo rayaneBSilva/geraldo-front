@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import ServiceBase from "./ServiceBase";
-import { cnpj } from "cpf-cnpj-validator";
+import { cnpj, cpf } from "cpf-cnpj-validator";
 interface UserData {
   [key: string]: any;
 }
@@ -10,7 +10,8 @@ class UserService extends ServiceBase {
       const response = await this.post(data, "login");     
       //TO-DO redirecionar para a pagina de vehicle component
       let isDriver = response.data.isDriver;
-      if (isDriver){
+      console.log(isDriver)
+      if (isDriver || cpf.isValid(data.username)){
         navigation.navigate("VehicleList");
       } else {
         navigation.navigate("MapScreen");

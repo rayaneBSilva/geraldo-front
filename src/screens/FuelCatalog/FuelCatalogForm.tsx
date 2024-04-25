@@ -175,7 +175,6 @@ const FuelCatalogForm = ({
               value,
               productStatus,
             },
-            componentData.establishmentId,
             navigation,
             "Catálogo cadastrado com sucesso!"
           );

@@ -7,14 +7,15 @@ interface UserData {
 class UserService extends ServiceBase {
   async login(data: UserData, navigation: any): Promise<AxiosResponse> {
     try {
-      const response = await this.post(data, "login");
-      if (cnpj.isValid(data.username)){
-        // O correto é MapScreen-To só desenvolv endo a minha tela
-        navigation.navigate("MapScreen");
-      }else{
+      const response = await this.post(data, "login");     
+      //TO-DO redirecionar para a pagina de vehicle component
+      let isDriver = response.data.isDriver;
+      if (isDriver){
         navigation.navigate("VehicleList");
+      } else {
+        navigation.navigate("MapScreen");
       }
-      
+
       return response;
     } catch (error: any) {
       throw error;

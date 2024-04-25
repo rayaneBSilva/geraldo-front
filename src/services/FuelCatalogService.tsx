@@ -6,12 +6,7 @@ interface Data {
 }
 
 class FuelCatalogService extends ServiceBase {
-  async save(
-    data: Data,
-    establishmentId: number,
-    navigation: any,
-    message?: string
-  ): Promise<void> {
+  async save(data: Data, navigation: any, message?: string): Promise<void> {
     try {
       await this.post(data, "fuels");
 

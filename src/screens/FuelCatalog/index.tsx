@@ -14,7 +14,6 @@ export type FuelCatalogProps = {
   fuelTitle?: string;
   value?: number;
   productStatus?: boolean;
-  establishmentId: number;
 };
 
 export type FuelCatalogRoute = {

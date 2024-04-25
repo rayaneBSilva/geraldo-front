@@ -10,7 +10,7 @@ class UserServiceDriverRegister extends ServiceBase {
         await this.post(data, "driver_register");
         navigation.navigate("RegisterSuccesfully");
       } catch (error:any) {
-        console.log(error.response.data);
+        console.log("Driver register error: ", error.response.data);
     }
   }
 }

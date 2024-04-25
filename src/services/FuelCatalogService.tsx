@@ -10,13 +10,14 @@ class FuelCatalogService extends ServiceBase {
     try {
       await this.post(data, "fuels");
 
+      console.log("LOG save catalog");
+
       message &&
         ToastComponent({
           type: "success",
           text1: message,
         });
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      navigation.navigate("VehicleList");
+      navigation.navigate("MapScreen");
     } catch (error: any) {
       console.log(error.response.data);
       const errors = error.response.data.message;

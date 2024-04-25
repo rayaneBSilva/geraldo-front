@@ -194,7 +194,7 @@ export const AppFrame = ({
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                    onPress={() => navigateToScreen("ViewCarScreen")}
+                    onPress={() => navigateToScreen("EstablishmentUpdate")}
                     style={{
                         flex: 1,
                         height: "100%",

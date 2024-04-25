@@ -7,8 +7,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../../components/button";
 import { validateEmail, validateCEP, validateName, formatCEP } from "./EstablishmentUpdateValidations";
 
-
-
 const EstablishmentUpdateForm = () =>{
   const [nomeFantasia, setNomeFantasia] = useState("");
   const [nomeFantasiaErrorMessage, setNomeFantasiaErrorMessage] = useState("");

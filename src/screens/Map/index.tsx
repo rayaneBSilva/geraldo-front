@@ -8,6 +8,8 @@ import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
 import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
+import getEstablishmentsOrderedByPrice from "../../services/getEstablishmentsOrderedByPrice";
+import { useAuth } from "../../context/authContext";
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
@@ -162,6 +164,8 @@ const MapScreen = () => {
     const [establishments, setEstablishments] = useState<Array<any>>([])
     const [selectedEstablishment, setSelectedEstablishment] = useState(null)
     const [location, setLocation] = useState<Loc | null>(null);
+    const [closestEstablishments, setClosestEstablishments] = useState<Array<any>>([])
+    const auth = useAuth()
 
     useEffect(() => {
         (async () => {
@@ -183,11 +187,18 @@ const MapScreen = () => {
                 long: location.coords.longitude
             })
 
+            const closestEstablishmentsByPrice = await getEstablishmentsOrderedByPrice.closestEstablishments(location.coords.latitude, location.coords.longitude, "DIESEL", auth.authState?.token as string)
+            
+            if (!closestEstablishmentsByPrice.isLeft()){
+                
+            }
+
+
             FindEstablishments
             .execute({
                 lat: location.coords.latitude,
                 long: location.coords.longitude
-            })
+            })    
             .then(response => {
                 if (response.isLeft()) {
                     Toast.show({

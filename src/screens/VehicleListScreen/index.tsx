@@ -20,6 +20,7 @@ import vehicleServiceList, {
 import { vehicleListStyles } from "./VehicleListStyles";
 import axios from "axios";
 import Config from "../../utils/Config";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const VehicleList = ({ route }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,22 +44,20 @@ const VehicleList = ({ route }: any) => {
       }
 
       if (route?.params?.registerVehicleCode) {
-        let alertText =
+        let alert =
           route.params.registerVehicleCode >= 200
-            ? "Veículo cadastrado com sucesso."
-            : "Erro ao cadastrar veículo.";
-        Alert.alert("Cadastro de Veículo", alertText, [
-          {
-            text: "Fechar",
-            style: "cancel",
-          },
-        ]);
+            ? { text: "Veículo cadastrado com sucesso."}
+            : {type: "error", text: "Erro ao cadastrar veículo."};
+
+          Toast.show({
+              type: alert.type,
+              text1: alert.text,
+          })
         navigation.setParams({ registerVehicleCode: null });
       }
     })();
   }, [isFocused]);
 
-  console.log(route);
 
   const handleSharePress = (id: any) => {
     console.log(id);

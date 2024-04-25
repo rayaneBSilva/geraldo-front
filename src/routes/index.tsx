@@ -71,31 +71,20 @@ function Routes() {
       }
     >
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Notificacao" component={Notificacao} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="FuelCatalog" component={FuelCatalog} />
-        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
-        <Stack.Screen name="VehicleList" component={VehicleList} />
-        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
-        <Stack.Screen
-          name="CreateEstablishment"
-          component={CreateEstablishment}
-        />
-        <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-        />
+        <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>
+        <Stack.Screen name="CreateEstablishment"component={CreateEstablishment}/>
         <Stack.Screen name="DriverRegister" component={DriverRegister} />
-        <Stack.Screen
-          name="RegisterSuccesfully"
-          component={RegistrationSuccesfully}
-        />
-        <Stack.Screen
-          name="VehicleRegistration"
-          component={VehicleRegistration}
-        />
+        <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully}/>
+
+        <Stack.Screen name="VehicleList" component={VehicleList} />
+        <Stack.Screen name="ViewCarScreen" component={ViewCar} />
+        <Stack.Screen name="FuelCatalog" component={FuelCatalog} />
+        <Stack.Screen name="VehicheComponent" component={VehicheComponent} />
+        <Stack.Screen name="VehicleRegistration" component={VehicleRegistration}/>
         <Stack.Screen name="CarSharing" component={CarSharing} />
+        
         <Stack.Screen name="HoursRegistration" component={HoursRegistration} />
         <Stack.Screen name="Succesfully" component={Succesfully} />
         <Stack.Screen name="EstablishmentUpdate" component={EstablishmentUpdate} />

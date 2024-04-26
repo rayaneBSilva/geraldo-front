@@ -40,7 +40,7 @@ export const hoursRegistrationStyles = StyleSheet.create({
     color:"#FFF",
     marginTop: 90,
     marginBottom:40,
-    fontSize: 44,
+    fontSize: 35,
     fontWeight: "bold",
     textAlign: "center"
   },

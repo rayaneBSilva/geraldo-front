@@ -98,20 +98,6 @@ export const AppFrame = ({
                         height={40}
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                    onPress={() => navigateToScreen("ViewCarScreen")}
-                    style={{
-                        flex: 1,
-                        height: "100%",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
-                    >
-                        <User
-                        width={40}
-                        height={40}
-                        />
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView> 
         )
@@ -161,6 +147,7 @@ export const AppFrame = ({
                     }}
                     >
                         <Calendar
+                        fill= "#23228A"
                         width={40}
                         height={40}
                         />

@@ -8,9 +8,14 @@ interface NPSDialogProps {
 
 const NPSDialog: React.FC<NPSDialogProps> = ({ onClose, onSubmit }) => {
   const [score, setScore] = useState<number | null>(null);
-
+  const [comment, setComment] = useState<string>('');
+  
   const handleRating = (rating: number) => {
     setScore(rating);
+  };
+
+  const handleCommentChange = (text: string) => {
+    setComment(text);
   };
 
   const handleSubmit = () => {
@@ -22,9 +27,9 @@ const NPSDialog: React.FC<NPSDialogProps> = ({ onClose, onSubmit }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>How likely are you to recommend us?</Text>
+      <Text style={styles.title}>Quanto você recomenda este estabelecimento?</Text>
       <View style={styles.ratingContainer}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+        {[0, 1, 2, 3, 4, 5].map((num) => (
           <TouchableOpacity
             key={num}
             style={[styles.ratingButton, score === num ? styles.selected : null]}
@@ -34,8 +39,14 @@ const NPSDialog: React.FC<NPSDialogProps> = ({ onClose, onSubmit }) => {
           </TouchableOpacity>
         ))}
       </View>
+      <TextInput
+        style={styles.commentInput}
+        placeholder="Deixe um comentário (optional)"
+        onChangeText={handleCommentChange}
+        value={comment}
+      />
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+        <Text style={styles.submitButtonText}>Enviar</Text>
       </TouchableOpacity>
     </View>
   );
@@ -79,7 +90,15 @@ const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 16,
     color: '#fff',
-    textAlign: 'center',
+    textAlign: 'center'
+  },
+  commentInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
   },
 });
 

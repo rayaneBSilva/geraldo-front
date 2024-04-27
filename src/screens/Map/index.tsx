@@ -283,11 +283,19 @@ const MapScreen = () => {
     const handleSubmitRating = (score: number) => {
         setShowDialog(false);
         // Here you can handle submitting the score to your backend or do anything you want
-        Alert.alert('Thank you!', `You rated us ${score} out of 10.`);
+        Alert.alert('Obrigado!', `Você avaliou como ${score} de 5.`);
     };
 
     return (
         <AppFrame>
+            <View style={{ zIndex: 11, position: "absolute" ,flex: 1, justifyContent: 'center', alignItems: 'center',alignContent: "center" }}>
+      {showDialog && (
+        <NPSDialog
+          onClose={handleCloseDialog}
+          onSubmit={handleSubmitRating}
+        />
+      )}
+    </View>
             {
                 location && (
                     <MapView

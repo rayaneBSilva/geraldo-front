@@ -147,6 +147,7 @@ const VehicheComponentForm = ({
   }, [showPicker]);
 
   const handleCustomButtonPress = async () => {
+    clearMessageError();
     validateVehicleComponentEmptyField();
 
     const dateErrorMessage = Validation.validateDate(date);

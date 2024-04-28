@@ -43,7 +43,7 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
         ref={ref}
         animation={isVisible ? slideInUp(height) : (!firstTimeTransition.current ? slideOutDown(height) : "")}
         onAnimationBegin={() => {
-            firstTimeTransition.current = false
+            if (firstTimeTransition.current) firstTimeTransition.current = false
         }}
         style={{
             width: "100%",
@@ -151,7 +151,7 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
 
 const origin = {latitude: 37.3318456, longitude: -122.0296002};
 const destination = {latitude: 37.771707, longitude: -122.4053769};
-const GOOGLE_MAPS_APIKEY = '';
+const GOOGLE_MAPS_APIKEY = 'AIzaSyCBNSMSaW344jow4JOFMKsbUO8f4FqO7tk';
 
 export type Loc = {
     lat: number;

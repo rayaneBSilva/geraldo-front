@@ -13,6 +13,14 @@ import { useAuth } from "../../context/authContext";
 import getEstablishments from "../../services/getEstablishments";
 import { Button, Alert } from 'react-native';
 import NPSDialog from "./rate_establishment";
+import UpdateMileageModal from "../../components/updateMileageModal";
+import { RouteProp } from '@react-navigation/native';
+
+type RootStackParamList = {
+    MapScreen: { id: number };
+  };
+  
+type MapScreenRouteProp = RouteProp<RootStackParamList, 'MapScreen'>;
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
@@ -201,12 +209,18 @@ export type Loc = {
     long: number;
 }
 
-const MapScreen = () => {
+const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
+    const { id } = route.params;
     const [establishments, setEstablishments] = useState<Array<any>>([])
     const [selectedEstablishment, setSelectedEstablishment] = useState(null)
-    const [location, setLocation] = useState<Loc | null>(null);
+    const [location, setLocation] = useState<Loc | null>(null)
     const [closestEstablishments, setClosestEstablishments] = useState<Array<any>>([])
     const auth = useAuth()
+    const [modalVisible, setModalVisible] = useState<boolean>(true)
+    const closeModal = () => {
+        console.log(id)
+        setModalVisible(false);
+    };
 
 
     useEffect(() => {
@@ -289,6 +303,9 @@ const MapScreen = () => {
     return (
         <AppFrame>
             <View style={{ zIndex: 11, position: "absolute" ,flex: 1, justifyContent: 'center', alignItems: 'center',alignContent: "center" }}>
+                <View style={{flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center"}}>
+                    <UpdateMileageModal isVisible={modalVisible} onClose={closeModal} idVeiculo= {id} token={auth.authState?.token || ''}  />
+                </View>
       {showDialog && (
         <NPSDialog
           onClose={handleCloseDialog}

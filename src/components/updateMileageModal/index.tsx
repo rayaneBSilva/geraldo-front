@@ -8,12 +8,13 @@ import ServiceBase from "../../services/ServiceBase";
 import { TouchableOpacity } from "react-native";
 
 interface UpdateMileageModalProps {
-  isVisible: boolean;
-  onClose: () => void;
-  idVeiculo: string;
+  isVisible: boolean
+  onClose: () => void
+  idVeiculo: number
+  token: string
 }
 
-const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onClose, idVeiculo }) => {
+const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onClose, idVeiculo, token }) => {
   const [mileageValue, setMileageValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const serviceBaseInstance = new ServiceBase();
@@ -22,7 +23,7 @@ const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onCl
     const inputMileage = parseInt(mileageValue);
     
     try {
-      const response = await serviceBaseInstance.post({ mileage: inputMileage }, `/kilometers/${idVeiculo}`);
+      const response = await serviceBaseInstance.patch({ mileage: inputMileage }, `kilometers/${idVeiculo}`, token);
       console.log("Resposta da API:", response.data);
       onClose(); 
     } catch (error: any) {

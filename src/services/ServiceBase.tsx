@@ -42,6 +42,16 @@ class ServiceBase {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
+
+  async patch(
+    data: UserData,
+    endpoint: string,
+    token: string
+  ): Promise<AxiosResponse> {
+    return await axios.patch(`${Config.API_URL}/${endpoint}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 }
 
 const serviceBase = new ServiceBase();

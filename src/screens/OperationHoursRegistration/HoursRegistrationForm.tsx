@@ -51,14 +51,16 @@ const HoursRegistrationForm = () => {
     };
 
     const handleHoursRegister = async () => {
+        
       const diaDaSemanaValido = validarCampo(diaDaSemana);
       const turnoInicialValido = validarTurno(turnoInicial);
       const turnoFinalValido = validarTurno(turnoFinal);
   
       // Verificando validade dos campos
       if (diaDaSemanaValido.valido && turnoInicialValido.valido && turnoFinalValido.valido) {
+        
           try {
-            if(route.params && authState?.token){
+            if(authState?.token){
                 const openinghours = turnoInicial + turnoFinal;
                 await UserServiceHoursRegistration.hoursRegistration({openinghours: openinghours} , authState.token);
             }

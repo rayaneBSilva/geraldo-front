@@ -1,20 +1,18 @@
 import React from "react";
-import { View, Text, ImageBackground} from "react-native";
-import HoursRegistrationForm  from "./HoursRegistrationForm"
+import { View, Text, ImageBackground } from "react-native";
+import HoursRegistrationForm from "./HoursRegistrationForm"
 import { hoursRegistrationStyles } from "./HoursRegistrationStyles";
+import { AppFrame } from "../../components/app-frame";
 
 
 const HoursRegistration = () => {
-    return (
-    <ImageBackground 
-      source = {require("../../../assets/splashScreen.png")}
-      style = {hoursRegistrationStyles.backgroundImage}
-    >
-    <View style={hoursRegistrationStyles.container}>
-        <HoursRegistrationForm/> 
-    </View>
-    </ImageBackground>
-    );
+  return (
+    <AppFrame>
+      <View style={hoursRegistrationStyles.container}>
+        <HoursRegistrationForm />
+      </View>
+    </AppFrame>
+  );
 }
 
 export default HoursRegistration;

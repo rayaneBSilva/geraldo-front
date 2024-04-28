@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 interface AuthProps {
-    authState?: {token: string | null; authenticated: boolean | null};
+    authState?: {token: string | null; authenticated: boolean | null; isDriver: boolean | null};
     onLogin?: (cpf: string, password: string, navigation: any) => Promise<any>
     onLogout?: () => Promise<any>
     onTokenUpdated?: (newToken: string) => Promise<any>
@@ -22,19 +22,28 @@ export const AuthProvider = ({ children }: any) => {
     const [authState, setAuthState] = useState<{
         token: string | null;
         authenticated: boolean | null;
+        isDriver: boolean | null;
     }>({
         token: null,
-        authenticated: null
+        authenticated: null,
+        isDriver: null
     })
     
     useEffect(() => {
         const loadToken = async () => {
-            const token = await SecureStore.getItemAsync("token")
+            const token = await SecureStore.getItemAsync("token");
+            var isDriverValue = await SecureStore.getItemAsync("isDriver");
+            var isDriver = true;
+
+            if (isDriverValue == "false"){
+                isDriver = false;
+            }
             
             if(token){
                 setAuthState({
                     token: token,
-                    authenticated: true
+                    authenticated: true,
+                    isDriver: isDriver
                 })
             }
         }
@@ -46,12 +55,15 @@ export const AuthProvider = ({ children }: any) => {
         try {
             const response =  await userService.login({username, password}, navigation)
             const token = response.data.data.access_token
+            const isDriver = response.data.data.isDriver
             setAuthState({
                 token: token,
-                authenticated: true
+                authenticated: true,
+                isDriver: isDriver
             })
 
             await SecureStore.setItemAsync("token", token)
+            await SecureStore.setItemAsync("isDriver",isDriver)
 
             return response
         } catch (e) {
@@ -62,9 +74,11 @@ export const AuthProvider = ({ children }: any) => {
     const updateToken = async (newToken: string) => {
         setAuthState({
             token: newToken,
-            authenticated: true
+            authenticated: true,
+            isDriver: true,
         })
         await SecureStore.setItemAsync("token", newToken)
+        await SecureStore.setItemAsync("isDriver","true")
     }
 
     const logout = async () => {

@@ -14,9 +14,8 @@ class UserServiceHoursRegistration extends ServiceBase {
     
         const headers = {
           'Authorization': `Bearer ${token}`
-
         }
-         const result = await axios.post(`${Config.API_URL}/establishment/${data}`,{headers});
+         const result = await axios.post(`${Config.API_URL}/establishment/openinghours`,{headers});
          return result.data; 
   }
 }

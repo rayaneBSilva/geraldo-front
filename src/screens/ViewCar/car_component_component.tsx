@@ -108,7 +108,7 @@ const BackCard = ({ route }: Props) => {
   const { authState } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const [tappedItemId, setTappedItemId] = useState(0);
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const vehicleId = route.params.id;
 
   useEffect(() => {
@@ -147,7 +147,7 @@ const BackCard = ({ route }: Props) => {
         componentId: tappedItemId,
         componentType: componentData.componentType,
         dateLastExchange: componentData.dateLastExchange,
-        kilometersLastExchange: componentData.kilometersLastExnchange,
+        kilometersLastExchange: componentData.kilometersLastExchange,
         maintenanceFrequency: componentData.maintenanceFrequency,
       };
 
@@ -325,7 +325,7 @@ const BackCard = ({ route }: Props) => {
                         color: "white",
                       }}
                     >
-                      {item.kilometersLastExnchange}
+                      {item.kilometersLastExchange}
                     </Text>
                   </View>
                   <View

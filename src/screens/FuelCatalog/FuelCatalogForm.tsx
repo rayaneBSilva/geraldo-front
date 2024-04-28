@@ -125,18 +125,19 @@ const FuelCatalogForm = ({
 
   useEffect(() => {
     if (
-      componentData.fuelType &&
-      componentData.value &&
-      componentData.productStatus
+      componentData?.fuelType &&
+      componentData?.value &&
+      componentData?.productStatus
     ) {
-      setFuelType(componentData.fuelType);
-      setFuelTitle(componentData.fuelTitle as string);
-      setValue(componentData.value);
-      setValueStr(componentData.value.toString());
-      setProductStatus(componentData.productStatus);
+      setFuelType(componentData?.fuelType);
+      setFuelTitle(componentData?.fuelTitle as string);
+      setValue(componentData?.value);
+      setValueStr(componentData?.value.toString());
+      setProductStatus(componentData?.productStatus);
 
       setType("edit");
     }
+    !fuelType && setFuelType(FuelCatalogTypeEnum.GASOLINE);
   }, [componentData]);
 
   const handleCustomButtonPress = async () => {
@@ -175,7 +176,6 @@ const FuelCatalogForm = ({
               value,
               productStatus,
             },
-            componentData.establishmentId,
             navigation,
             "Catálogo cadastrado com sucesso!"
           );
@@ -214,7 +214,7 @@ const FuelCatalogForm = ({
             children={
               <FrequencyButton
                 title={
-                  componentData.fuelType
+                  componentData?.fuelType
                     ? componentData.fuelType + "                              "
                     : " GASOLINE                              "
                 }
@@ -302,7 +302,7 @@ const FuelCatalogForm = ({
             children={
               <FrequencyButton
                 title={
-                  componentData.productStatus
+                  componentData?.productStatus
                     ? "Disponível                                  "
                     : "Indisponível                               "
                 }

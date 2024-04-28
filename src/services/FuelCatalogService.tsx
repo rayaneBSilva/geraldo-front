@@ -6,14 +6,11 @@ interface Data {
 }
 
 class FuelCatalogService extends ServiceBase {
-  async save(
-    data: Data,
-    establishmentId: number,
-    navigation: any,
-    message?: string
-  ): Promise<void> {
+  async save(data: Data, navigation: any, message?: string): Promise<void> {
     try {
       await this.post(data, "fuels");
+
+      console.log("LOG save catalog");
 
       message &&
         ToastComponent({
@@ -21,7 +18,7 @@ class FuelCatalogService extends ServiceBase {
           text1: message,
         });
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      navigation.navigate("VehicleList");
+      navigation.navigate("MapScreen");
     } catch (error: any) {
       console.log(error.response.data);
       const errors = error.response.data.message;

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
-    elevation: 5,
+    elevation: 5
   },
   title: {
     fontSize: 18,

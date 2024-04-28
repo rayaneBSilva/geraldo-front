@@ -1,20 +1,18 @@
+import { RouteProp } from '@react-navigation/native';
 import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View, ViewProps, ViewStyle, StyleSheet } from "react-native";
+import { Alert, Dimensions, Text, TouchableOpacity, View, ViewProps, ViewStyle } from "react-native";
 import * as Animatable from 'react-native-animatable';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Toast from "react-native-toast-message";
 import GasPump from '../../../assets/icons/gas-pump.svg';
-import { FindEstablishments } from "../../api/queries/FindEstablishments";
 import { AppFrame } from "../../components/app-frame";
-import getEstablishmentsOrderedByPrice from "../../services/getEstablishments";
+import UpdateMileageModal from "../../components/updateMileageModal";
 import { useAuth } from "../../context/authContext";
 import getEstablishments from "../../services/getEstablishments";
-import { Button, Alert } from 'react-native';
 import NPSDialog from "./rate_establishment";
-import UpdateMileageModal from "../../components/updateMileageModal";
-import { RouteProp } from '@react-navigation/native';
+import MapViewDirections from "react-native-maps-directions"
 
 type RootStackParamList = {
     MapScreen: { id: number };
@@ -24,7 +22,13 @@ type MapScreenRouteProp = RouteProp<RootStackParamList, 'MapScreen'>;
 
 export type EstablishmentModalProps = {
     isVisible: boolean;
+    handleInitiateTrip: () => void;
     onRateTap: () => void;
+    name: string;
+    fuels: {
+        gasoline: number;
+        diesel: number;
+    }
 }
 
 const slideInUp = (height: number) => ({
@@ -46,7 +50,10 @@ const slideOutDown = (height: number) => ({
 
 const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
     isVisible,
-    onRateTap
+    onRateTap,
+    name,
+    fuels,
+    handleInitiateTrip
 }) => {
     const { height } = Dimensions.get('window');
     const ref = useRef<Animatable.AnimatableComponent<ViewProps, ViewStyle>>(null)
@@ -55,11 +62,12 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
     return (
         <Animatable.View
         ref={ref}
-        animation={isVisible ? slideInUp(height) : (!firstTimeTransition.current ? slideOutDown(height) : "")}
+        animation={isVisible ? slideInUp(height) : slideOutDown(height)}
         onAnimationBegin={() => {
-            if (firstTimeTransition.current) firstTimeTransition.current = false
+            firstTimeTransition.current = false
         }}
         style={{
+            display: firstTimeTransition.current && !isVisible ? "none" : "flex",
             width: "100%",
             height: "45%",
             zIndex: 10,
@@ -85,7 +93,7 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
                     color: "white",
                     fontWeight: "bold",
                     fontSize: 25
-                }}>Posto Ipiranga</Text>
+                }}>{name}</Text>
                 <GasPump
                     style={{
                         position: "relative",
@@ -98,7 +106,8 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
                 style={{
                     backgroundColor: "#D3D3D3",
                     flex: 1,
-                    zIndex: -1
+                    zIndex: -1,
+                    flexDirection: "row"
                 }}
             >
                 <View
@@ -112,12 +121,8 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
                     }}
                 >
                     <View>
-                        <Text style={{ color: "#13164B", fontSize: 18, marginBottom: 8 }}>Gasolina: <Text style={{ color: "black" }}>R$ 9,20</Text></Text>
-                        <Text style={{ color: "#13164B", fontSize: 18 }}>Diesel: <Text style={{ color: "black" }}>R$ 9,20</Text></Text>
-                    </View>
-                    <View>
-                        <Text style={{ color: "#13164B", fontSize: 18, marginBottom: 8 }}>Funcionamento:</Text>
-                        <Text style={{ color: "black", fontSize: 18 }}>16h-22h</Text>
+                        <Text style={{ color: "#13164B", fontSize: 18, marginBottom: 8 }}>Gasolina: <Text style={{ color: "black" }}>R$ {fuels.gasoline} </Text></Text>
+                        <Text style={{ color: "#13164B", fontSize: 18 }}>Diesel: <Text style={{ color: "black" }}>R$ {fuels.diesel} </Text></Text>
                     </View>
                 </View>
                 <View
@@ -129,17 +134,13 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
                         alignItems: "center",
                     }}
                 >
-                    <View>
+                    {/* <View>
                         <Text style={{ color: "#13164B", fontSize: 18, marginBottom: 8 }}>Distância:</Text>
                         <Text style={{ color: "black", fontSize: 18, alignSelf: "center" }}>9 km</Text>
-                    </View>
+                    </View> */}
                     <View
                         style={{
-                            //paddingHorizontal: 30,
-                            //display: "flex",
-                            flexDirection: "column",
-                            //justifyContent: "space-between",
-                            //alignItems: "center",
+                            flexDirection: "column"
                         }}
                     >
                         <LinearGradient
@@ -157,7 +158,7 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
                                 height: "100%",
                                 alignItems: "center",
                                 justifyContent: "center"
-                            }} onPress={() => { }}>
+                            }} onPress={handleInitiateTrip}>
                                 <Text style={{
                                     color: "#13164B",
                                     fontSize: 18,
@@ -200,8 +201,6 @@ const EstablishmentModal: React.FC<EstablishmentModalProps> = ({
     )
 }
 
-const origin = {latitude: 37.3318456, longitude: -122.0296002};
-const destination = {latitude: 37.771707, longitude: -122.4053769};
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCBNSMSaW344jow4JOFMKsbUO8f4FqO7tk';
 
 export type Loc = {
@@ -209,11 +208,27 @@ export type Loc = {
     long: number;
 }
 
+type Establishment = {
+    name: string;
+    fuels: {
+        gasoline: number;
+        diesel: number;
+    };
+    loc: Loc;
+}
+
+type Trip = {
+    origin: Loc;
+    destination: Loc;
+}
+
 const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
     const { id } = route.params;
-    const [establishments, setEstablishments] = useState<Array<any>>([])
-    const [selectedEstablishment, setSelectedEstablishment] = useState(null)
+    const [isEstablishmentModalVisible, setIsEstablishmentModalVisible] = useState(false)
+    const [selectedEstablishment, setSelectedEstablishment] = useState<Establishment | null>(null)
+    const [currentTrip, setCurrentTrip] = useState<Trip | null>(null)
     const [location, setLocation] = useState<Loc | null>(null)
+    const [showDialog, setShowDialog] = useState(false);
     const [closestEstablishments, setClosestEstablishments] = useState<Array<any>>([])
     const auth = useAuth()
     const [modalVisible, setModalVisible] = useState<boolean>(true)
@@ -247,27 +262,11 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
             const closestEstablishmentsByPrice = await getEstablishments.closestEstablishments(location.coords.latitude, location.coords.longitude, "", auth.authState?.token as string)
 
             if (auth.authState?.isDriver && !closestEstablishmentsByPrice.isLeft()) {
+                console.log({
+                    esta: JSON.stringify(closestEstablishmentsByPrice.value.data.data, null, 4)
+                })
                 setClosestEstablishments(closestEstablishmentsByPrice.value.data.data)
             }
-
-
-            FindEstablishments
-                .execute({
-                    lat: location.coords.latitude,
-                    long: location.coords.longitude
-                })
-                .then(response => {
-                    if (response.isLeft()) {
-                        Toast.show({
-                            type: "error",
-                            text1: "Sem estabelecimentos",
-                            text2: "Não conseguimos encontrar estabelecimentos próximos."
-                        })
-                    } else {
-                        const result = response.value;
-                        setEstablishments(result)
-                    }
-                })
         })()
     }, [])
 
@@ -287,9 +286,6 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
         return Object.values(maxValues);
     };
 
-    const [showDialog, setShowDialog] = useState(false);
-
-
     const handleCloseDialog = () => {
         setShowDialog(false);
     };
@@ -299,6 +295,26 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
         // Here you can handle submitting the score to your backend or do anything you want
         Alert.alert('Obrigado!', `Você avaliou como ${score} de 5.`);
     };
+
+    const handleInitiateTrip = () => {
+        if (!location) return
+
+        if (!selectedEstablishment) return
+
+        const trip: Trip = {
+            origin: {
+                lat: location.lat,
+                long: location.long
+            },
+            destination: {
+                lat: selectedEstablishment.loc.lat,
+                long: selectedEstablishment.loc.long
+            }
+        }
+
+        setCurrentTrip(trip)
+        setIsEstablishmentModalVisible(false)
+    }
 
     return (
         <AppFrame>
@@ -318,7 +334,7 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
                     <MapView
                         showsBuildings={false}
                         showsPointsOfInterest={false}
-                        onPress={() => setSelectedEstablishment(null)}
+                        onPress={() => setIsEstablishmentModalVisible(false)}
                         style={{
                             zIndex: 5,
                             backgroundColor: "red",
@@ -339,79 +355,67 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
                             }}
                             image={require("../../../assets/icons/orange-car.png")}
                         />
-                        <Marker
-                            onPress={(e) => {
-                                e.stopPropagation();
-                                setSelectedEstablishment(10 as any);
-                            }}
-                            coordinate={destination}
-                            image={require("../../../assets/icons/orange-gas-station.png")}
-                        />
-
                         {
                             closestEstablishments.map((item, key) => {
                                 return (
-
                                     <Marker
                                         key={key}
                                         coordinate={{
                                             latitude: item.address.latitude,
                                             longitude: item.address.longitude
                                         }}
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedEstablishment({
+                                                name: item.name,
+                                                fuels: {
+                                                    diesel: item.fuels.find((fuel: any) => fuel.fuelType.name === "DIESEL")?.value ?? 0,
+                                                    gasoline: item.fuels.find((fuel: any) => fuel.fuelType.name === "GASOLINE")?.value ?? 0
+                                                },
+                                                loc: {
+                                                    lat: Number(item.address.latitude),
+                                                    long: Number(item.address.longitude)
+                                                }
+                                            });
+                                            setIsEstablishmentModalVisible(true);
+                                        }}
                                         image={require("../../../assets/icons/orange-gas-station.png")}
 
-                                    >
-                                        <Callout key={key}>
-                                            <View style={{ padding: 10 }}>
-                                                {
-                                                    item?.fuels.length ?
-
-                                                        filterFuel(item?.fuels).map((fuel: any, key: any) => {
-                                                            return (
-                                                                <Text key={key}>{fuel.fuelType.name}: R$ {fuel.value}</Text>
-                                                            )
-                                                        })
-                                                        :
-                                                        <Text key={key}>Combustivel não cadastrado</Text>
-
-                                                }
-                                            </View>
-                                        </Callout>
-                                    </Marker>
-
+                                    />
                                 )
                             })
                         }
-                        {/* {
-                            establishments.map(establishment => (
-                                <Marker
-                                key={establishment.id}
-                                onPress={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedEstablishment(10 as any);
+                        {
+                            currentTrip && (
+                                <MapViewDirections
+                                origin={{
+                                    latitude: currentTrip.origin.lat,
+                                    longitude: currentTrip.origin.long
                                 }}
-                                coordinate={{
-                                    latitude: 37.78825,
-                                    longitude: -122.4324
+                                destination={{
+                                    latitude: currentTrip.destination.lat,
+                                    longitude: currentTrip.destination.long
                                 }}
-                                image={require("../../../assets/icons/gas-station.png")}
+                                apikey={GOOGLE_MAPS_APIKEY}
+                                strokeWidth={3}
+                                strokeColor="#FEC500"
                                 />
-                            ))
-                        } */}
-                        {/* <MapViewDirections
-                        origin={origin}
-                        destination={destination}
-                        apikey={GOOGLE_MAPS_APIKEY}
-                        strokeWidth={3}
-                        strokeColor="#FEC500"
-                        /> */}
+                            )
+                        }
                     </MapView>
                 )
             }
-            <EstablishmentModal
-                isVisible={!!selectedEstablishment}
-                onRateTap={() => setShowDialog(true)}
-            />
+            {
+                selectedEstablishment && (
+                    <EstablishmentModal
+                    isVisible={isEstablishmentModalVisible}
+                    onRateTap={() => setShowDialog(true)}
+                    name={selectedEstablishment.name}
+                    fuels={selectedEstablishment.fuels}
+                    handleInitiateTrip={handleInitiateTrip}
+                    />
+                )
+            }
         </AppFrame>
     )
 }

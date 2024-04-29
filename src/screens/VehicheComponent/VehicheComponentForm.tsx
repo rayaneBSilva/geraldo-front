@@ -317,7 +317,12 @@ const VehicheComponentForm = ({
           <CustomInput
             placeholder="Data da troca"
             icon={CalendarIcon}
-            onChangeText={(text) => setDate(text)}
+            onChangeText={(text) => {
+              const [day, month, year] = text.split("-");
+              const formattedDate = `${year}-${month}-${day}`;
+              setDateSave(formattedDate);
+              setDate(text);
+            }}
             value={date}
             onPress={handleDatePress}
             errorMessage={Validation.generateErrorMessage(

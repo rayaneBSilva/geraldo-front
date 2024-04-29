@@ -96,7 +96,7 @@ const modalStyle = StyleSheet.create({
 });
 
 interface backCard {
-  idVeiculo: number | any
+  idVeiculo: number | any;
 }
 
 const BackCard: React.FC<backCard> = ({ idVeiculo }) => {

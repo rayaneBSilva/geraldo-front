@@ -229,7 +229,6 @@ type RootStackParamList = {
 
 type ViewCarScreenRouteProp = RouteProp<RootStackParamList, "ViewCarScreen">;
 
-
 const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
   const [isToShowBack, setIsToShowBack] = useState(false);
   const offset = useSharedValue({ x: 0 });
@@ -282,9 +281,7 @@ const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
             }}
           >
             {isToShowBack ? (
-              <BackCard
-                idVeiculo={auth.authState?.carId}
-              />
+              <BackCard idVeiculo={auth.authState?.carId} />
             ) : (
               <FrontCard />
             )}
@@ -311,7 +308,7 @@ const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
             justifyContent: "center",
           }}
           onPress={() =>
-            navigation.navigate("VehicheComponent")
+            navigation.navigate("VehicheComponent", auth.authState?.carId)
           }
         >
           <Plus width={25} height={25} />

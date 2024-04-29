@@ -72,8 +72,8 @@ function Routes() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Notificacao" component={Notificacao} />
         <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen}/>
+        <Stack.Screen name="Notificacao" component={Notificacao} />
         <Stack.Screen name="CreateEstablishment"component={CreateEstablishment}/>
         <Stack.Screen name="DriverRegister" component={DriverRegister} />
         <Stack.Screen name="RegisterSuccesfully" component={RegistrationSuccesfully}/>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { GestureResponderEvent, StyleSheet, Text, TextInput, View } from "react-native";
-import axios from "axios";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import Quilometros from '../../../assets/icons/quilometragem.svg';
 import { Button2 } from "../button/Button2";
 import { Modal } from "../modal/Modal";
 import ServiceBase from "../../services/ServiceBase";
 import { TouchableOpacity } from "react-native";
+import MilageUpdateService from "../../services/MilageUpdateService";
 
 interface UpdateMileageModalProps {
   isVisible: boolean
@@ -14,7 +14,7 @@ interface UpdateMileageModalProps {
   token: string
 }
 
-const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onClose, idVeiculo, token }) => {
+const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onClose, idVeiculo, token}) => {
   const [mileageValue, setMileageValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const serviceBaseInstance = new ServiceBase();
@@ -23,7 +23,7 @@ const UpdateMileageModal: React.FC<UpdateMileageModalProps> = ({ isVisible, onCl
     const inputMileage = parseInt(mileageValue);
     
     try {
-      const response = await serviceBaseInstance.patch({ mileage: inputMileage }, `kilometers/${idVeiculo}`, token);
+      const response = await MilageUpdateService.milageUpdate( inputMileage, idVeiculo, token);
       console.log("Resposta da API:", response.data);
       onClose(); 
     } catch (error: any) {

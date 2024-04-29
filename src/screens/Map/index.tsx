@@ -22,12 +22,6 @@ import getEstablishments from "../../services/getEstablishments";
 import MapViewDirections from "react-native-maps-directions";
 import NpsDialog from "../../components/npsDialog/nps_dialog";
 
-type RootStackParamList = {
-  MapScreen: { id: number };
-};
-
-type MapScreenRouteProp = RouteProp<RootStackParamList, "MapScreen">;
-
 export type EstablishmentModalProps = {
   isVisible: boolean;
   handleInitiateTrip: () => void;
@@ -47,6 +41,7 @@ const slideInUp = (height: number) => ({
     translateY: 0,
   },
 });
+
 const slideOutDown = (height: number) => ({
   from: {
     translateY: 0,
@@ -250,22 +245,20 @@ type Trip = {
   destination: Loc;
 };
 
-const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
-  const { id } = route.params;
+const MapScreen = () => {
   const [isEstablishmentModalVisible, setIsEstablishmentModalVisible] =
     useState(false);
   const [selectedEstablishment, setSelectedEstablishment] =
-    useState<Establishment | null>(null);
-  const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
+    useState <Establishment | null>(null);
+  const [currentTrip, setCurrentTrip] = useState<Trip | null> (null);
   const [location, setLocation] = useState<Loc | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const [closestEstablishments, setClosestEstablishments] = useState<
     Array<any>
-  >([]);
+  > ([]);
   const auth = useAuth();
   const [modalVisible, setModalVisible] = useState<boolean>(true);
   const closeModal = () => {
-    console.log(id);
     setModalVisible(false);
   };
 
@@ -362,7 +355,7 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
         <AppFrame>
             <View style={{ zIndex: 11, position: "absolute", flex: 1, justifyContent: 'center', alignItems: 'center', alignContent: "center" }}>
                 <View style={{ flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" }}>
-                    <UpdateMileageModal isVisible={modalVisible} onClose={closeModal} idVeiculo={id} token={auth.authState?.token || ''} />
+                    <UpdateMileageModal isVisible={modalVisible} onClose={closeModal} idVeiculo={auth.authState?.carId || 0} token={auth.authState?.token || ''} />
                     <NpsDialog isVisible={showDialog} onClose={handleCloseDialog} idEstabelecimento={selectedEstablishment?.id || ''} token={auth.authState?.token || ''} />
                 </View>
             </View>

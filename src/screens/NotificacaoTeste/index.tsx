@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Button, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import axios from 'axios';
+import ServiceBase from '../../services/ServiceBase';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -23,10 +25,14 @@ export default function SendNotification() {
 
         await requestNotificationPermission();
 
+        const response = await new ServiceBase().get('check_maintance', 'token');
+        const titulo = response.data.titulo != null? response.data.titulo: "Manutenção";
+        const corpo = response.data.corpo != null? response.data.corpo: "Está tudo em dia";
+
         await Notifications.scheduleNotificationAsync({
             content: {
-                title: 'Está na hora da revisão!',
-                body: 'Body Test',
+                title: titulo,
+                body: corpo,
                 data: {},
             },
             trigger: {

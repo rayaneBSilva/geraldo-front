@@ -205,7 +205,6 @@ const VehicheComponentForm = ({
               kilometersLastExchange: mileage,
               maintenanceFrequency: frequency,
             },
-            componentData.vehicleId,
             navigation,
             "Componente cadastrado com sucesso!"
           );

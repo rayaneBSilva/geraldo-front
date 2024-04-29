@@ -66,7 +66,6 @@ class VehicheComponentService extends ServiceBase {
   async save(
     id: number,
     data: Data,
-    vehicleId: number,
     navigation: any,
     message?: string
   ): Promise<void> {

@@ -19,8 +19,8 @@ import { AppFrame } from "../../components/app-frame";
 import UpdateMileageModal from "../../components/updateMileageModal";
 import { useAuth } from "../../context/authContext";
 import getEstablishments from "../../services/getEstablishments";
-import NPSDialog from "./rate_establishment";
 import MapViewDirections from "react-native-maps-directions";
+import NpsDialog from "../../components/npsDialog/nps_dialog";
 
 type RootStackParamList = {
   MapScreen: { id: number };
@@ -236,6 +236,7 @@ export type Loc = {
 };
 
 type Establishment = {
+    id: string,
   name: string;
   fuels: {
     gasoline: number;
@@ -357,126 +358,106 @@ const MapScreen = ({ route }: { route: MapScreenRouteProp }) => {
     setIsEstablishmentModalVisible(false);
   };
 
-  return (
-    <AppFrame route={route}>
-      <View
-        style={{
-          zIndex: 11,
-          position: "absolute",
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          alignContent: "center",
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#fff",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <UpdateMileageModal
-            isVisible={modalVisible}
-            onClose={closeModal}
-            idVeiculo={id}
-            token={auth.authState?.token || ""}
-          />
-        </View>
-        {showDialog && (
-          <NPSDialog
-            onClose={handleCloseDialog}
-            onSubmit={handleSubmitRating}
-          />
-        )}
-      </View>
-      {location && (
-        <MapView
-          showsBuildings={false}
-          showsPointsOfInterest={false}
-          onPress={() => setIsEstablishmentModalVisible(false)}
-          style={{
-            zIndex: 5,
-            backgroundColor: "red",
-            width: "100%",
-            height: "100%",
-          }}
-          region={{
-            latitude: location.lat,
-            longitude: location.long,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: location.lat,
-              longitude: location.long,
-            }}
-            image={require("../../../assets/icons/orange-car.png")}
-          />
-          {closestEstablishments.map((item, key) => {
-            return (
-              <Marker
-                key={key}
-                coordinate={{
-                  latitude: Number(item.address.latitude),
-                  longitude: Number(item.address.longitude),
-                }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  setSelectedEstablishment({
-                    name: item.name,
-                    fuels: {
-                      diesel:
-                        item.fuels.find(
-                          (fuel: any) => fuel.fuelType.name === "DIESEL"
-                        )?.value ?? 0,
-                      gasoline:
-                        item.fuels.find(
-                          (fuel: any) => fuel.fuelType.name === "GASOLINE"
-                        )?.value ?? 0,
-                    },
-                    loc: {
-                      lat: Number(item.address.latitude),
-                      long: Number(item.address.longitude),
-                    },
-                  });
-                  setIsEstablishmentModalVisible(true);
-                }}
-                image={require("../../../assets/icons/orange-gas-station.png")}
-              />
-            );
-          })}
-          {currentTrip && (
-            <MapViewDirections
-              origin={{
-                latitude: currentTrip.origin.lat,
-                longitude: currentTrip.origin.long,
-              }}
-              destination={{
-                latitude: currentTrip.destination.lat,
-                longitude: currentTrip.destination.long,
-              }}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              strokeColor="#FEC500"
-            />
-          )}
-        </MapView>
-      )}
-      {selectedEstablishment && (
-        <EstablishmentModal
-          isVisible={isEstablishmentModalVisible}
-          onRateTap={() => setShowDialog(true)}
-          name={selectedEstablishment.name}
-          fuels={selectedEstablishment.fuels}
-          handleInitiateTrip={handleInitiateTrip}
-        />
-      )}
-    </AppFrame>
-  );
-};
+    return (
+        <AppFrame>
+            <View style={{ zIndex: 11, position: "absolute", flex: 1, justifyContent: 'center', alignItems: 'center', alignContent: "center" }}>
+                <View style={{ flex: 1, backgroundColor: "#fff", alignItems: "center", justifyContent: "center" }}>
+                    <UpdateMileageModal isVisible={modalVisible} onClose={closeModal} idVeiculo={id} token={auth.authState?.token || ''} />
+                    <NpsDialog isVisible={showDialog} onClose={handleCloseDialog} idEstabelecimento={selectedEstablishment?.id || ''} token={auth.authState?.token || ''} />
+                </View>
+            </View>
+            {
+                location && (
+                    <MapView
+                        showsBuildings={false}
+                        showsPointsOfInterest={false}
+                        onPress={() => setIsEstablishmentModalVisible(false)}
+                        style={{
+                            zIndex: 5,
+                            backgroundColor: "red",
+                            width: "100%",
+                            height: "100%"
+                        }}
+                        region={{
+                            latitude: location.lat,
+                            longitude: location.long,
+                            latitudeDelta: 0.01,
+                            longitudeDelta: 0.01
+                        }}
+                    >
+                        <Marker
+                            coordinate={{
+                                latitude: location.lat,
+                                longitude: location.long
+                            }}
+                            image={require("../../../assets/icons/orange-car.png")}
+                        />
+                        {
+                            closestEstablishments.map((item, key) => {
+                                return (
+                                    <Marker
+                                        key={key}
+                                        coordinate={{
+                                            latitude: Number(item.address.latitude),
+                                            longitude: Number(item.address.longitude)
+                                        }}
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedEstablishment({
+                                                id: item.id,
+                                                name: item.name,
+                                                fuels: {
+                                                    diesel: item.fuels.find((fuel: any) => fuel.fuelType.name === "DIESEL")?.value ?? 0,
+                                                    gasoline: item.fuels.find((fuel: any) => fuel.fuelType.name === "GASOLINE")?.value ?? 0
+                                                },
+                                                loc: {
+                                                    lat: Number(item.address.latitude),
+                                                    long: Number(item.address.longitude)
+                                                }
+                                            });
+                                            setIsEstablishmentModalVisible(true);
+                                        }}
+                                        image={require("../../../assets/icons/orange-gas-station.png")}
+
+                                    />
+                                )
+                            })
+                        }
+                        {
+                            currentTrip && (
+                                <MapViewDirections
+                                    origin={{
+                                        latitude: currentTrip.origin.lat,
+                                        longitude: currentTrip.origin.long
+                                    }}
+                                    destination={{
+                                        latitude: currentTrip.destination.lat,
+                                        longitude: currentTrip.destination.long
+                                    }}
+                                    apikey={GOOGLE_MAPS_APIKEY}
+                                    strokeWidth={3}
+                                    strokeColor="#FEC500"
+                                />
+                            )
+                        }
+                    </MapView>
+                )
+            }
+            {
+                selectedEstablishment && (
+                    <EstablishmentModal
+                        isVisible={isEstablishmentModalVisible}
+                        onRateTap={() => setShowDialog(true)}
+                        name={selectedEstablishment.name}
+                        fuels={selectedEstablishment.fuels}
+                        handleInitiateTrip={handleInitiateTrip}
+                    />
+                )
+            }
+        </AppFrame>
+    )
+}
+
+
 
 export default MapScreen;

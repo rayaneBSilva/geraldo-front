@@ -12,6 +12,7 @@ import Plus from "../../../assets/icons/plus.svg";
 import { AppFrame } from "../../components/app-frame";
 import BackCard from "./car_component_component";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useAuth } from "../../context/authContext";
 
 const FrontCard = () => {
   return (
@@ -223,14 +224,17 @@ const FrontCard = () => {
 };
 
 type RootStackParamList = {
-  VehicheComponent: { id: number };
+  ViewCarScreen: { id: number };
 };
 
-const ViewCar = () => {
+type ViewCarScreenRouteProp = RouteProp<RootStackParamList, "ViewCarScreen">;
+
+
+const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
   const [isToShowBack, setIsToShowBack] = useState(false);
   const offset = useSharedValue({ x: 0 });
   const navigation = useNavigation();
-  const route = useRoute();
+  const auth = useAuth();
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -279,9 +283,7 @@ const ViewCar = () => {
           >
             {isToShowBack ? (
               <BackCard
-                route={
-                  route as RouteProp<RootStackParamList, "VehicheComponent">
-                }
+                idVeiculo={auth.authState?.carId}
               />
             ) : (
               <FrontCard />
@@ -309,9 +311,7 @@ const ViewCar = () => {
             justifyContent: "center",
           }}
           onPress={() =>
-            navigation.navigate("VehicheComponent", {
-              id: route.params.id,
-            })
+            navigation.navigate("VehicheComponent")
           }
         >
           <Plus width={25} height={25} />

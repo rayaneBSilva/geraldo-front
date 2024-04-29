@@ -25,7 +25,9 @@ export const AppFrame = ({ children, route }: AppFrameProps) => {
   const { authState } = useAuth();
 
   function navigateToScreen(screen: string, id?: string) {
-    id ? navigation.navigate(screen, { id }) : navigation.navigate(screen);
+    console.log(screen);
+    console.log(id);
+    id ? navigation.navigate(screen, { id:id }) : navigation.navigate(screen);
   }
   if (authState?.isDriver) {
     return (
@@ -64,7 +66,7 @@ export const AppFrame = ({ children, route }: AppFrameProps) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigateToScreen("ViewCarScreen", route?.params?.id)}
+            onPress={() => navigateToScreen("ViewCarScreen")}
             style={{
               flex: 1,
               height: "100%",

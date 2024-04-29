@@ -95,21 +95,17 @@ const modalStyle = StyleSheet.create({
   },
 });
 
-type RootStackParamList = {
-  VehicheComponent: { id: number };
-};
+interface backCard {
+  idVeiculo: number | any
+}
 
-type Props = {
-  route: RouteProp<RootStackParamList, "VehicheComponent">;
-};
-
-const BackCard = ({ route }: Props) => {
+const BackCard: React.FC<backCard> = ({ idVeiculo }) => {
   const [components, setComponents] = useState<ComponentData[]>([]);
   const { authState } = useAuth();
   const [modalVisible, setModalVisible] = useState(false);
   const [tappedItemId, setTappedItemId] = useState(0);
   const navigation: any = useNavigation();
-  const vehicleId = route.params.id;
+  const vehicleId = idVeiculo;
 
   useEffect(() => {
     (async () => {

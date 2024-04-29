@@ -6,10 +6,10 @@ import axios from "axios";
 
 
 interface AuthProps {
-    authState?: {token: string | null; authenticated: boolean | null; isDriver: boolean | null};
+    authState?: {token: string | null; authenticated: boolean | null; isDriver: boolean | null, carId : number | null};
     onLogin?: (cpf: string, password: string, navigation: any) => Promise<any>
     onLogout?: () => Promise<any>
-    onTokenUpdated?: (newToken: string) => Promise<any>
+    onTokenUpdated?: (newToken: string, newCarId: number) => Promise<any>
 }
 
 const AuthContext = createContext<AuthProps>({});
@@ -23,10 +23,12 @@ export const AuthProvider = ({ children }: any) => {
         token: string | null;
         authenticated: boolean | null;
         isDriver: boolean | null;
+        carId: number | null;
     }>({
         token: null,
         authenticated: null,
-        isDriver: null
+        isDriver: null,
+        carId : null
     })
     
     useEffect(() => {
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: any) => {
             const token = await SecureStore.getItemAsync("token");
             var isDriverValue = await SecureStore.getItemAsync("isDriver");
             var isDriver = true;
+            var carId = await SecureStore.getItemAsync("carId");
 
             if (isDriverValue == "false"){
                 isDriver = false;
@@ -43,7 +46,8 @@ export const AuthProvider = ({ children }: any) => {
                 setAuthState({
                     token: token,
                     authenticated: true,
-                    isDriver: isDriver
+                    isDriver: isDriver,
+                    carId: carId ? Number(carId) : null
                 })
             }
         }
@@ -59,7 +63,8 @@ export const AuthProvider = ({ children }: any) => {
             setAuthState({
                 token: token,
                 authenticated: true,
-                isDriver: isDriver
+                isDriver: isDriver,
+                carId: null
             })
 
             await SecureStore.setItemAsync("token", token)
@@ -71,20 +76,24 @@ export const AuthProvider = ({ children }: any) => {
         }
     }
 
-    const updateToken = async (newToken: string) => {
+    const updateToken = async (newToken: string, newCarId: number) => {
         setAuthState({
             token: newToken,
             authenticated: true,
             isDriver: true,
+            carId: newCarId,
         })
         await SecureStore.setItemAsync("token", newToken)
         await SecureStore.setItemAsync("isDriver","true")
+        var carId = await SecureStore.setItemAsync("carId",`${newCarId}`)
     }
 
     const logout = async () => {
         setAuthState({
             token: null,
-            authenticated: null
+            authenticated: null,
+            isDriver: null,
+            carId: null
         })
 
         await SecureStore.deleteItemAsync("token")

@@ -4,6 +4,8 @@ import { ScrollView, TextInput } from "react-native-gesture-handler"
 import Arrow from '../../../assets/icons/arrow-white.svg';
 import React, { useRef, useState } from "react";
 import Toast from "react-native-toast-message";
+import { useAuth } from "../../context/authContext";
+import { AskCommand } from "../../api/commands/Ask";
 
 type Message = {
     sender: "user" | "assistant";
@@ -43,6 +45,7 @@ const MessageWrapper: React.FC<MessageWrapperProps> = ({
 
 export const Chat = () => {
     const [currentMessage, setCurrentMessage] = useState("")
+    const [isWaitingForAnswer, setIsWaitingForAnswer] = useState(false)
     const [messages, setMessages] = useState<Array<Message>>([
         {
             sender: "assistant",
@@ -50,8 +53,11 @@ export const Chat = () => {
         }
     ]);
     const keyboardRef = useRef<TextInput>(null);
+    const auth = useAuth();
 
     function sendMessage() {
+        const token = auth.authState?.token
+        if (!token) return
         if (!currentMessage.trim()) {
             Toast.show({
                 type: "error",
@@ -68,6 +74,31 @@ export const Chat = () => {
                 content: currentMessage
             }
         ])
+        setIsWaitingForAnswer(true)
+
+        AskCommand.execute({
+            question: currentMessage,
+            token
+        })
+        .then(async response => {
+            if (response.isLeft()) {
+                Toast.show({
+                    type: "error",
+                    text1: "Erro",
+                    text2: "Geraldo não conseguiu responder sua pergunta agora"
+                })
+            } else {
+                setMessages(currentMessages => [
+                    ...currentMessages,
+                    {
+                        sender: "assistant",
+                        content: response.value.response
+                    }
+                ])
+            }
+            setIsWaitingForAnswer(false)
+        })
+
         setCurrentMessage("")
     }
 
@@ -103,6 +134,7 @@ export const Chat = () => {
                 }}>
                     <TextInput
                     ref={keyboardRef}
+                    editable={!isWaitingForAnswer}
                     value={currentMessage}
                     onChangeText={(text) => setCurrentMessage(text)}
                     placeholder="Digite sua dúvida ..."
@@ -120,6 +152,7 @@ export const Chat = () => {
                     />
                     <TouchableOpacity
                     onPress={sendMessage}
+                    disabled={isWaitingForAnswer}
                     style={{
                         flex: 1,
                         alignItems: "center",

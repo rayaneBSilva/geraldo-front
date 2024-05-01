@@ -11,10 +11,24 @@ import Animated, {
 import Plus from "../../../assets/icons/plus.svg";
 import { AppFrame } from "../../components/app-frame";
 import BackCard from "./car_component_component";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useAuth } from "../../context/authContext";
+import { GetVehicleData } from "../../api/queries/GetVehicleData";
+import Toast from "react-native-toast-message";
 
-const FrontCard = () => {
+type FrontCardProps = {
+  model: string;
+  plate: string;
+  year: string;
+  kilometers: number;
+}
+
+const FrontCard: React.FC<FrontCardProps> = ({
+  kilometers,
+  model,
+  plate,
+  year
+}) => {
   return (
     <>
       <ImageBackground
@@ -40,7 +54,7 @@ const FrontCard = () => {
             color: "#13164B",
           }}
         >
-          Fiat Uno
+          { model }
         </Text>
       </View>
       <View
@@ -73,6 +87,7 @@ const FrontCard = () => {
             paddingVertical: 10,
             backgroundColor: "#13164B",
             flex: 1,
+            alignItems: "center"
           }}
         >
           <Text
@@ -88,7 +103,7 @@ const FrontCard = () => {
               color: "white",
             }}
           >
-            10 km
+            { kilometers } km
           </Text>
         </View>
         <View
@@ -98,6 +113,7 @@ const FrontCard = () => {
             paddingVertical: 10,
             backgroundColor: "#1F1546",
             flex: 1,
+            alignItems: "center"
           }}
         >
           <Text
@@ -106,14 +122,14 @@ const FrontCard = () => {
               color: "white",
             }}
           >
-            Consumo Médio:{" "}
+            Placa:{" "}
           </Text>
           <Text
             style={{
               color: "white",
             }}
           >
-            10 km/l
+            { plate }
           </Text>
         </View>
         <View
@@ -123,6 +139,7 @@ const FrontCard = () => {
             paddingVertical: 10,
             backgroundColor: "#13164B",
             flex: 1,
+            alignItems: "center"
           }}
         >
           <Text
@@ -131,91 +148,14 @@ const FrontCard = () => {
               color: "white",
             }}
           >
-            Próxima Revisão:{" "}
+            Ano:{" "}
           </Text>
           <Text
             style={{
               color: "white",
             }}
           >
-            50,000 km
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#1F1546",
-            flex: 1,
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
-            Distância desde a última revisão:{" "}
-          </Text>
-          <Text
-            style={{
-              color: "white",
-            }}
-          >
-            2,345 km
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#13164B",
-            flex: 1,
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
-            Último abastecimento:{" "}
-          </Text>
-          <Text
-            style={{
-              color: "white",
-            }}
-          >
-            30l, R$ 3,50/l
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#1F1546",
-            flex: 1,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
-            Registro de Viagens:{" "}
-          </Text>
-          <Text
-            style={{
-              color: "white",
-            }}
-          >
-            Janeiro - 3 viagens
+            { year }
           </Text>
         </View>
       </View>
@@ -231,9 +171,38 @@ type ViewCarScreenRouteProp = RouteProp<RootStackParamList, "ViewCarScreen">;
 
 const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
   const [isToShowBack, setIsToShowBack] = useState(false);
+  const auth = useAuth();
+  const [vehicleData, setVehicleData] = useState({
+    model: "",
+    year: "",
+    plate: "",
+    kilometers: 0
+  });
   const offset = useSharedValue({ x: 0 });
   const navigation = useNavigation();
-  const auth = useAuth();
+
+  useFocusEffect(() => {
+    (async () => {
+      const token = auth.authState?.token
+      const carId = auth.authState?.carId
+      if (token && carId) {
+        const response = await GetVehicleData.execute({
+          token,
+          vehicleId: carId
+        })
+
+        if (response.isLeft()) {
+          Toast.show({
+            type: "error",
+            text1: "Erro",
+            text2: "Não foi possível recuperar as informações do seu veículo"
+          })
+        } else {
+          setVehicleData(response.value)
+        }
+      }
+    })();
+  })
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -283,7 +252,12 @@ const ViewCar = ({ route }: { route: ViewCarScreenRouteProp }) => {
             {isToShowBack ? (
               <BackCard idVeiculo={auth.authState?.carId} />
             ) : (
-              <FrontCard />
+              <FrontCard 
+              kilometers={vehicleData.kilometers}
+              model={vehicleData.model}
+              plate={vehicleData.plate}
+              year={vehicleData.year}
+              />
             )}
           </View>
         </Animated.View>

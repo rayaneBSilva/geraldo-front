@@ -292,13 +292,6 @@ const MapScreen = () => {
         );
 
       if (auth.authState?.isDriver && !closestEstablishmentsByPrice.isLeft()) {
-        console.log({
-          esta: JSON.stringify(
-            closestEstablishmentsByPrice.value.data.data,
-            null,
-            4
-          ),
-        });
         setClosestEstablishments(closestEstablishmentsByPrice.value.data.data);
       }
     })();
@@ -429,7 +422,7 @@ const MapScreen = () => {
                                     }}
                                     apikey={GOOGLE_MAPS_APIKEY}
                                     strokeWidth={3}
-                                    strokeColor="#FEC500"
+                                    strokeColor="#93032E"
                                 />
                             )
                         }
